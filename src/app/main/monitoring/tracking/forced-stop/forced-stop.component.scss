@@ -1,0 +1,59 @@
+@import "src/@fuse/scss/fuse";
+
+.app-forced-stop {
+    
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 480px;
+    }
+    .mat-dialog-content {
+        overflow: hidden; /* Hide scrollbars */
+    }
+    .mat-dialog-container {
+        padding: 0;
+    }
+    .dialog-content-wrapper {
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+    }
+    mat-radio-group {
+        display: flex;
+        flex-direction: column;
+        margin: 15px 0;
+      }
+      
+      mat-radio-button {
+        margin: 5px;
+      }
+}
+
+div.mat-chip-list-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    width: 400px !important;
+    .mat-chip {
+      flex: 0 0 auto;
+    }
+  }
+  
+  
+  .scrolling-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  
+    .card {
+      flex: 0 0 auto;
+      padding: 16px
+    }
+  }
+
+  .container-chip{
+    width: 100vw !important;
+    margin: 1% !important;
+  }

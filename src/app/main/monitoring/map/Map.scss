@@ -1,0 +1,122 @@
+@import '../map/Cluster.scss';
+@import '../map/Drawing.scss';
+@import '../map/traject.scss';
+@import '../map/detailsCard.scss';
+
+
+
+// leaflet-routing-container leaflet-bar leaflet-control
+
+::ng-deep{
+    .leaflet-top.leaflet-right{
+        margin-top:65px !important
+    }
+
+    
+.pathStart{
+    //border: solid 4px lime;
+    img{
+      width: 60px;
+    }
+  }
+  
+  .pathEnd{
+    //border: solid 4px red;
+    img{
+      width: 60px;
+    }
+  }
+  .pathStart, .pathEnd{
+    z-index: 99!important;
+  }
+  
+  
+  .directionMarker{
+    width: 30px !important;
+    height: 30px !important;
+    background-image: url('/assets/images/arrowicon.png');
+    background-size: contain;
+    border-radius: 50px;
+    border: 3px solid black;
+  }
+  
+
+  
+.shadowPulse {  
+    stroke-dasharray: 50px 200%;
+    animation: pulsePath 10s linear infinite;
+  }
+  
+  .TrajectPath{
+    animation: pathAppearnce 20s linear 1;
+  }
+
+  
+.partOfTraject {
+    animation: pulsePath 50s linear infinite;
+    stroke-dasharray: 50px 20px;
+}
+
+
+.pathStart{
+    //border: solid 4px lime;
+    img{
+      width: 60px;
+    }
+  }
+  
+  .pathEnd{
+    //border: solid 4px red;
+    img{
+      width: 60px;
+    }
+  }
+  .pathStart, .pathEnd{
+    z-index: 99!important;
+  }
+
+  .stopIcon{
+    border-radius: 50px;
+    overflow: hidden;
+    img{
+      width: 21px;
+    }
+  }
+  
+  
+}
+
+
+
+  
+@keyframes pathAppearnce {
+    from {
+      stroke-dasharray: 1000%;
+      stroke-dashoffset: 1000%;
+    }
+    to {
+        stroke-dasharray: 1000%;
+        stroke-dashoffset: 0%;
+    }
+  }
+  
+  @keyframes pulsePath {
+    0% {
+      stroke-dashoffset: 1000%;
+    }
+    
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  
+  @keyframes pulsing{
+    0%{  
+      box-shadow: #000000 0 0 0px 0px;
+    }
+  
+    100%{ 
+      box-shadow: #ff000000 0 0 0px 35px;
+    }
+  }

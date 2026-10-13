@@ -1,0 +1,239 @@
+<meta http-equiv="Cache-control" content="public">
+
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="space-around center" fxLayout.gt-sm="row"
+        fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>sms_failed</mat-icon>
+                <span class="h1">
+                    {{'NAV.smsmailconfig' | translate}} 
+
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données"  (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            
+           
+          <!-- ADD BUTTON -->
+          <button mat-fab color="warn" class="add-button" (click)="addmail()"
+                aria-label="Add account" >
+                <mat-icon>add</mat-icon>
+            </button>
+            <!-- / ADD BUTTON -->
+            
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div id="ExampleTable" #ExampleTable class="content-card">
+            <mat-tab-group  (selectedTabChange)="tabChanged($event)" style="height: 100%;">
+                <mat-tab >
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">add_comment </mat-icon>
+                        {{'NAV.emailaddress' | translate}} 
+                      </ng-template>
+                   
+         <mat-table matTableExporter  #table [dataSource]="dataSource" matSort
+                #exporter="matTableExporter" >
+
+                <ng-container matColumnDef="MailAdress">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.emailaddress' | translate}} 
+
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                     
+                        <p class="text-truncate">{{item.MailAdress  }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="text-truncate"> {{'NAV.Name' | translate}} 
+                        </p>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">{{item.Name}} </mat-cell>
+                </ng-container>
+                <!-- 
+                <ng-container matColumnDef="DateDebut">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="text-truncate"> {{'DateDebut' | translate}} 
+                        </p>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">{{item.DateDebut}} </mat-cell>
+
+                </ng-container>
+                <ng-container matColumnDef="DateFin">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="text-truncate"> {{'DateFin' | translate}} 
+                        </p>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">{{item.DateFin}} </mat-cell>
+
+                </ng-container> -->
+
+               
+                <!-- actions -->
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>
+                       
+
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let item; let i=index;">
+                        <button mat-icon-button (click)="editmail(item)">
+                            <div class="tooltip">
+                                <mat-icon>create</mat-icon><span class="tooltiptxt">{{'NAV.Edit' | translate}}</span>
+                            </div>
+                        </button>
+
+                       
+
+                        <button mat-icon-button color="warn" (click)="removemail(item)">
+                            <div class="tot">
+                                <mat-icon aria-label="Delete">delete</mat-icon><span class="tottxt">{{'NAV.Remove' | translate}}</span>
+                            </div>
+                        </button>
+
+                        <a><button mat-icon-button color="accent" 
+                            (click)="navigatetoconfig(item)">
+                            <mat-icon>add_alert
+                            </mat-icon>
+                        </button></a>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="tableColumns; sticky:true"></mat-header-row>
+
+                <mat-row 
+                    *matRowDef="let product; columns: tableColumns;" class="product" matRipple>
+                </mat-row>
+
+            </mat-table>
+           
+
+          
+                      
+
+                        
+                        <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+
+                            <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                            </div>
+                            <span class="spacer"></span>
+                            <mat-paginator #paginator [pageSize]="5"
+                                    [pageSizeOptions]="[ 5, 10]">
+                                </mat-paginator>
+                                
+                        </mat-toolbar>
+                        <!--<div class="no-results" [style.display]="dataSource.ListTires.length == 0 ? '' : 'none'">
+        <h4>No results</h4>
+    </div>-->
+</mat-tab>
+                <mat-tab > 
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">device_unknown</mat-icon>
+                        {{'NAV.telnumbers' | translate}} 
+                      </ng-template>
+
+                    <div class="content">
+                             <mat-table matTableExporter class="products-table" #table [dataSource]="dataSourceTelNumber" matSort
+                #exporter="matTableExporter" >
+
+                <ng-container matColumnDef="Tel">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.telnumbers' | translate}} 
+
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                     
+                        <p class="text-truncate">{{item.Tel}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="text-truncate"> {{'NAV.Name' | translate}} 
+                        </p>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">{{item.Name}} </mat-cell>
+
+                </ng-container>
+
+               
+                <!-- actions -->
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>
+                     
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let item; let i=index;">
+                        <button mat-icon-button (click)="edittel(item)">
+                            <div class="tooltip">
+                                <mat-icon>create</mat-icon><span class="tooltiptxt">{{'NAV.Edit' | translate}}</span>
+                            </div>
+                        </button>
+
+                      
+
+                        <button mat-icon-button color="warn" (click)="removetel(item)">
+                            <div class="tot">
+                                <mat-icon aria-label="Delete">delete</mat-icon><span class="tottxt">{{'NAV.Remove' | translate}}</span>
+                            </div>
+                        </button>
+                        <a><button mat-icon-button color="accent" 
+                            (click)="navigatetoconfig(item)">
+                            <mat-icon>add_alert
+                            </mat-icon>
+                        </button></a>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="tableColumns2; sticky:true"></mat-header-row>
+
+                <mat-row 
+                    *matRowDef="let product; columns: tableColumns2;" class="product" matRipple>
+                </mat-row>
+
+            </mat-table>
+           
+
+            <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                </div>
+                <span class="spacer"></span>
+                <mat-paginator #paginator [pageSize]="5"
+                        [pageSizeOptions]="[ 5, 10]">
+                    </mat-paginator>
+                    
+            </mat-toolbar>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+     
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -1,0 +1,115 @@
+<div id="login" style="height: 100%;" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
+    <div id="bg">
+
+    </div>
+    <div id="login-intro" fxFlex fxHide fxShow.gt-xs>
+
+        <div class="logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <ngx-picture src="assets/images/logos/Logo.png" alt="Logo" [lazyLoad]="true"></ngx-picture>
+        </div>
+
+        <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+            {{'wlc' | translate}}
+        </div>
+
+        <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+            Le système de tracking GPS LaTrace permet de suivre la vitesse véhicule de votre flotte et d'être averti de
+            tout dépassement.
+        </div>
+
+    </div>
+
+    <div id="login-form-wrapper" fusePerfectScrollbar [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+
+        <div id="login-form">
+
+            <div class="logo" fxHide.gt-xs>
+                <ngx-picture src="assets/images/logos/Logo.png" alt="Logo" [lazyLoad]="true"></ngx-picture>
+            </div>
+
+            <div class="title">{{'LoginToYourAccount' | translate}}</div>
+            <p class="secondary-text" style="margin-bottom: 16px; font-size: 13px;">
+                Mode démo offline — saisissez n’importe quel identifiant / mot de passe.
+            </p>
+
+            <form name="loginForm" [formGroup]="loginForm" novalidate>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'login' | translate}}</mat-label>
+                    <input matInput formControlName="email">
+                    <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+                    <mat-error *ngIf="loginForm.get('email').hasError('required')">
+                        {{'emailIsRequired' | translate}}
+                    </mat-error>
+                    <mat-error *ngIf="!loginForm.get('email').hasError('required') &&
+                                loginForm.get('email').hasError('email')">
+                        {{'msgRequiredEmail' | translate}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'password' | translate}}</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                    <!--                     <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+ -->
+                    <mat-icon matSuffix (click)="hide = !hide">
+                        {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  
+                <mat-error *ngIf="loginForm.get('password').hasError('required')">
+                    {{'Pwd_Required' | translate}}
+                </mat-error>
+                <mat-error *ngIf="!loginForm.get('password').hasError('required')">
+                    {{'Account_Prb' | translate}}
+                </mat-error>
+                </mat-form-field>
+
+                <!-- <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
+                     fxLayoutAlign="space-between center">
+                    <mat-checkbox class="remember-me" aria-label="Remember Me" formControlName="RememberMe">
+                       {{'rememberMe' | translate}}
+                    </mat-checkbox>
+                </div> -->
+
+                <div fxLayout="row" fxLayout.xs="column" style="width: min-content;margin: auto;">
+                    <re-captcha (resolved)="resolved($event)" (error)="errored()" errorMode="handled"
+                        siteKey="6LdSsXUdAAAAAKyfrG6ekR9sPMCT5IhmZ_q77-YL"></re-captcha>
+                </div>
+                <!--  <button mat-raised-button color="accent" class="AuthenticateButton" [ngClass]="{'loadingButton':isLoading}" [disabled]="!recaptchaValidation" (click)="Authenticate()"> -->
+                <button mat-raised-button color="accent" class="AuthenticateButton" 
+                    [ngClass]="{'loadingButton':isLoading}" (click)="Authenticate()">
+                    Connecter
+                </button>
+                <div class="lds-roller">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <!-- <mat-spinner-button (click)="Authenticate()"  [options]="spinnerButtonOptions">
+                   
+                </mat-spinner-button> -->
+
+            </form>
+            <button mat-button fxHidefxSh ow.gt-xs class="language-button" [matMenuTriggerFor]="languageMenu">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <img class="flag mr-8" [src]="'assets/icons/flags/'+selectedLanguage.flag+'.png'">
+                    <span class="iso text-uppercase">{{selectedLanguage.id}}</span>
+                </div>
+            </button>
+            <mat-menu #languageMenu="matMenu" [overlapTrigger]="false">
+
+                <button mat-menu-item *ngFor="let lang of languages" (click)="setLanguage(lang)">
+                    <span fxLayout="row" fxLayoutAlign="start center">
+                        <img class="flag mr-16" [src]="'assets/icons/flags/'+lang.flag+'.png'">
+                        <span class="iso">{{lang.title}}</span>
+                    </span>
+                </button>
+
+            </mat-menu>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,314 @@
+<div class="orient-page orient-page--wide">
+  <div class="orient-page-header">
+    <div class="orient-page-header__text">
+      <h1 class="orient-page-header__title">Dashboard</h1>
+      <p class="orient-page-header__subtitle">
+        Général et mission
+      </p>
+    </div>
+    <div class="orient-page-header__actions">
+      <button mat-stroked-button type="button" (click)="exportPdf()" [disabled]="!canExport()">PDF</button>
+      <button mat-stroked-button type="button" (click)="exportExcel()" [disabled]="!canExport()">Excel</button>
+      <button mat-stroked-button type="button" (click)="goSuivi()">
+        <mat-icon>public</mat-icon>
+        Ouvrir le suivi
+      </button>
+    </div>
+  </div>
+
+  <div class="orient-tabs orient-dash-tabs" role="tablist">
+    <button
+      *ngFor="let tab of views"
+      type="button"
+      role="tab"
+      class="orient-tabs__btn"
+      [class.orient-tabs__btn--active]="view === tab.id"
+      [attr.aria-selected]="view === tab.id"
+      (click)="setView(tab.id)"
+    >
+      {{ tab.label }}
+    </button>
+  </div>
+
+  <mat-card class="orient-table-card">
+    <div class="orient-toolbar">
+      <mat-form-field appearance="outline" class="orient-filter" *ngIf="view === 'mission'">
+        <mat-label>Mission</mat-label>
+        <mat-select [ngModel]="entityFilter" (ngModelChange)="onEntityChange($event)">
+          <mat-option *ngFor="let m of missionOptions" [value]="m.id">{{ m.name || m.id }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <ng-container *ngIf="view === 'general'">
+        <mat-form-field appearance="outline" class="orient-filter orient-filter--date">
+          <mat-label>Du</mat-label>
+          <input
+            matInput
+            [matDatepicker]="fromPicker"
+            [ngModel]="dateFrom"
+            (ngModelChange)="onDateFromChange($event)"
+          />
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="orient-filter orient-filter--date">
+          <mat-label>Au</mat-label>
+          <input
+            matInput
+            [matDatepicker]="toPicker"
+            [ngModel]="dateTo"
+            (ngModelChange)="onDateToChange($event)"
+          />
+          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker></mat-datepicker>
+        </mat-form-field>
+      </ng-container>
+    </div>
+  </mat-card>
+
+  <section class="orient-dash-section" aria-labelledby="dash-summary-title">
+    <div class="orient-dash-section__header">
+      <span class="orient-dash-section__index">01</span>
+      <div>
+        <h2 id="dash-summary-title">Vue d’ensemble</h2>
+        <p>Les indicateurs essentiels de {{ view === 'mission' ? 'la mission sélectionnée' : 'la période sélectionnée' }}.</p>
+      </div>
+    </div>
+  <div class="orient-kpi-row" *ngIf="view === 'mission'">
+    <mat-card
+      class="orient-kpi orient-kpi--click"
+      (click)="openAlerts()"
+      [class.orient-kpi--off]="!alertCount"
+    >
+      <div class="orient-kpi__icon orient-kpi__icon--danger"><mat-icon>notification_important</mat-icon></div>
+      <div>
+        <p class="orient-kpi__value">{{ alertCount }}</p>
+        <p class="orient-kpi__label">Alertes</p>
+      </div>
+    </mat-card>
+    <mat-card
+      class="orient-kpi orient-kpi--click"
+      (click)="openUnjustified()"
+      [class.orient-kpi--off]="!alertMin"
+    >
+      <div class="orient-kpi__icon orient-kpi__icon--danger"><mat-icon>timer</mat-icon></div>
+      <div>
+        <p class="orient-kpi__value">{{ num(alertMin) }}</p>
+        <p class="orient-kpi__label">Temps non justifié (min)</p>
+      </div>
+    </mat-card>
+    <mat-card
+      class="orient-kpi orient-kpi--click"
+      (click)="openCycleDetails()"
+      [class.orient-kpi--off]="!tripTotal"
+    >
+      <div class="orient-kpi__icon orient-kpi__icon--navy"><mat-icon>local_shipping</mat-icon></div>
+      <div>
+        <p class="orient-kpi__value">{{ tripTotal }}</p>
+        <p class="orient-kpi__label">Nombre de voyages</p>
+      </div>
+    </mat-card>
+    <mat-card
+      class="orient-kpi orient-kpi--click"
+      (click)="openWorkshopDetails()"
+      [class.orient-kpi--off]="!workshopVisits"
+    >
+      <div class="orient-kpi__icon orient-kpi__icon--warn"><mat-icon>build</mat-icon></div>
+      <div>
+        <p class="orient-kpi__value">{{ workshopVisits }}</p>
+        <p class="orient-kpi__label">Passages atelier</p>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="orient-kpi-row" *ngIf="view === 'general'">
+    <mat-card
+      class="orient-kpi orient-kpi--click"
+      (click)="openGeneralTrips()"
+      [class.orient-kpi--off]="!tripTotal"
+    >
+      <div class="orient-kpi__icon orient-kpi__icon--brand"><mat-icon>local_shipping</mat-icon></div>
+      <div>
+        <p class="orient-kpi__value">{{ tripTotal }}</p>
+        <p class="orient-kpi__label">Voyages réalisés</p>
+      </div>
+    </mat-card>
+    <mat-card
+      class="orient-kpi orient-kpi--click"
+      (click)="openDoneMissions()"
+      [class.orient-kpi--off]="!doneMissionCount"
+    >
+      <div class="orient-kpi__icon orient-kpi__icon--navy"><mat-icon>assignment_turned_in</mat-icon></div>
+      <div>
+        <p class="orient-kpi__value">{{ doneMissionCount }}</p>
+        <p class="orient-kpi__label">Missions</p>
+      </div>
+    </mat-card>
+    <mat-card
+      class="orient-kpi orient-kpi--click"
+      *ngIf="view === 'general' || view === 'mission'"
+      (click)="openAlerts()"
+      [class.orient-kpi--off]="!alertCount"
+    >
+      <div class="orient-kpi__icon orient-kpi__icon--danger"><mat-icon>notification_important</mat-icon></div>
+      <div>
+        <p class="orient-kpi__value">{{ alertCount }}</p>
+        <p class="orient-kpi__label">Alertes</p>
+      </div>
+    </mat-card>
+    <mat-card
+      class="orient-kpi orient-kpi--click"
+      *ngIf="view === 'general'"
+      (click)="openWorkshopDetails()"
+      [class.orient-kpi--off]="!workshopVisits"
+    >
+      <div class="orient-kpi__icon orient-kpi__icon--warn"><mat-icon>build</mat-icon></div>
+      <div>
+        <p class="orient-kpi__value">{{ workshopVisits }}</p>
+        <p class="orient-kpi__label">Passages atelier</p>
+      </div>
+    </mat-card>
+  </div>
+  </section>
+
+  <section class="orient-dash-section" aria-labelledby="dash-operations-title">
+    <div class="orient-dash-section__header">
+      <span class="orient-dash-section__index">02</span>
+      <div>
+        <h2 id="dash-operations-title">Temps et opérations</h2>
+        <p *ngIf="view === 'general'">Activité par poste.</p>
+        <p *ngIf="view === 'mission'">Temps moyen de cycle.</p>
+      </div>
+    </div>
+  <div class="orient-dash-grid" *ngIf="view === 'mission'">
+    <mat-card class="orient-chart-card">
+      <mat-card-header>
+        <mat-card-title>Temps moyen de cycle</mat-card-title>
+        <mat-card-subtitle>Moyenne réel / standard (min) · chargement, aller, déchargement, retour et total</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="orient-axis-chart">
+          <div class="orient-axis-chart__unit">min</div>
+          <div class="orient-axis-chart__body">
+            <div class="orient-axis-chart__y">
+              <span *ngFor="let tick of axisTicks(cycleBars)">{{ num(tick) }}</span>
+            </div>
+            <div class="orient-bar-chart orient-bar-chart--plot">
+              <div class="orient-bar-chart__grid" aria-hidden="true">
+                <span *ngFor="let tick of axisTicks(cycleBars)"></span>
+              </div>
+              <ng-container *ngFor="let bar of cycleBars">
+              <div class="orient-bar-chart__col" *ngIf="bar.actual > 0">
+                <div class="orient-bar-chart__bar orient-bar-chart__bar--stack" [style.height.px]="bar.height">
+                  <span *ngIf="bar.danger" class="orient-bar-chart__seg orient-bar-chart__seg--danger" [style.height.px]="bar.danger"></span>
+                  <span *ngIf="bar.ok" class="orient-bar-chart__seg orient-bar-chart__seg--ok" [style.height.px]="bar.ok"></span>
+                </div>
+              </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="orient-axis-chart__x">
+            <span class="orient-axis-chart__x-pad"></span>
+            <div class="orient-axis-chart__x-labels">
+              <ng-container *ngFor="let bar of cycleBars">
+              <div *ngIf="bar.actual > 0">
+                <span class="orient-bar-chart__label">{{ bar.label }}</span>
+                <span class="orient-bar-chart__label">{{ num(bar.actual) }} / {{ num(bar.standard) }}</span>
+              </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="orient-chart-card" *ngIf="view === 'general'">
+    <mat-card-header>
+      <mat-card-title>Par poste</mat-card-title>
+      <mat-card-subtitle>Voyages et cycle moyen / standard (min)</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-container *ngFor="let p of posteBars">
+      <div class="orient-poste" *ngIf="p.trips > 0 || p.avg > 0">
+        <div class="orient-poste__row">
+          <span>{{ p.label }} · {{ p.trips }} voyages</span>
+          <span class="orient-chip" [ngClass]="deltaClass(p.avg, p.standard)">
+            {{ num(p.avg) }} / {{ num(p.standard) }}
+          </span>
+        </div>
+        <div class="orient-poste__bar">
+          <div class="orient-poste__fill" [style.width.%]="p.standard ? (p.avg / p.standard) * 100 : 0"></div>
+        </div>
+      </div>
+      </ng-container>
+      <p class="orient-empty" *ngIf="!hasActivePoste()">Aucun poste pour cette date.</p>
+    </mat-card-content>
+  </mat-card>
+  </section>
+
+  <section class="orient-dash-section" aria-labelledby="dash-drivers-title">
+    <div class="orient-dash-section__header">
+      <span class="orient-dash-section__index">03</span>
+      <div>
+        <h2 id="dash-drivers-title">Chauffeurs</h2>
+        <p>{{ view === 'mission' ? 'Voyages et alertes' : 'Missions, voyages et alertes' }} par chauffeur.</p>
+      </div>
+    </div>
+  <div class="orient-rank-grid">
+    <mat-card class="orient-chart-card orient-rank-card" *ngFor="let chart of driverCharts">
+      <mat-card-header>
+        <mat-card-title>{{ chart.title }}</mat-card-title>
+        <mat-card-subtitle>Échelle : 0 à {{ num(chart.max) }} {{ chart.unit }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="orient-rank-chart" role="list" [attr.aria-label]="chart.title">
+          <ng-container *ngFor="let row of driverRanks">
+          <div class="orient-rank-chart__item" role="listitem" *ngIf="row[chart.metric] > 0">
+            <span class="orient-rank-chart__name" [title]="row.name">{{ row.name }}</span>
+            <div class="orient-rank-chart__track" aria-hidden="true">
+              <span class="orient-rank-chart__fill" [ngClass]="'orient-rank-chart__fill--' + chart.tone"
+                [style.width.%]="(row[chart.metric] / chart.max) * 100"></span>
+            </div>
+            <strong class="orient-rank-chart__value">{{ num(row[chart.metric]) }}</strong>
+          </div>
+          </ng-container>
+        </div>
+        <p class="orient-empty" *ngIf="!hasPositive(driverRanks, chart.metric)">Aucun chauffeur pour {{ view === 'mission' ? 'cette mission' : 'cette période' }}.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  </section>
+
+  <section class="orient-dash-section" *ngIf="view === 'mission'" aria-labelledby="dash-trucks-title">
+    <div class="orient-dash-section__header">
+      <span class="orient-dash-section__index">04</span>
+      <div>
+        <h2 id="dash-trucks-title">Camions</h2>
+        <p>Voyages, temps d’atelier et alertes par camion.</p>
+      </div>
+    </div>
+    <div class="orient-rank-grid">
+      <mat-card class="orient-chart-card orient-rank-card" *ngFor="let chart of truckCharts">
+        <mat-card-header>
+          <mat-card-title>{{ chart.title }}</mat-card-title>
+          <mat-card-subtitle>Échelle : 0 à {{ num(chart.max) }} {{ chart.unit }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="orient-rank-chart" role="list" [attr.aria-label]="chart.title">
+            <ng-container *ngFor="let row of truckRanks">
+            <div class="orient-rank-chart__item" role="listitem" *ngIf="row[chart.metric] > 0">
+              <span class="orient-rank-chart__name" [title]="row.plate">{{ row.plate }}</span>
+              <div class="orient-rank-chart__track" aria-hidden="true">
+                <span class="orient-rank-chart__fill" [ngClass]="'orient-rank-chart__fill--' + chart.tone"
+                  [style.width.%]="(row[chart.metric] / chart.max) * 100"></span>
+              </div>
+              <strong class="orient-rank-chart__value">{{ num(row[chart.metric]) }}</strong>
+            </div>
+            </ng-container>
+          </div>
+          <p class="orient-empty" *ngIf="!hasPositive(truckRanks, chart.metric)">Aucun camion pour cette mission.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+</div>

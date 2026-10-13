@@ -1,0 +1,252 @@
+
+  @import "src/@fuse/scss/fuse";
+
+
+
+  .products-table {
+      flex: 1 1 auto;
+      border-bottom: 1px solid rgba(0, 0, 0, .12);
+      overflow: scroll;
+
+
+      .mat-header-row {
+          min-height: 64px;
+      }
+
+      .product {
+          position: relative;
+          cursor: pointer;
+          height: 65px;
+      }
+
+      .mat-cell {
+          min-width: 0;
+          display: flex;
+          align-items: center;
+      }
+
+      .mat-column-id {
+          flex: 0 1 80px;
+      }
+
+      .mat-column-image {
+          flex: 0 1 84px;
+
+          .product-image {
+              width: 52px;
+              height: 52px;
+              border: 1px solid rgba(0, 0, 0, .12);
+          }
+      }
+
+      .mat-column-category {
+          flex: 0 1 240px;
+      }
+
+      .mat-column-price {
+          flex: 0 1 160px;
+      }
+
+      .mat-column-quantity {
+          flex: 0 1 160px;
+      }
+
+      .mat-column-active {
+          flex: 0 1 80px;
+      }
+
+      .quantity-indicator {
+          display: inline-block;
+          vertical-align: middle;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          margin-right: 8px;
+
+          & + span {
+              display: inline-block;
+              vertical-align: middle;
+          }
+      }
+
+      .active-icon {
+          border-radius: 50%;
+      }
+  }
+
+  .tooltip{
+    position: relative;
+    display: inline-block;
+    
+  }
+  .tooltip .tooltiptxt{
+    visibility: hidden; 
+    width: 44px;
+    background-color: #1d1b1b;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+  }
+  .tooltip:hover .tooltiptxt{
+    visibility: visible;
+  }
+  .tot{
+    position: relative;
+    display: inline-block;
+    
+  }
+ .tottxt{
+    visibility: hidden;
+    width: 52px;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+  }
+ .tot:hover .tottxt{
+    visibility: visible;
+  }
+  .row_effect:hover{
+    background-color: #c8c8c8;
+  }
+  .Scolling_wigh{
+    width: 200%;
+    overflow: scroll;
+  }
+  .check_box_header{
+    margin-left: 5px;
+  margin-right: 0;
+  margin-bottom: 3px;
+  }
+  .example-spacer {
+      flex: 1 1 auto;
+    }
+
+    .active-icon {
+      border-radius: 50%;
+  }
+  .tooltip{
+    position: relative;
+    display: inline-block;
+    
+  }
+  .tooltip .tooltiptxt{
+    visibility: hidden; 
+    width: 44px;
+    background-color: #1d1b1b;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+  }
+  .tooltip:hover .tooltiptxt{
+    visibility: visible;
+  }
+  .tot{
+    position: relative;
+    display: inline-block;
+    
+  }
+ .tottxt{
+    visibility: hidden;
+    width: 74px;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+  }
+  .tot2{
+    position: relative;
+    display: inline-block;
+    
+  }
+ .tottxt2{
+    visibility: hidden;
+    width: 74px;
+    background-color: #039be5;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+  }
+ .tot:hover .tottxt{
+    visibility: visible;
+  }
+  .tot2:hover .tottxt2{
+    visibility: visible;
+  }
+  .row_effect:hover{
+    background-color: #c8c8c8;
+  }
+
+  .mat-toolbar.mat-white {
+    background:white;
+    margin-top: 5px;   
+  }
+
+  .make-gold {
+    background-color: #ffe5e5
+    //#AFff5f49
+}
+
+.hidden {
+  display: none !important;
+}
+[hidden] {
+  display: none !important;
+}
+mat-page {
+ 
+  margin-top: 100px;
+}
+.list-hide {
+  display: none;
+}
+
+.list-show {
+  display: block;
+}
+
+
+
+::ng-deep{
+  .ngx-mat-timepicker
+{
+  
+    font-size: x-small !important;
+    line-height: 1 !important;
+    .ng-star-inserted
+    {
+      display:none !important;
+    }
+}
+
+}

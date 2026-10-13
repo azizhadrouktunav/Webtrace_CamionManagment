@@ -1,0 +1,142 @@
+<meta http-equiv="Cache-control" content="public">
+
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="space-around center" fxLayout.gt-sm="row"
+        fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>account_box</mat-icon>
+                <span class="h1">
+                    {{'NAV.pageTitle' | translate}} 
+
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données"  (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            
+           
+          <!-- ADD BUTTON -->
+          <button mat-fab color="warn" class="add-button" (click)="addaccount()"
+                aria-label="Add account" >
+                <mat-icon>add</mat-icon>
+            </button>
+            <!-- / ADD BUTTON -->
+            
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            
+            <mat-table matTableExporter  #table [dataSource]="dataSource" matSort
+                #exporter="matTableExporter" fusePerfectScrollbar>
+
+                <ng-container matColumnDef="Login">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.colLogin' | translate}} 
+
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                     
+                        <p class="text-truncate">{{item.Login  }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="FirstName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="text-truncate"> {{'NAV.lbUserFirstName' | translate}} 
+                        </p>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">{{item.FirstName}} </mat-cell>
+
+                </ng-container>
+
+                <ng-container matColumnDef="LastName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="text-truncate"> {{'NAV.lbUserLastName' | translate}}</p>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item"> {{item.LastName}} </mat-cell>
+
+                </ng-container>
+                <ng-container matColumnDef="ControlledDepartment">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NAV.colControlledDepartment' | translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                        <p class="text-truncate">{{item.ControlledDepartment}}</p>
+                    </mat-cell>
+
+                </ng-container>
+                <!-- actions -->
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>
+
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let item; let i=index;">
+                        <button mat-icon-button (click)="editaccount(item)">
+                            <div class="tooltip">
+                                <mat-icon>create</mat-icon><span class="tooltiptxt">{{'NAV.Edit' | translate}}</span>
+                            </div>
+                        </button>
+
+                        <a><button mat-icon-button color="accent" (click)="changePassword(item)">
+                                <div class="tot2">
+                                    <mat-icon aria-label="Delete">phonelink_lock</mat-icon><span
+                                        class="tottxt2">{{'NAV.itemMenuChangePassword' | translate}}</span>
+                                </div>
+                            </button></a>
+
+                        <button mat-icon-button color="warn" (click)="deleteAccount(item)">
+                            <div class="tot">
+                                <mat-icon aria-label="Delete">delete</mat-icon><span class="tottxt">{{'NAV.Remove' | translate}}</span>
+                            </div>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="tableColumns; sticky:true"></mat-header-row>
+
+                <mat-row [ngClass]="{'make-gold': product.ShowReminder == true}"
+                    *matRowDef="let product; columns: tableColumns;" class="product" matRipple>
+                </mat-row>
+
+            </mat-table>
+           
+
+            <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                </div>
+                <span class="spacer"></span>
+                <mat-paginator #paginator [pageSize]="5"
+                        [pageSizeOptions]="[5, 10, 20]">
+                    </mat-paginator>
+                    
+            </mat-toolbar>
+            
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

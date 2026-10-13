@@ -1,0 +1,69 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+ <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+    <span class="title dialog-title">{{'NAV.CarDriver' | translate}} {{FullName}}</span>
+    <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar >
+        <mat-table [dataSource]="dataSource" matSort class="products-table" [@animateStagger]="{value:'50'}"
+        fusePerfectScrollbar>
+
+      
+        <ng-container matColumnDef="Equipment">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.Equipment' | translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <p class="text-truncate">{{element.Equipment}}</p>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="EtatConduite">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Autorisation de conduite</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+               
+                <mat-checkbox [(ngModel)]="element.EtatConduite"></mat-checkbox>
+            </mat-cell>
+           
+        </ng-container>
+        <ng-container matColumnDef="CurrentTrackingObjectName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.car' | translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <p class="text-truncate">{{element.CurrentTrackingObjectName}}</p>
+            </mat-cell>
+        </ng-container>
+
+       <!-- <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm></mat-header-cell>
+            <mat-cell *matCellDef="let row" fxHide fxShow.gt-sm>
+              <div fxLayout="row" fxLayoutAlign="space-around">
+                <button mat-icon-button color="primary" (click)="editCar(row)">
+                    <div class="tooltip">
+                        <mat-icon>edit</mat-icon>
+                    </div>
+                    
+                </button>
+               
+              </div>
+            </mat-cell>
+        </ng-container>-->
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="Scolling_wigh"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" class="product" matRipple class="Scolling_wigh"></mat-row>
+
+    </mat-table>
+   
+        </div>
+
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <button 
+            mat-button
+            class="save-button"
+            (click)="SaveAllCar()"
+           
+            aria-label="SAVE">
+            {{'NAV.Save' | translate}}
+          </button>
+        </div>
+
+</div>

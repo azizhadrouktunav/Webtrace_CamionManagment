@@ -1,0 +1,79 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AccountmanagmentComponent } from './accountmanagment/accountmanagment.component';
+import { RouterModule, Routes } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ResizableModule } from 'angular-resizable-element';
+import { MatDialogModule, MatSnackBarModule, MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule, MatMenuModule, MatChipsModule, MatExpansionModule, MatDatepickerModule, MatNativeDateModule, MatStepperModule, MatListModule, MatIconModule, MatFormFieldModule, MatSelectModule, MatToolbarModule, MatButtonModule, MatInputModule, MatCheckboxModule } from '@angular/material';
+import { FuseSharedModule } from '@fuse/shared.module';
+import { FuseWidgetModule, FuseSidebarModule } from '@fuse/components';
+import { MatTableExporterModule } from 'mat-table-exporter';
+import { CdkTableExporterModule } from 'cdk-table-exporter';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { GridModule } from '@angular/flex-layout';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { AccountpopupComponent } from './accountpopup/accountpopup.component';
+import {MatTreeModule} from '@angular/material/tree';
+import { MatRadioModule } from '@angular/material';
+import { UpdatepasswordComponent } from './updatepassword/updatepassword.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+const routes: Routes = [
+  {
+      path     : '',
+      component: AccountmanagmentComponent,
+      
+  }
+  
+];
+
+@NgModule({
+  declarations: [AccountmanagmentComponent, AccountpopupComponent, UpdatepasswordComponent],
+  imports: [
+    RouterModule.forChild(routes),
+    CommonModule,
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ResizableModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatTabsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    FuseSharedModule,
+    FuseWidgetModule,
+    MatTableExporterModule,
+    CdkTableExporterModule,
+    MatMenuModule,
+    NgxChartsModule,
+    MatChipsModule,
+    MatExpansionModule,
+    GridModule,
+    MatDatepickerModule,
+    MatNativeDateModule ,
+    MatStepperModule,
+    MatListModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule, 
+    NgxMatNativeDateModule,
+    FuseSidebarModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatInputModule,
+    MatTreeModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatAutocompleteModule
+  ],
+  
+  entryComponents: [
+    AccountpopupComponent,
+    UpdatepasswordComponent
+  ]
+})
+export class AccountmanagmentModule { }

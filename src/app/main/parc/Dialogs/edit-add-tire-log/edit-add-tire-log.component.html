@@ -1,0 +1,131 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitleTire | translate}}</span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" fusePerfectScrollbar>
+        <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="w-100-p" >
+
+                <mat-label>{{'PARC.WorkOrderNumber' | translate}}</mat-label>
+
+                <input matInput type="text" formControlName="WorkOrderNumber" [ngModel]="data.WorkOrderNumber" />
+                <mat-error *ngIf="dataForm.get('WorkOrderNumber').hasError('required')">
+                   *
+                </mat-error>
+            </mat-form-field>
+           
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                    <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <!-- -->
+                        <mat-label>{{'PARC.Description' | translate}}</mat-label>
+                        <input matInput
+                               type="text" formControlName="Description" [ngModel]="data.Description" />
+
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.Comment' | translate}}</mat-label>
+
+                        <input matInput type="text" [ngModel]="data.Comment"
+                               formControlName="Comment" />
+
+                    </mat-form-field>
+
+                </div>
+            </div>
+          
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <mat-label>{{'PARC.OperationDate' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="OperationDateLocal" required [ngModel]="data.OperationDateLocal">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="dataForm.get('OperationDateLocal').hasError('required')">
+                            *
+                         </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.Mileage' | translate}}</mat-label>
+                        <input matInput type="number"
+                               formControlName="OperationMileage" [ngModel]="data.OperationMileage" />
+
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                    <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <!-- -->
+                        <mat-label>{{'PARC.Pressure' | translate}}</mat-label>
+                        <input matInput type="number"
+                               formControlName="OperationPressure" [ngModel]="data.OperationPressure" />
+
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.AccountServiceBy' | translate}}</mat-label>
+                        <mat-select  formControlName="AccountServiceBy">
+                            <mat-option *ngFor="let Account of ListAccount" [value]="Account.Id">
+                                {{Account.Login}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+
+                </div>
+            </div>
+
+            
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.AccountWorkedBy' | translate}}</mat-label>
+                        <mat-select  formControlName="AccountWorkedBy">
+                            <mat-option *ngFor="let Account of ListAccount" [value]="Account.Id">
+                                {{Account.Login}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>OperationCost</mat-label>
+                        <input matInput type="number"
+                               formControlName="OperationCost" [ngModel]="data.OperationCost" />
+
+                    </mat-form-field>
+                </div>
+            </div>
+         
+            
+        </form>
+
+    </div>
+    <div mat-dialog-actions class="m-0 p-16 mat-dialog-actions" fxLayout="row" fxLayoutAlign="end center">
+
+        <button mat-raised-button color="accent" (click)="onSubmit()" type="submit" class="button" [disabled]="!dataForm.valid">{{ActionType | translate}}</button>
+
+
+    </div>
+</div>
+
+

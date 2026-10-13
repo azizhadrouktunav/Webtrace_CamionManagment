@@ -1,0 +1,11 @@
+@mixin e-commerce-products-theme($theme) {
+
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    app-order-management {
+
+        .header {
+        }
+    }
+}

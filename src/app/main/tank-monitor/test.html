@@ -1,0 +1,181 @@
+<div id="dashboard-analytics" class="page-layout blank">
+
+    <div class="main-widget">
+   
+           <div class="position-relative p-24 blue-600"
+                fxLayout="row" fxLayoutAlign="space-between center">
+               <div fxLayout="column" fxLayoutAlign="start start">
+                   <span class="h2">Visitors</span>
+                   <span class="h5 secondary-text">Unique visitors by month</span>
+               </div>
+               <div fxLayout="row" fxLayoutAlign="start center">
+                   <div class="py-8 px-12 border-radius-2 line-height-1 mr-8 cursor-pointer"
+                        (click)="changePeriod(1)"
+                        [ngClass]="{'blue-700': widget1SelectedYear === 1 }">
+                       Today
+                   </div>
+                   <div class="py-8 px-12 border-radius-2 line-height-1 mr-8 cursor-pointer"
+                        (click)="changePeriod(2)"
+                        [ngClass]="{'blue-700': widget1SelectedYear ===  2 }">
+                       Yesterday
+                   </div>
+                   <div class="py-8 px-12 border-radius-2 line-height-1 cursor-pointer"
+                        (click)="changePeriod(3)"
+                        [ngClass]="{'blue-700': widget1SelectedYear === 3 }">
+                       Last Week
+                   </div>
+                   <div class="py-8 px-12 border-radius-2 line-height-1 cursor-pointer"
+                   (click)="changePeriod(4)"
+                   [ngClass]="{'blue-700': widget1SelectedYear === 4}">
+                  Last Month
+              </div>
+               </div>
+           </div>
+   
+           <div class="position-relative h-256 pb-16 blue-600">
+               <!-- <canvas baseChart
+                       [datasets]="widgets.widget1.datasets[widget1SelectedYear]"
+                       [labels]="widgets.widget1.labels"
+                       [colors]="widgets.widget1.colors"
+                       [options]="widgets.widget1.options"
+                       [chartType]="widgets.widget1.chartType">
+               </canvas> -->
+           </div>
+   
+       </div>
+   
+       <div class="content">
+            
+               <div fxLayout="column" fxLayoutAlign="start"
+                    fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+   
+                    <div class="widget" fxFlex="100" fxFlex.gt-sm="33" *ngFor="let tank of tanks">
+   
+                       <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
+                           <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                               <div class="p-16">
+                                   <div class="h1 font-weight-300">{{tank.Name}}</div>
+                               </div>
+   
+                               <div>
+                                   <button mat-icon-button [matMenuTriggerFor]="card19Menu" aria-label="more">
+                                       <mat-icon>more_vert</mat-icon>
+                                   </button>
+   
+                                   <mat-menu #card19Menu="matMenu">
+                                       <!-- <button mat-menu-item>
+                                           <mat-icon>trending_up</mat-icon>
+                                           <span>Trend</span>
+                                       </button> -->
+                                       <button mat-menu-item (click)="getHistory(tank.Name)">
+                                           <mat-icon>history</mat-icon>
+                                           <span>History</span>
+                                       </button>
+                                       <button mat-menu-item>
+                                           <mat-icon>notifications_off</mat-icon>
+                                           <span>Disable alerts</span>
+                                       </button>
+                                   </mat-menu>
+                               </div>
+                           </div>
+                           <div class="h-148 w-100-p">
+                               <!-- <ngx-gauge
+                                         *fuseIfOnDom
+                                          [type]="gaugeType" 
+                                          [value]="tank.FuelLevel" 
+                                          [append]="gaugeAppendText"
+                                          [foregroundColor]="foregroundColor"
+                                          [thick]="thick"
+                                          [size]="size"
+                                          [thresholds]="thresholdConfig"
+                                          >
+                               </ngx-gauge> -->
+   
+                               <app-ngx-d3-liquid-fill-gauge 
+                                                   [value]="tank.FuelLevel" 
+                                                   [circleThickness]="0.1" 
+                                                   [circleFillGap]="0.05"
+                                                   [circleColor]="'#ccc68a'" 
+                                                   [waveHeight]="0.05" 
+                                                   [waveCount]="1" 
+                                                   [waveRiseTime]="500" 
+                                                   [waveAnimateTime]="10000" 
+                                                   [waveRise]="true"
+                                                   [waveHeightScaling]="true" 
+                                                   [waveAnimate]="true" 
+                                                   [waveColor]="tank.color" 
+                                                   [waveOffset]="0" 
+                                                   [textVertPosition]=".5" 
+                                                   [textSize]="1"
+                                                   [valueCountUp]="true" 
+                                                   [displayPercent]="true" 
+                                                   [textColor]="tank.color" 
+                                                   [waveTextColor]="'#A4DBf8'">
+                               </app-ngx-d3-liquid-fill-gauge>
+                           </div>
+                           <div class="py-4">
+                               <div class="py-4 px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                                   <span class="h4">Tank Level</span>
+                                   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                       <strong>
+                                           {{tank.FuelLevelInL}}
+                                       </strong>
+                                       <strong>Liters</strong>
+                                   </div> 
+                               </div>
+   
+                               <div class="py-4 px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                                   <span class="h4">Last reading</span>
+                                   <strong>
+                                       {{tank.LastReading | customDate}}
+                                   </strong>  
+                               </div>
+                                
+                               <div class="py-4 px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                                   <span class="h4">Change since last reading</span>
+                                  
+                                       <strong>
+                                           {{tank.FuelLevelInL}}
+                                       </strong>  
+                                   
+                               </div>
+                               
+                               <div class="py-4 px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                                   <span class="h4">Contents</span>
+                                 
+                                       <strong>
+                                           {{tank.FuelType}}
+                                       </strong>     
+                       
+                               </div>
+                                     
+                               <div class="py-4 px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                                   <span class="h4">Tank Capacity</span>
+                                  
+                                   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                       <strong>
+                                           {{tank.ContainerCapacitySonde}}
+                                       </strong> 
+                                       <strong>Liters</strong>
+                                   </div>   
+                               </div>
+                               
+                               <div class="py-4 px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                                   <span class="h4">Temperature</span>
+                                  
+                                   <div fxLayout="row" fxLayoutAlign="start center">
+                                       <strong>
+                                           {{tank.Temperature}}
+                                       </strong> 
+                                       <span class="hint-text text-super ml-8">°</span>
+                                   </div>   
+                               </div>      
+                           </div>
+                       </div>
+                    </div>
+               </div>      
+   
+       </div>
+   
+   </div>
+   

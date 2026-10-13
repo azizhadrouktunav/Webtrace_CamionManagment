@@ -1,0 +1,163 @@
+<div id="repair" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+          <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+         <!-- APP TITLE -->
+         <div class="logo mb-24 mb-md-0"
+              fxLayout="row" fxLayoutAlign="start center">
+             <button mat-icon-button class="mr-16" [routerLink]="'/parc/app-maintenance'" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <dl>
+                    <dt class="mat-subheading-2">{{ currentMaintenance.MaintenanceTypeString }}</dt>
+                    <dd class="h2"> {{'Maintenance.Logs' | translate}}  <span class="h3"> {{ matricule }} </span></dd>
+                </dl>
+             </span>
+         </div>
+         <!-- / APP TITLE -->
+
+          <!-- SEARCH -->
+          <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+            <div class="search">
+                <input id="searchBtn" #filter placeholder="Filtrer les données" [(ngModel)]="searchkey" required>
+                <label for="searchBtn">
+                    <mat-icon class="grey-700-fg">search</mat-icon>
+                </label>
+            </div>
+          </div>
+        <!-- / SEARCH -->
+
+         <!-- ADD BUTTON -->
+         <button mat-fab color="warn" class="add-button" aria-label="Add event"
+                (click)="addRepair()">
+                <mat-icon>add</mat-icon>
+            </button>
+         <!-- / ADD BUTTON -->
+     </div>
+     <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+                            <mat-table class="maintenances-table"
+                            #table [dataSource]="dataSource"
+                            matSort
+                            [@animateStagger]="{value:'50'}"
+                            fusePerfectScrollbar>
+                            <!-- MaintenanceTypeString -->
+                            <ng-container matColumnDef="DateCompletion">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >{{'Maintenance.DateCompletion' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let repair" >
+                            <p class="text-truncate">
+                                {{repair.DateCompletionGMT | localizedDate}}
+                            </p>
+                            </mat-cell>
+                            </ng-container>
+                            <!-- IsReminderByEnum Column -->
+                            <ng-container matColumnDef="MileageCompletion">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Maintenance.MileageCompletion' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let repair">
+                            <p class="text-truncate">{{repair.MileageCompletion}}</p>
+                            </mat-cell>
+                            </ng-container> 
+                            
+                            <!-- Cost Column -->
+                            <ng-container matColumnDef="Cost">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Maintenance.Cost' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let repair">
+                            <p class="text-truncate">{{repair.Cost}}</p>
+                            </mat-cell>
+                            <mat-footer-cell *matFooterCellDef [ngStyle] ="{'color':'red'}"> Total Cost: {{getTotalCost() | currency: 'TND'}} </mat-footer-cell>
+                            </ng-container> 
+                            <!-- Frequency Column --> 
+                            <ng-container matColumnDef="PaidCost">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header > {{'Maintenance.PaidCost' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let repair">
+                             <p class="total-price text-truncate">
+                                 {{repair.PaidCost}}
+                             </p>
+                            </mat-cell>
+                            <mat-footer-cell *matFooterCellDef [ngStyle] ="{'color':'green'}"> {{getTotalPaidCost() | currency: 'TND'}} </mat-footer-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="PaidDate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header >{{'Maintenance.DateToPaid' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let repair">
+                                 <p class="total-price text-truncate">
+                                      {{repair.PaidDateLocal| localizedDate}}
+                                 </p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Description Column -->
+                            <ng-container matColumnDef="Description">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Maintenance.Description' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let repair">
+                            <p class="text-truncate">
+                               {{repair.Description}}
+                            </p>
+                            </mat-cell>
+                            </ng-container>
+                            <!-- Reference Column -->
+                            <ng-container matColumnDef="InvoiceReference">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'Maintenance.InvoiceReference' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+                             <p class="text-truncate">{{repair.InvoiceReference}}</p>
+                            </mat-cell>
+                            </ng-container>
+                            <!-- Reference Column -->
+                            <ng-container matColumnDef="Supplier">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'Maintenance.Supplier' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+                            <p class="text-truncate">{{repair.Supplier}}</p>
+                            </mat-cell>
+                            </ng-container>        
+                            <!-- Date Column -->
+                            <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>actions</mat-header-cell>
+                            <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+                                <div fxLayout="row" fxLayoutAlign="space-around">
+                                  <button mat-icon-button color="primary" (click)="editRepair('editMaintenance', repair)"><mat-icon>edit</mat-icon></button>
+                                  <button mat-icon-button color="warn" (click)="deleteRepair(repair)"><mat-icon>delete_outline</mat-icon></button>
+                                </div>
+                              </mat-cell>
+                            </ng-container>
+                            
+                            <mat-header-row *matHeaderRowDef="displayedColumns_; sticky:true"></mat-header-row>
+                            
+                            <mat-row *matRowDef="let repair columns: displayedColumns_;"
+                              class="maintenance"
+                              matRipple>
+                            </mat-row>
+                            <mat-footer-row *matFooterRowDef="tableFooterColumns"></mat-footer-row>
+                            </mat-table>
+                            <mat-toolbar style="background-color: white;width:calc(100% - 65px);" [hidden]="disabled">
+
+                                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                                    <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                                    </mat-icon>
+                                    <img  src="assets/icons/excel.png" class="excel" title="Export as excel file">
+                                </div>
+                                <span class="spacer"></span>
+                                <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="10"
+                                    [pageSizeOptions]="[1, 5, 10]">
+                                </mat-paginator>
+                
+                            </mat-toolbar>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+</div>

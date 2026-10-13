@@ -1,0 +1,146 @@
+<div id="repair" class="page-layout MainContainer simple fullwidth">
+ 
+ <!-- HEADER -->
+ <div class="header p-24">
+   <div fxLayout="row" fxLayoutAlign="space-around center">
+    <form name="dateForm"  [formGroup]="dateForm" fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" 
+    (ngSubmit)="onSubmit()" (keydown.enter)="onSubmit()" class="box">
+
+ <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="25">
+   <mat-label>{{'Maintenance.StartDate' | translate}}</mat-label>
+   <input datePickerFormat="DD/MM/YYYY" matInput [matDatepicker]="startDatePicker" name="start" formControlName="start" required>
+   <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+   <mat-datepicker #startDatePicker></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field appearance="outline" class="pr-sm-8" fxFlex="25">
+   <mat-label>{{'Maintenance.EndDate' | translate}}</mat-label>
+   <input datePickerFormat="DD/MM/YYYY" matInput [matDatepicker]="endDatePicker" name="end" formControlName="end" required>
+   <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+   <mat-datepicker #endDatePicker></mat-datepicker>
+</mat-form-field>
+<mat-card-actions fxLayout="column" fxLayoutAlign="center">
+ <button mat-raised-button type="submit" color="accent" fxFlex="50">{{'appliquer' | translate}}</button>
+</mat-card-actions>
+</form>
+   </div>
+</div> 
+<!-- / HEADER --> 
+ 
+  <!-- CONTENT -->
+  <div class="content">
+    <mat-table
+    #table [dataSource]="dataSource"
+    matSort
+    [@animateStagger]="{value:'50'}"
+    fusePerfectScrollbar>
+    <!-- MaintenanceTypeString -->
+    <ng-container matColumnDef="MileageCompletion">
+    <mat-header-cell *matHeaderCellDef mat-sort-header >{{'Maintenance.MileageCompletion' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let repair" >
+    <p class="text-truncate">
+        {{repair.MileageCompletion}}
+    </p>
+    </mat-cell>
+    </ng-container>
+    <!-- Cost Column -->
+    <ng-container matColumnDef="Cost">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Maintenance.Cost' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let repair">
+    <p class="text-truncate">{{repair.Cost}}</p>
+    </mat-cell>
+    </ng-container> 
+    <!-- Paid Cost Column -->
+    <ng-container matColumnDef="PaidCost">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.Payed' | translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let repair">
+      <p class="text-truncate">{{repair.PaidCost}}</p>
+      </mat-cell>
+      </ng-container> 
+    <!-- InvoiceReference Column -->
+    <ng-container matColumnDef="InvoiceReference">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Maintenance.InvoiceReference' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let repair">
+    <p class="text-truncate">{{repair.InvoiceReference}}</p>
+    </mat-cell>
+    </ng-container> 
+    <!-- Supplier Column -->
+    <ng-container matColumnDef="Supplier">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Maintenance.Supplier' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let repair">
+    <p class="text-truncate">{{repair.Supplier}}</p>
+    </mat-cell>
+    </ng-container> 
+    <!-- Description Column -->
+    <ng-container matColumnDef="Description">
+    <mat-header-cell *matHeaderCellDef mat-sort-header >{{'Maintenance.Description' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let repair">
+     <p class="total-price text-truncate">
+         {{repair.Description}}
+     </p>
+    </mat-cell>
+    </ng-container>
+    <!-- Reference Column -->
+    <ng-container matColumnDef="MaintenanceType">
+    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'Maintenance.MaintenanceType' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+     <p class="text-truncate">{{repair.MaintenanceTypeStr}}</p>
+    </mat-cell>
+    </ng-container>
+    <!-- Reference Column -->
+    <ng-container matColumnDef="DateCompletion">
+    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'Maintenance.DateCompletion' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+    <p class="text-truncate">{{repair.DateCompletionGMT | localizedDate}}</p>
+    </mat-cell>
+    </ng-container>
+    <!-- PaidDate Column -->
+    <ng-container matColumnDef="PaidDate">
+    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'Maintenance.DateToPaid' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+    <p class="text-truncate">{{repair.PaidDateLocal | localizedDate}}</p>
+    </mat-cell>
+    </ng-container>
+    
+    <!-- actions Column -->
+    <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef  fxHide fxShow.gt-sm>
+     
+    </mat-header-cell>
+
+    <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+        <div fxLayout="row" fxLayoutAlign="space-around">
+          <button mat-icon-button color="primary" (click)="editRepair('edit', repair)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button color="warn" (click)="deleteRepair(repair)"><mat-icon>delete_outline</mat-icon></button>
+        </div>
+      </mat-cell>
+    </ng-container>
+    
+    <mat-header-row *matHeaderRowDef="displayedColumns_;"></mat-header-row>
+    
+    <mat-row *matRowDef="let repair columns: displayedColumns_;"
+              matRipple>
+    </mat-row>
+    </mat-table>
+
+    <div *ngIf="dataSource.data.length == 0">
+        <h4>{{'NAV.NoResult' | translate}}</h4>
+    </div>
+
+   <mat-toolbar style="background-color: white">
+
+    <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+        <mat-icon (click)="downloadPdf()" class="pdf" matTooltip="Export as PDF">picture_as_pdf
+        </mat-icon>
+        <img  (click)="exportExcel()" src="assets/icons/excel.png" class="excel">
+    </div>
+    <span class="spacer"></span>
+    <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>
+
+</mat-toolbar>
+</div>
+<!-- / CONTENT -->
+  
+</div>

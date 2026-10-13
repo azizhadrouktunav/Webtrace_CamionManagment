@@ -1,0 +1,45 @@
+<aside class="orient-geo-panel" [attr.aria-label]="title">
+  <header class="orient-geo-panel__header">
+    <div class="orient-geo-panel__icon">
+      <mat-icon>map</mat-icon>
+    </div>
+    <div class="orient-geo-panel__head-text">
+      <h2>{{ title }}</h2>
+      <p>{{ rows.length }} élément(s)</p>
+    </div>
+    <button mat-icon-button type="button" (click)="onClose()" aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <ul class="orient-geo-panel__list">
+    <li
+      *ngFor="let row of rows"
+      class="orient-geo-panel__item"
+      [class.orient-geo-panel__item--hl]="highlightId === row.id"
+    >
+      <div class="orient-geo-panel__row-top">
+        <div class="orient-geo-panel__meta">
+          <p class="orient-geo-panel__title">{{ row.title }}</p>
+          <p class="orient-geo-panel__sub">{{ row.subtitle }}</p>
+        </div>
+        <span [class]="chipClass(row.active ? 'ok' : 'neutral')">
+          {{ row.active ? 'Actif' : 'Inactif' }}
+        </span>
+      </div>
+      <div class="orient-geo-panel__actions">
+        <button mat-stroked-button type="button" (click)="onView(row)">
+          <mat-icon>visibility</mat-icon> Visualiser
+        </button>
+        <mat-slide-toggle
+          [checked]="row.active"
+          (change)="onToggle(row)"
+          color="primary"
+        >
+          Visibilité
+        </mat-slide-toggle>
+      </div>
+    </li>
+    <li class="orient-geo-panel__empty" *ngIf="!rows.length">Aucun élément.</li>
+  </ul>
+</aside>

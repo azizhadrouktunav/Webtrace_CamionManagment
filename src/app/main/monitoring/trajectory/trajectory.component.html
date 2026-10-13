@@ -1,0 +1,701 @@
+<div id="trajectory" class="page-layout simple fullwidth inner-scroll">
+
+    <!-- HEADER -->
+     <mat-accordion  #accordion="matAccordion" [multi]="true" class="fuse-white">
+        
+            <mat-panel-title fxLayout="row" fxLayoutAlign="end center" (click)="$event.stopPropagation();" class="panelTitle">
+                 
+
+                        <label for="fuse-search-bar-input">
+                        
+                                <mat-icon class="s-24 secondary-text">search</mat-icon>
+                        </label>
+                
+                        <input id="fuse-search-bar-input" class="ml-24" type="text" (keyup)="applyFilter()" placeholder="{{'NAV.find' | translate }}"  [(ngModel)]="filterValue" #filter fxFlex>
+            </mat-panel-title>
+            <mat-panel-description  fxLayout="row" fxLayoutAlign="end center"> 
+
+              <button *ngIf="!isMobileResolution" mat-icon-button color="primary" (click)="removeTable()" matTooltip="Clean table" aria-label="clean table">
+                <mat-icon>delete_sweep</mat-icon>
+              </button>
+              <button mat-icon-button color="primary"  matTooltip="Show/Hide columns" (click)="$event.stopPropagation()" [matMenuTriggerFor]="options" aria-label="add columns">
+                <mat-icon>add_circle_outline</mat-icon>
+            </button>
+          <button mat-icon-button color="primary" (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu" matTooltip="menu" aria-label="menu options">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <button  style="margin: 5px" (click)="generateTrajectory()" mat-raised-button color="primary"><span style="font-size: 11px ;">Choisir la véhicule</span></button>
+
+            </mat-panel-description>
+  
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item matTooltip="Save trajectory like a way" (click)="addWay()"
+            [disabled]="disabledInfo">
+            <mat-icon>save</mat-icon>
+            <span>{{'Common.SaveTrajectory' | translate }}</span>
+          </button>
+    
+        <button mat-menu-item matTooltip="Info" (click)="openBottomSheet()"
+            [disabled]="disabledInfo">
+            <mat-icon>info</mat-icon>
+            <span>{{'Common.GeneralInfo' | translate }}</span>
+        </button>
+        <button mat-menu-item [matMenuTriggerFor]="card20Menu" matTooltip="Info">
+        <mat-icon>map</mat-icon>
+        <span>{{'NAV.ShowOnTheMap' | translate }}</span>
+     </button>
+     <button mat-menu-item matTooltip="Play Animation" (click)="AnimateTrajectory()">
+        <mat-icon>play_circle_filled_white </mat-icon>
+        <span>{{'animation' | translate }}</span>
+     </button>
+     <button mat-menu-item matTooltip="Play Animation" (click)="RemoveTrajectory()">
+        <mat-icon>delete_forever </mat-icon>
+        <span>{{'deleteTrajet' | translate }}</span>
+     </button>
+    </mat-menu>
+    
+    <mat-menu #options="matMenu">
+      
+    <!-- <mat-form-field>
+            <mat-label>Search</mat-label>
+            <input matInput [formControl]="search"  (input)="onSearchChange($event.target.value)"  (click)="$event.stopPropagation();$event.preventDefault();">
+        </mat-form-field>-->
+      
+            <mat-selection-list  class="h-300" #List (selectionChange)="onGroupsChange(List.selectedOptions.selected, $event)">
+                <mat-list-option *ngFor="let column of columnDefinitionsFiltr"
+                    (click)="$event.stopPropagation();$event.preventDefault();" [value]="column"
+                    [selected]="column.selected">
+                    {{column.column | translate }}
+                </mat-list-option>
+            </mat-selection-list>
+    
+    </mat-menu>
+    <mat-menu #card20Menu="matMenu">
+        <mat-list>
+            <!-- <mat-list-item [checkboxPosition]='before' *ngFor="let column of typeFilters"
+                (click)="$event.stopPropagation();$event.preventDefault();" [value]="column.key"
+                [selected]="column.selected">
+                  <span>{{column.value}}</span>
+            </mat-list-item> -->
+            <mat-list-item *ngFor="let column of typeFilters">
+                    <mat-checkbox
+                               #checkbox="matCheckbox"
+                                (click)="$event.stopPropagation()"
+                                [checked]="column.checked"
+                                [value]="column.key"
+                                [labelPosition]="before"
+                                (change)="onConfigChange($event)">
+                                {{column.value | translate }}
+                    </mat-checkbox>
+            </mat-list-item>
+        </mat-list>
+    </mat-menu>
+   
+    </mat-accordion>
+    <!-- / HEADER -->
+   
+    
+    <!-- CONTENT -->
+    <mat-tab-group  #tabGroup fxLayout="column"  #tabGroup (selectedTabChange)="tabChanged($event)" id="tabTrajectory">
+        <mat-tab style="color:black" > 
+            <ng-template mat-tab-label  *ngIf="!isMobileResolution" >
+                <mat-icon matTooltip="Mode tabulaire">view_list </mat-icon>
+               
+              </ng-template>
+
+            <!--  <dx-data-grid id="MonitoringTable" [dataSource]="gpsData" [remoteOperations]="true" [columnAutoWidth]="true"
+    [masterDetail]="{ enabled: false, template: 'detail'}" [showColumnLines]="false" [showRowLines]="false"
+    [showBorders]="true" [rowAlternationEnabled]="true" [allowColumnResizing]="true" [columnMinWidth]="100"
+    [allowColumnReordering]="true" (onExporting)="exportGrid($event)" (onRowDblClick)="dbClick($event.key)">
+    <dxo-export [enabled]="true"></dxo-export>
+
+    <dxo-paging [pageSize]="50"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="allowedPageSizes"></dxo-pager>
+    <dxi-column [dataField]="'StopRunStatusEnumString'" [caption]="'StopRunStatus' | translate" dataType="string" cellTemplate="StopRunStatus"></dxi-column>
+    <dxi-column [dataField]="'BeginDateLocalString'" [caption]="'StartDate' | translate" dataType="string"></dxi-column>
+  
+              </dx-data-grid>-->
+
+  <mat-table #table [dataSource]="dataSource" multiTemplateDataRows
+                   matSort  [@animateStagger]="{value:'50'}"
+                   fusePerfectScrollbar>
+           
+            <ng-container matColumnDef="StartDate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'StartDate' | translate }}</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.BeginDateLocalString}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <ng-template *ngIf="gpsData.length != 0">
+                        Account : {{ gpsData.length }}
+                    </ng-template>
+                </mat-footer-cell>
+            </ng-container>
+           
+            <ng-container matColumnDef="StopRunStatus">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> {{'StopRunStatus' | translate }}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <p class="status text-truncate h6 p-4"
+                        [ngClass]="{'red-500':element.StopRunStatusEnumString == 'Stop', 'green-600':element.StopRunStatusEnumString == 'Circulation','orange-800':element.StopRunStatusEnumString == 'Ralenti'}">
+                        {{element.StopRunStatusEnumString }}
+                    </p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+          
+           <ng-container matColumnDef="isAlert">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <p *ngIf="element.IsAlert && element.DesAlert != 'Inconnu' ">
+                        <img src="./assets/images/alert-icon.png"  width="25" height="25">
+                    </p>
+                   
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="isDefaut">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    
+                    <p style="margin-left: 5px;" *ngIf="element.OtherInfo != 0">
+                        <img src="./assets/images/defaut-icon.png"  width="35" height="35">
+                    </p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+          
+            <ng-container matColumnDef="CumulativeDistanceString">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Distance' | translate }}</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.CumulativeDistanceString}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="BatteryLevel">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.BatteryLevel' | translate }}</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.BatteryLevel}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+         
+            <ng-container matColumnDef="Speed">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-icon color="primary">shutter_speed</mat-icon> {{'Speed' | translate }}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Speed}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <ng-template  *ngIf="maxSpeed !=0 && minSpeed !=0">
+                        <mat-icon color="warn">av_timer</mat-icon> {{maxSpeed}} <br>
+                        <mat-icon color="accent">av_timer</mat-icon> {{minSpeed}}
+                    </ng-template>
+                </mat-footer-cell>
+            </ng-container>
+          
+            <ng-container matColumnDef="Place">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> {{'Place' | translate }} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.NearestPlaceString}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+          
+            <ng-container matColumnDef="Period">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> {{'Period' | translate }} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.PeriodString}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="expandedDetail" sticky >
+                <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                <mat-cell class="test" *matCellDef="let element"    >
+                    <div  *ngIf="expandedElement == element">
+                    <app-detail [element]="element"></app-detail>
+                </div>
+               <!-- <img src="./assets/icons/FlatIcons/png/alarm.png"  class="w-24 h-24" [ngClass]="{'visibleIcon': !element.Hood}" matTooltip="Capot">
+                    <img src="./assets/icons/FlatIcons/png/trunk.png"  class="w-24 h-24" [ngClass]="{'visibleIcon': !element.Trunk}" matTooltip="Coffre">
+
+                    <img src="./assets/icons/FlatIcons/png/gas-pump.png" class="w-24 h-24" matTooltip="Carburant bas"  [ngClass]="{'visibleIcon': !element.FuelLow}" class="w-24 h-24">
+                        
+                        
+                    <img src="./assets/icons/FlatIcons/png/seatbelt.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.DriverSeatbelt}" matTooltip="Ceinture de sécurité conducteur">
+                    
+                    
+                    <img src="./assets/icons/FlatIcons/png/fan.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.AirConditioning}" matTooltip="Climatisation">
+                    
+                    
+                   
+                   
+                        <img src="./assets/icons/FlatIcons/png/lock.png" class="w-24 h-24"  [ngClass]="{'visibleIcon': !element.CentralLock}" matTooltip="Fermeture centrale">
+                      
+                        <img src="./assets/icons/FlatIcons/png/carlight.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.RuningLight}" matTooltip="Feux de position">
+
+                  
+                        <img src="./assets/icons/FlatIcons/png/fog-lamp.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.RearFogLight}" matTooltip="Feu brouillard arriére">
+                  
+                        <img src="./assets/icons/FlatIcons/png/fogleft-lamp.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.FrontFogLight}" matTooltip="Feu brouillard avant">
+                   
+
+                        <img src="./assets/icons/FlatIcons/png/car-light.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.LowBeams}" matTooltip="Feux de croisement">                                                                                               
+                   
+                        <img src="./assets/icons/FlatIcons/png/turn-signal.png"  class="w-24 h-24" [ngClass]="{'visibleIcon': !element.HazardLight}"  matTooltip="Feux clignotants">
+
+                        <img src="./assets/icons/FlatIcons/png/high-beam.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.HighBeams}" matTooltip="Feux de route">
+
+                   
+                        <img src="./assets/icons/FlatIcons/png/frein.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.Handbrake}"  matTooltip="Frein à main">
+                   
+                        <img src="./assets/icons/FlatIcons/png/gearshift.png"  class="w-24 h-24" [ngClass]="{'visibleIcon': !element.ReverseGear}" matTooltip="Marche arriére">
+
+                        <img src="./assets/icons/FlatIcons/png/page-speed.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.CruiseControl}" matTooltip="Regulateur de vitesse">
+                   
+                    
+                        <img src="./assets/icons/FlatIcons/png/pedal.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.BrakePedal}" matTooltip="Frein à pied">
+                        <img src="./assets/icons/FlatIcons/png/clutch.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.ClutchPedal}" matTooltip="Pédale embrayage">
+
+                    
+                       
+                     <img src="./assets/icons/FlatIcons/png/car-door.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.Doors}" matTooltip="Portes">
+                     <img src="./assets/icons/FlatIcons/png/doorleft.png"  class="w-24 h-24" [ngClass]="{'visibleIcon': !element.PassengerDoor}" matTooltip="Porte passager">
+                     <img src="./assets/icons/FlatIcons/png/doorright.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.DriverDoor}"  matTooltip="Porte du conducteur">
+                     <img src="./assets/icons/FlatIcons/png/doorleft.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.RearRightDoor}" matTooltip="Porte arriére gauche">
+                     <img src="./assets/icons/FlatIcons/png/doorright.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.DriverDoor}"  matTooltip="Porte arriére droite">
+
+                     <img src="./assets/icons/FlatIcons/png/heating.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.Webcast}" matTooltip="Un système de chauffage de stationnement">
+                     <img src="./assets/icons/FlatIcons/png/brake.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.BrakeFluidLowIndicator}" matTooltip="Indicateur de liquide de frein">
+                     <img src="./assets/icons/FlatIcons/png/coolant.png" style="height: 32px;width: 32px;" [ngClass]="{'visibleIcon': !element.CoolantLevelLowIndicator}" matTooltip="Indicateur de niveau de liquide de refroidissement bas">
+                     <img src="./assets/icons/FlatIcons/png/battery.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.BatteryIndicator}" matTooltip="Indicateur de batterie">
+                     <img src="./assets/icons/FlatIcons/png/brake.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.BrakeFailureIndicator}" matTooltip="Indicateur de panne du système de freinage">
+                     <img src="./assets/icons/FlatIcons/png/pressure-gauge.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.OilPressureIndicator}" matTooltip="Indicateur de pression huile">
+                     <img src="./assets/icons/FlatIcons/png/temperature.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.EngineHotIndicator}" matTooltip="Indicateur de moteur chaud">
+                     <img src="./assets/icons/FlatIcons/png/abs.png" style="height: 32px;width: 32px;" [ngClass]="{'visibleIcon': !element.ABSFailureIndicator}" matTooltip="Indicateur de panne ABS">
+                     <img src="./assets/icons/FlatIcons/png/car-engine.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.CheckEngine}" matTooltip="Check Engine">
+                     <img src="./assets/icons/FlatIcons/png/airbag.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.AirBagIndicator}" matTooltip="Indicateur airbags">
+                     <img src="./assets/icons/FlatIcons/png/call.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.ServiceCallIndicator}" matTooltip="Indicateur appel de service">
+                     <img src="./assets/icons/FlatIcons/png/engine-oil.png"style="height: 35px;width: 35px;" [ngClass]="{'visibleIcon': !element.OilLevelLowIndicator}" matTooltip="Indicateur de niveau huile bas">
+                     <img src="./assets/icons/FlatIcons/png/batterycharging.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.BatteryCharging}" matTooltip="Recharge de batterie pour voitures électriques">
+                     <img src="./assets/icons/FlatIcons/png/fuel.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.FuelSource}" matTooltip="Source de carburant">
+                     <img src="./assets/icons/FlatIcons/png/pto.png" class="w-24 h-24" [ngClass]="{'visibleIcon': !element.PTO}" matTooltip="Power take-off">
+                       
+--> 
+                        </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let element"   (click)="getRecord(element,expandedElement)">
+                    <button mat-icon-button *ngIf="expandedElement != element"
+                        [class.expanded]="expandedElement == element" (click)="expandedElement = element">
+                        <mat-icon>keyboard_arrow_down</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="expandedElement == element"
+                        [class.expanded]="expandedElement == undefined" (click)="expandedElement = undefined">
+                        <mat-icon>keyboard_arrow_up</mat-icon>
+                    </button>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+           
+            <ng-container matColumnDef="Engine">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.StateContact' | translate }}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <div *ngIf="element.IgnOn == false">
+                        <mat-icon color="warn" matTooltip="Contact Off">power_settings_new</mat-icon>
+                    </div>
+                    <div *ngIf="element.IgnOn == true">
+                        <mat-icon class="green-icon" matTooltip="Contact ON">power_settings_new</mat-icon>
+                    </div>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <mat-icon color="primary"> directions_car</mat-icon> {{engineOnAccount}} <br>
+                    <mat-icon color="warn"> directions_car</mat-icon> {{engineOffAccount}}
+                </mat-footer-cell>
+            </ng-container>
+         
+            <ng-container matColumnDef="FuelLevel">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NAV.FuelLevel' | translate }} </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="quantity-indicator text-truncate"
+                        [ngClass]="{'red-500':element.FuelLow, 'green-600': !element.FuelLow}">
+                    </span>
+                    <span>
+                        {{element.FuelLevelString}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <span>
+                        <mat-icon color="warn"> local_gas_station</mat-icon> {{maxFuelLevel}}
+                    </span>
+                    <span>
+                        <mat-icon color="teal"> local_gas_station</mat-icon> {{minFuelLevel}}
+                    </span>
+                </mat-footer-cell>
+            </ng-container>
+           
+            <ng-container matColumnDef="FuelConsumptionAvgInL100Km">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Fuel Consumption Avg In (L\100Km) </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.FuelConsumptionAvgInL100Km}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            
+            <ng-container matColumnDef="Direction">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Direction' | translate }}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <div *ngIf="element.Direction >= 0  && element.Direction < 45">
+                        <mat-icon color="primary" matTooltip="Direction de mouvement: {{element.Direction}}">
+                            arrow_upward</mat-icon>
+                    </div>
+                    <div *ngIf="element.Direction >= 45  && element.Direction < 90">
+                        <mat-icon color="primary" matTooltip="Direction de mouvement: {{element.Direction}}">
+                            call_made
+                        </mat-icon>
+                    </div>
+                    <div *ngIf="element.Direction >= 90  && element.Direction < 135">
+                        <mat-icon color="primary" matTooltip="Direction de mouvement: {{element.Direction}}">
+                            arrow_forward</mat-icon>
+                    </div>
+                    <div *ngIf="element.Direction >= 135  && element.Direction < 180">
+                        <mat-icon color="primary" matTooltip="Direction de mouvement: {{element.Direction}}">
+                            trending_down</mat-icon>
+                    </div>
+                    <div *ngIf="element.Direction >= 180  && element.Direction < 225">
+                        <mat-icon color="primary" matTooltip="Direction de mouvement: {{element.Direction}}">
+                            arrow_downward</mat-icon>
+                    </div>
+                    <div *ngIf="element.Direction >= 225  && element.Direction < 270">
+                        <mat-icon color="primary" matTooltip="Direction de mouvement: {{element.Direction}}">
+                            call_received</mat-icon>
+                    </div>
+                    <div *ngIf="element.Direction >= 270  && element.Direction < 315">
+                        <mat-icon color="primary" matTooltip="Direction de mouvement: {{element.Direction}}">arrow_back
+                        </mat-icon>
+                    </div>
+                    <div *ngIf="element.Direction >= 315  && element.Direction < 360">
+                        <mat-icon color="primary" matTooltip="Direction de mouvement: {{element.Direction}}">call_missed
+                        </mat-icon>
+                    </div>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+           
+            <ng-container matColumnDef="CentralLock">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> {{'NAV.CentralClosure' | translate }}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <div *ngIf="element.CentralLock == false" fxFlex="20">
+                        <mat-icon matTooltip="Central Lock off" color="warn">lock</mat-icon>
+                    </div>
+                    <div *ngIf="element.CentralLock == true" fxFlex="20">
+                        <mat-icon matTooltip="Central Lock On" color="primary">lock_open</mat-icon>
+                    </div>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <mat-icon color="primary">lock_open</mat-icon> {{contactOnAccount}} <br>
+                    <mat-icon color="warn">lock</mat-icon> {{contactOffAccount}}
+                </mat-footer-cell>
+            </ng-container>
+
+
+           
+            <ng-container matColumnDef="Temperature">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Temperature </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Temperature}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <p color="warn"> Max: {{maxTemperature}} </p> <br>
+                    <p color="primary"> Min: {{minTemperature}} </p>
+                </mat-footer-cell>
+            </ng-container>
+
+            
+            <ng-container matColumnDef="EngineHours">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> {{'EngineHours' | translate }} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.EngineHours}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+           
+            <ng-container matColumnDef="EngineTemperature">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> {{'EngineTemperature' | translate }} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.EngineTemperature}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <p color="warn"> Max: {{maxEngineTemperature}} </p> <br>
+                    <p color="primary"> Min: {{minEngineTemperature}} </p>
+                </mat-footer-cell>
+            </ng-container>
+           
+            <ng-container matColumnDef="RPM">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>{{'NAV.RPM' | translate }}(tr/min)
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.RPM}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="Latitude">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>{{'NAV.Latitude' | translate }}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.Latitude}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="Longitude">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>{{'NAV.Longitude' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.Longitude}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="Report_Reason">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>{{'NAV.Report_Reason' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.Report_Reason}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="LockStatus">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>{{'NAV.LockStatus' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                   
+                    <span  *ngIf="element.LockStatus">
+
+                        Fermé
+                    </span>
+                    <span  *ngIf="!element.LockStatus">
+
+                        Ouvert
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container> <ng-container matColumnDef="SealStatus">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>{{'NAV.SealStatus' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span  *ngIf="element.SealStatus">
+
+                        Fermé
+                    </span>
+                    <span  *ngIf="!element.SealStatus">
+
+                        Ouvert
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+             <ng-container matColumnDef="ElockBattery">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>{{'NAV.ElockBattery' | translate}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.ElockBattery}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Mileage">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>{{'Mileage'| translate }}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.Mileage}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="SN">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Numéro de série sonde</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.SNSonde1}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="Volume">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Volume</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.VolumeSonde1}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="TemperatureSonde">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Temperature Sonde</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.TemperatureSonde1}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="BatterySonde">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Niveau de batterie Sonde</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span>
+                        {{element.BatteryLevelSonde1}}
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="StatusConnectedSonde">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Etat</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                   
+                    <span  *ngIf="element.StatusConnectedSonde1">
+
+                        Connectée
+                    </span>
+                    <span  *ngIf="!element.StatusConnectedSonde1">
+
+                        Non connectée
+                    </span>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container> 
+            <ng-container matColumnDef="waterdetected1">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Présence d'eau</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                   
+                    <span  *ngIf="element.waterdetected1">
+
+                        Oui
+                    </span>
+                    <span  *ngIf="!element.waterdetected1">
+
+                        Non
+                    </span>
+                </mat-cell>
+            </ng-container>
+                <ng-container matColumnDef="AxleWeight1st">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Poids essieu 1er</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span>
+                            {{element.AxleWeight1st}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="AxleWeight">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Poids essieu 2ème</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span  *ngIf="element.AxleWeight == undefined">
+                              0
+                        </span>
+                        <span  *ngIf="element.AxleWeight != undefined">
+    
+                            {{element.AxleWeight}}
+
+                        </span>
+                       
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="AxleWeight3rd">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Poids essieu 3ème</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span>
+                            {{element.AxleWeight3rd}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="AxleWeight4th">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Poids essieu 4ème</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span>
+                            {{element.AxleWeight4th}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="RapidBrackings">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Freins rapides</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span>
+                            {{element.RapidBrackings}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="RapidAccelerations">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Accélérations rapides</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span>
+                            {{element.RapidAccelerations}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="AdBlueLevel">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>Niveau AdBlue</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span>
+                            {{element.AdBlueLevel}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="HumidityLevel">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow>{{'NAV.HumidityLevel' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span>
+                            {{element.HumidityLevel}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style="width: fit-content;min-width: 100%;"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="show(row)" matRipple class="element-row" style="width: fit-content;min-width: 100%;"></mat-row>
+            <mat-row *matRowDef="let row; columns: ['expandedDetail'];"
+                [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'" style="overflow: hidden" >
+            </mat-row>
+            <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true" style="width: fit-content;min-width: 100%;"></mat-footer-row> 
+        </mat-table>
+        <div *ngIf="isLoading"
+             style="
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             background: white;
+             position: absolute;
+             width: 100%;
+             top: 100px;
+             bottom: 75px;
+            ">
+                    <mat-progress-spinner 
+                        color="primary" 
+                        mode="indeterminate">
+                    </mat-progress-spinner>
+        </div>
+        <div  style="text-align: center;background-color:white;" *ngIf="dataSource.data.length === 0">
+            <span class="mat-subheading-2" >{{'no_data_found' | translate }}</span>
+        </div>  
+        <mat-toolbar  style="min-height: 46px !important; height: 46px !important;" class="fuse-white-bg">
+            <mat-toolbar-row fxLayout="row" fxLayoutAlign="start center">
+  
+              <mat-icon  class="pdf red-fg" matTooltip="Export as PDF" (click)="exportPdf()" >picture_as_pdf
+              </mat-icon> 
+              <button mat-icon-button class="excel" matTooltip="Export as CSV" [disabled]="dataSource.data.length == 0"  (click)="exportExcel()" >
+                <img src="assets/icons/excel.png" class="h-24 w-24" />
+              </button> 
+  
+            
+            <mat-paginator #paginator
+                            [length]="dataSource.filteredData.length"
+                            [pageIndex]="0"
+                            [pageSize]="50"
+                            [pageSizeOptions]="[50, 100, 200, 500,dataSource.data.length]">
+            </mat-paginator>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </mat-tab> 
+    <mat-tab  *ngIf="!isMobileResolution"  style="color:black">
+        <ng-template mat-tab-label>
+            <mat-icon matTooltip="Mode graphique">timeline</mat-icon>
+          
+          </ng-template>
+        <div id="chartdiv"></div>
+    </mat-tab>
+    </mat-tab-group>
+    <!-- / CONTENT -->
+</div>

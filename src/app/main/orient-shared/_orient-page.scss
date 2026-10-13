@@ -1,0 +1,639 @@
+/* Orient mockup — Fuse / React-aligned shared styles */
+
+/* Beat Fuse content > * { display:flex; min-width:100% } so pages fill the viewport */
+:host {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+}
+
+.orient-fullbleed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.orient-page {
+  display: block;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  padding: 24px;
+}
+
+.orient-page--wide {
+  max-width: none;
+}
+
+/* Blue accent page header (React PageHeader / Fuse .header.accent) */
+.orient-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin: -24px -24px 24px;
+  padding: 20px 24px;
+  background: #039be5;
+  color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.orient-page-header__text {
+  min-width: 200px;
+  flex: 1 1 auto;
+}
+
+.orient-page-header__title {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.orient-page-header__subtitle {
+  margin: 0;
+  max-width: 48rem;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.orient-page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.orient-page-header__actions .mat-raised-button,
+.orient-page-header__actions .mat-stroked-button,
+.orient-page-header__actions button[mat-raised-button],
+.orient-page-header__actions button[mat-stroked-button] {
+  background: #fff !important;
+  color: #0277bd !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) !important;
+}
+
+.orient-page-header__actions .mat-raised-button .mat-icon,
+.orient-page-header__actions .mat-stroked-button .mat-icon,
+.orient-page-header__actions button[mat-raised-button] .mat-icon,
+.orient-page-header__actions button[mat-stroked-button] .mat-icon {
+  color: #0277bd !important;
+}
+
+.orient-page-header__actions .mat-raised-button:hover,
+.orient-page-header__actions button[mat-raised-button]:hover {
+  background: #e1f5fe !important;
+}
+
+/* Icon after label on text buttons / menu items */
+.orient-btn-icon-end .mat-icon,
+button.mat-menu-item .mat-icon {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+/* KPI strip */
+.orient-kpi-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -8px 24px;
+}
+
+.orient-kpi {
+  flex: 1 1 200px;
+  margin: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px !important;
+}
+
+.orient-kpi__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.orient-kpi__icon mat-icon {
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+.orient-kpi__icon--brand { background: #039be5; }
+.orient-kpi__icon--ok { background: #43a047; }
+.orient-kpi__icon--warn { background: #fb8c00; }
+.orient-kpi__icon--danger { background: #e53935; }
+.orient-kpi__icon--navy { background: #1e3a5f; }
+
+.orient-kpi__value {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.orient-kpi__label {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+/* Chips / badges (React Badge) */
+.orient-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  white-space: nowrap;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.orient-chip--dot::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.orient-chip--ok { background: #ecfdf3; color: #067647; box-shadow: inset 0 0 0 1px #d1fadf; }
+.orient-chip--warn { background: #fff6ed; color: #b54708; box-shadow: inset 0 0 0 1px #ffead5; }
+.orient-chip--danger { background: #fef3f2; color: #b42318; box-shadow: inset 0 0 0 1px #fee4e2; }
+.orient-chip--brand { background: #e1f5fe; color: #0277bd; box-shadow: inset 0 0 0 1px #b3e5fc; }
+.orient-chip--accent { background: #e1f5fe; color: #0288d1; box-shadow: inset 0 0 0 1px #b3e5fc; }
+.orient-chip--info { background: #fefbe8; color: #a15c07; box-shadow: inset 0 0 0 1px #fef7c3; }
+.orient-chip--neutral { background: #f2f4f7; color: #667085; box-shadow: inset 0 0 0 1px #e4e7ec; }
+
+/* Filter / toolbar bar (search + segmented tabs) */
+.orient-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
+}
+
+.orient-toolbar .orient-filter {
+  width: 160px;
+  font-size: 13px;
+}
+
+.orient-toolbar ::ng-deep .orient-filter .mat-form-field-wrapper {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.orient-toolbar ::ng-deep .orient-filter .mat-form-field-subscript-wrapper {
+  display: none;
+}
+
+.orient-toolbar ::ng-deep .orient-filter .mat-form-field-infix {
+  padding: 0.6em 0;
+  border-top: 0.6em solid transparent;
+}
+
+.orient-search {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+}
+
+.orient-search__icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #9e9e9e;
+  pointer-events: none;
+}
+
+.orient-search__input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 12px 0 34px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #212121;
+  background: #fff;
+  outline: none;
+}
+
+.orient-search__input:focus {
+  border-color: #039be5;
+  box-shadow: 0 0 0 2px rgba(3, 155, 229, 0.2);
+}
+
+.orient-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  box-shadow: inset 0 0 0 1px #e0e0e0;
+}
+
+.orient-tabs__btn {
+  height: 28px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #616161;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.orient-tabs__btn:hover {
+  color: #212121;
+}
+
+.orient-tabs__btn--active {
+  background: #fff;
+  color: #212121;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.orient-tabs__count {
+  margin-left: 6px;
+  font-variant-numeric: tabular-nums;
+  color: #9e9e9e;
+}
+
+.orient-tabs__btn--active .orient-tabs__count {
+  color: #616161;
+}
+
+.orient-datetime-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.orient-datetime-filter mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #9e9e9e;
+}
+
+.orient-datetime-filter input {
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: #212121;
+  background: transparent;
+  max-width: 190px;
+}
+
+/* Cards & tables */
+.orient-table-card,
+.orient-form-card,
+.orient-chart-card {
+  margin-bottom: 16px;
+  overflow: hidden;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+.orient-table-card.mat-card,
+.orient-table-card {
+  width: 100%;
+  padding: 0 !important;
+  overflow-x: auto;
+}
+
+.orient-table-card .mat-card-content,
+.orient-table-card mat-card-content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.orient-form-card.mat-card,
+.orient-form-card {
+  padding: 16px !important;
+}
+
+.orient-table-scroll {
+  overflow-x: auto;
+}
+
+.orient-table {
+  width: 100%;
+  min-width: 100%;
+}
+
+.orient-vehicle-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.orient-table .mat-header-cell {
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff !important;
+  background: #039be5;
+  border-bottom: none !important;
+  white-space: nowrap;
+  padding: 12px 16px;
+}
+
+.orient-table .mat-cell {
+  font-size: 13px;
+  color: #212121;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 16px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.orient-table .mat-row:hover {
+  background: rgba(245, 245, 245, 0.7);
+}
+
+.orient-table-row--selected {
+  background: #e1f5fe !important;
+}
+
+.orient-table .mat-header-row,
+.orient-table .mat-row {
+  height: auto;
+}
+
+.orient-cell-title {
+  display: block;
+  font-weight: 600;
+  color: #212121;
+  line-height: 1.3;
+}
+
+.orient-cell-subtitle {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: #9e9e9e;
+  line-height: 1.3;
+}
+
+.orient-cell-muted {
+  color: #616161;
+}
+
+.orient-cell-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.orient-alert-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: #fef3f2;
+  color: #b42318;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px #fee4e2;
+}
+
+.orient-alert-empty {
+  color: #9e9e9e;
+}
+
+/* Progress bar (React ProgressBar) */
+.orient-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.orient-progress__track {
+  flex: 0 0 96px;
+  width: 96px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f5f5f5;
+  box-shadow: inset 0 0 0 1px #e0e0e0;
+}
+
+.orient-progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #039be5;
+  transition: width 0.2s ease;
+}
+
+.orient-progress__fill--ok {
+  background: #12b76a;
+}
+
+.orient-progress__text {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: #616161;
+  white-space: nowrap;
+}
+
+.orient-row-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0;
+}
+
+.orient-empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 14px;
+}
+
+.orient-form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.orient-form-grid mat-form-field {
+  flex: 1 1 220px;
+  min-width: 180px;
+}
+
+.orient-form-full {
+  width: 100%;
+  flex: 1 1 100% !important;
+}
+
+.orient-shift-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+.orient-levels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.orient-map-wrap {
+  height: 100%;
+  min-height: 280px;
+}
+
+.orient-geo-map {
+  height: 280px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  margin-bottom: 12px;
+}
+
+/* Settings side nav */
+.orient-settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.orient-settings__nav {
+  flex: 0 0 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.orient-settings__nav-btn {
+  justify-content: flex-start !important;
+  text-align: left;
+  border-radius: 6px !important;
+}
+
+.orient-settings__nav-btn--active {
+  background: rgba(3, 155, 229, 0.12) !important;
+  color: #0277bd !important;
+  font-weight: 600;
+}
+
+.orient-settings__content {
+  flex: 1 1 480px;
+  min-width: 0;
+}
+
+.orient-section-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.orient-section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Chart bars (CSS simple) */
+.orient-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 160px;
+  padding: 8px 4px 0;
+}
+
+.orient-bar-chart__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.orient-bar-chart__bar {
+  width: 100%;
+  max-width: 36px;
+  border-radius: 4px 4px 0 0;
+  background: #039be5;
+  min-height: 4px;
+  transition: height 0.2s ease;
+}
+
+.orient-bar-chart__bar--current {
+  background: #1e3a5f;
+}
+
+.orient-bar-chart__bar--empty {
+  background: rgba(0, 0, 0, 0.08);
+  height: 8px !important;
+}
+
+.orient-bar-chart__label {
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.54);
+}

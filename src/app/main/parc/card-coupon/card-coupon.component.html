@@ -1,0 +1,254 @@
+<div id="elements" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_cart
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'ListCardCoupon' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="primary-500-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+
+            <!-- ADD BUTTON -->
+            <button mat-fab color="warn" class="add-button" (click)="add()" *ngIf="whichButton ==0">
+                <mat-icon>add</mat-icon>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <div class="content" style="overflow:hidden">
+                <mat-tab-group (selectedTabChange)="tabChanged($event)">
+
+                    <mat-tab label="{{'CardCoupon' | translate}}">
+                        <form [formGroup]="dateRangeForm" (ngSubmit)="onFormSubmit()" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="space-evenly start" class="p-24">
+                            <mat-checkbox formControlName="showCard" value="cardChecked" [checked]="cardChecked" (change)="radioChangeCard($event)" fxLayout="row" fxLayoutAlign="space-around center">
+                                <span class="mat-h4 m-0">{{'ShowCard' | translate}}</span>
+                            </mat-checkbox>
+                            <div fxLayout="row" fxLayoutAlign="space-evenly start" >
+                                <mat-checkbox formControlName="showCoupon" value="couponChecked" (change)="radioChangeCoupon($event)" [checked]="couponChecked">
+                                    <span class="mat-h4 m-0">{{'ShowCoupon' | translate}}</span>
+                                </mat-checkbox>
+                               
+                                <mat-form-field  appearance="outline" class="pr-sm-8">
+                                    <mat-label>{{'Maintenance.StartDate' | translate}}</mat-label>
+                                    <input matInput name="start" formControlName="start" [matDatepicker]="startDatePicker"
+                                        placeholder="Choose a date" required >
+                                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #startDatePicker></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field  appearance="outline" class="pr-sm-8">
+                                    <mat-label>{{'Maintenance.EndDate' | translate}}</mat-label>
+                                    <input matInput name="end" formControlName="end" [matDatepicker]="endDatePicker"
+                                        placeholder="Choose a date" required >
+                                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #endDatePicker></mat-datepicker>
+                                </mat-form-field>
+                                <div fxLayout="row" fxLayoutAlign="end center">
+                                    <button mat-raised-button
+                                            class="mat-accent compose-dialog-button w-100-p"
+                                            #tooltip="matTooltip" 
+                                            matTooltip=""
+                                            aria-label="Submit">
+                                            <mat-icon>filter_list</mat-icon>
+                                            <span>Filter</span>
+                                    </button>
+                                  </div>  
+                                
+                            </div>
+                  </form>
+                        <mat-table class="cardcoupons-table" #outerSort="matSort" #table [dataSource]="dataSource"
+                            matSort>
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="N°">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'N' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <p class="text-truncate">{{element.CardCouponRef}}</p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Card/Coupon Column -->
+                            <ng-container matColumnDef="Card/Coupon">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'CardCoupon' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    {{element.CardCoupnTypeEnumString}}
+                                    <!-- <p class="text-truncate" *ngIf="element.IsCard == true">{{'Card' | translate}}</p>
+                                    <p class="text-truncate" *ngIf="element.IsCoupon == true">{{'Coupon' | translate}}</p> -->
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Free/Affected Column -->
+                            <ng-container matColumnDef="Free/Affected">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FreeAffected' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <p class="text-truncate" *ngIf="element.IsFree === true">{{'Free' | translate}}</p>
+                                    <p class="text-truncate" *ngIf="element.IsFree === false">{{'Affected' | translate}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Money/Liter Column -->
+                            <ng-container matColumnDef="Money/Liter">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'MoneyLittre' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <p class="text-truncate">{{element.PricePerL}}</p>
+                                    <mat-icon *ngIf="element.IsCardCouponWorkByMoney === true">attach_money</mat-icon>
+                                    <mat-icon *ngIf="element.IsCardCouponWorkByMoney === false">local_gas_station
+                                    </mat-icon>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Quantity Column -->
+                            <ng-container matColumnDef="Quantity">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'LittreQuantity' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <p class="text-truncate">{{element.QuantityL}}</p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Total amount Column -->
+                            <ng-container matColumnDef="Total amount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'TotalAmount' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <p class="text-truncate">{{element.TotalPrice}}</p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Driver Column -->
+                            <ng-container matColumnDef="Driver">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Driver' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <button mat-icon-button *ngIf="element.IsFree == false" color="warn"
+                                        (click)="reminder(element)">
+                                        <mat-icon>add_alert</mat-icon>
+                                    </button>
+                                    <p class="text-truncate">{{element.DriverString}}</p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Vehicule Column -->
+                            <ng-container matColumnDef="Vehicule">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Vehicle' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <p class="text-truncate">{{element.Vehicle}}</p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Supplier Column -->
+                            <ng-container matColumnDef="Supplier">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PARC.Supplier' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <p class="text-truncate">{{element.SupplierFuelString | translate}}</p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Expiration date Column -->
+                            <ng-container matColumnDef="Expiration date">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    class="Date-Cell">{{'ValidateDate' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="Date-Cell">
+                                    <p class="price text-truncate">
+                                        {{element.DateGMT | localizedDate}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Tank Column -->
+                            <ng-container matColumnDef="Tank">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'Tank' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <p class="price text-truncate">
+                                        {{element.Tank}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- actions columns -->
+                            <ng-container matColumnDef="actions">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                    <mat-menu #moreMenu="matMenu">
+                                        <button mat-button-toggle mat-icon-button color="primary"
+                                            (click)="edit('edit',element)">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                        <!--<button mat-button-toggle mat-icon-button color="accent" (click)="toggleRow(element)"><mat-icon>history</mat-icon></button>-->
+                                        <button mat-button-toggle mat-icon-button color="accent"
+                                            [routerLink]="['/parc/card-coupon/log' , element.Id]">
+                                            <mat-icon>history</mat-icon>
+                                        </button>
+                                        <button mat-button-toggle mat-icon-button color="warn"
+                                            (click)="affect(element)" *ngIf="element.IsFree === true">
+                                            <mat-icon>assignment_ind</mat-icon>
+                                        </button>
+                                        <button mat-button-toggle mat-icon-button color="warn"
+                                            (click)="releaseCardCoupon(element.Id)" *ngIf="element.IsFree === false">
+                                            <mat-icon>restore_page</mat-icon>
+                                        </button>
+                                        <button mat-button-toggle mat-icon-button color="warn"
+                                            (click)="delete(element)" [disabled]="isDisabledDelete">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </mat-menu>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row
+                            [ngStyle]="{'background-color':element.IsFree == false ? '#ffe5e5' : 'transparent' }"
+                                *matRowDef="let element; columns: displayedColumns;"  class='product' matRipple>
+                            </mat-row>
+                        </mat-table>
+                        <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+
+                            <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                                <mat-icon class="pdf" title="Export as pdf file" (click)="exportpdf()">picture_as_pdf
+                                </mat-icon>
+                                <img (click)='ExportTOExcel()' src="assets/icons/excel.png" class="excel"
+                                    title="Export as excel file">
+                            </div>
+                            <span class="spacer"></span>
+                            <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0"
+                                [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                            </mat-paginator>
+                        </mat-toolbar>
+                    </mat-tab>
+                    <mat-tab label="{{'showTanks' | translate}}">
+                        <tanks></tanks>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

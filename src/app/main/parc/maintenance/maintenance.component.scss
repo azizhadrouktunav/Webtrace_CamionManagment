@@ -1,0 +1,17 @@
+@import "src/@fuse/scss/fuse";
+
+#maintenances {
+   .mat-table {
+     width: 100%;
+   }
+
+   .example-spacer {
+    flex: 1 1 auto;
+  }
+  .last-item {
+     margin-left: auto;
+    //align-self: flex-end
+  }
+}
+
+

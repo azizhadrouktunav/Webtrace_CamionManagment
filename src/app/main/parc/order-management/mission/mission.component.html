@@ -1,0 +1,266 @@
+<div id="product" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" (click)="goBack()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{mission.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        {{'NAV.NewMission' | translate}}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>{{'PARC.Details' | translate}}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="save-product-button" [disabled]="missionForm.invalid"
+                *ngIf="pageType ==='new'" (click)="add()">
+                <span>Ajouter</span>
+            </button>
+            <button mat-raised-button class="save-product-button"
+                [disabled]="missionForm.invalid || missionForm.pristine" *ngIf="pageType ==='edit'" (click)="update()">
+                <span>Enregistrer</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+                <form name="missionForm" [formGroup]="missionForm" class="product w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+                        <mat-tab label="Basic Info">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                  <!--Number-->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="pageType ==='new'">
+                                    <mat-label>{{'PlannedMission.Number' | translate}}</mat-label>
+                                    <input matInput placeholder="Number" name="Number" formControlName="Number">
+                                    <!-- <mat-error *ngIf="missionForm.controls['Number'].invalid">This number of vist/mission exist, Please choice another
+                                    
+                                    </mat-error> -->
+                                </mat-form-field>
+                                <!--Immatriculation-->
+                                <mat-form-field floatLabel="always" appearance="outline" class="w-100-p" >
+                                    <mat-label>{{'PlannedMission.Vehicle' | translate}}</mat-label>
+                                    <input matInput aria-label="Vehicle" [matAutocomplete]="auto1" formControlName="TrackingTarget" required>
+                                        <mat-autocomplete [panelWidth]="'auto'" #auto1="matAutocomplete" [displayWith]="displayCar">
+                                    <mat-option *ngFor="let car of filteredOptionsVehicule | async" [value]="car.id">
+                                        {{car.name}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                    <mat-error>Selecter la vehicule</mat-error>
+                                </mat-form-field>
+                                <mat-form-field floatLabel="always" appearance="outline" class="w-100-p" >
+                                    <mat-label>{{'PlannedMission.Driver' | translate}}</mat-label>
+                                    <input matInput aria-label="Vehicle" [matAutocomplete]="auto" formControlName="Driver" required>
+                                        <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" [displayWith]="displayDriver">
+                                    <mat-option *ngFor="let driver of filteredOptions | async" [value]="driver.id" :key="driver.key">
+                                        {{driver.name}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                    <mat-error>Selecter le Responsable</mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.Purpose' | translate}}</mat-label>
+                                    <input matInput placeholder="Purpose" name="Purpose" formControlName="Purpose">
+                                </mat-form-field>
+                            <div fxLayout="row" fxLayoutAlign="space-between none" >
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" fxLayoutGap="20px">
+                                    <mat-label>{{'PlannedMission.StatusMission' | translate}}</mat-label>
+                                    <mat-select formControlName="StatusMission">
+                                        <mat-option *ngFor="let status of statusMission" [value]="status.id">
+                                            {{status.name | translate}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <button *ngIf="pageType ==='edit'" matSuffix mat-button mat-icon-button (click)= "verifyStatus()"><mat-icon color="primary">cached</mat-icon></button>
+                            </div>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.Cost' | translate}}</mat-label>
+                                    <input matInput placeholder="Cost" name="Cost" formControlName="Cost" type="number">
+                                </mat-form-field>
+
+                            </div>
+
+                        </mat-tab>
+                        <!--Départ-->
+                        <mat-tab label="{{'PlannedMission.Starting' | translate }}">
+                            <!--Date planifiée de départ-->
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.EstimatedDateLocalOfStarting' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="EstimatedDateLocalOfStarting"
+                                        name="EstimatedDateLocalOfStarting"
+                                        formControlName="EstimatedDateLocalOfStarting" required>
+                                    <mat-datepicker-toggle matSuffix [for]="EstimatedDateLocalOfStarting">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #EstimatedDateLocalOfStarting></mat-datepicker>
+                                </mat-form-field>
+                                <!-- Date réelle de départ -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="pageType ==='edit'">
+                                    <mat-label>{{'PlannedMission.RealDateLocalOfStarting' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="RealDateLocalOfStarting"
+                                        name="RealDateLocalOfStarting"
+                                        formControlName="EstimatedDateLocalOfStarting" required>
+                                    <mat-datepicker-toggle matSuffix [for]="RealDateLocalOfStarting">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #RealDateLocalOfStarting></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.StartPlace' | translate}}</mat-label>
+                                    <mat-select formControlName="StartPlaceOfMission">
+                                        <mat-option *ngFor="let place of places" [value]="place.id">
+                                            {{place.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="{{'PlannedMission.Mission' | translate }}">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.DestinationPlace' | translate}}</mat-label>
+                                    <mat-select formControlName="DestinationPlaceOfMission" *ngIf="pageType ==='new'" multiple>
+                                        <mat-option *ngFor="let place of places" [value]="place.id" >
+                                            {{place.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-select formControlName="DestinationPlaceOfMission" *ngIf="pageType ==='edit'">
+                                        <mat-option *ngFor="let place of places" [value]="place.id" >
+                                            {{place.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- EstimatedDateLocalOfMission -->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.EstimatedDateLocalOfMission' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="EstimatedDateLocalOfMission"
+                                        name="EstimatedDateLocalOfMission" formControlName="EstimatedDateLocalOfMission"
+                                        required>
+                                    <mat-datepicker-toggle matSuffix [for]="EstimatedDateLocalOfMission">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #EstimatedDateLocalOfMission></mat-datepicker>
+                                </mat-form-field>
+                                <!--RealDateOfMission-->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="pageType ==='edit'">
+                                    <mat-label>{{'PlannedMission.RealDateLocalOfMission' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="RealDateLocalOfMission"
+                                        name="RealDateLocalOfMission"
+                                        formControlName="RealDateLocalOfMission" required>
+                                    <mat-datepicker-toggle matSuffix [for]="RealDateLocalOfMission">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #RealDateLocalOfMission></mat-datepicker>
+                                </mat-form-field>
+                                 <!--MaxDateOfMission-->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.MaxDateLocalOfMission' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="MaxDateLocalOfMission" name="MaxDateLocalOfMission"
+                                        formControlName="MaxDateLocalOfMission" required>
+                                    <mat-datepicker-toggle matSuffix [for]="MaxDateLocalOfMission">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #MaxDateLocalOfMission></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="{{'PlannedMission.Odometer' | translate }}">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <!--Kilométrage au départ-->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.OdometerOut' | translate}}</mat-label>
+                                    <input matInput placeholder="OdometerOut" name="OdometerOut"
+                                        formControlName="OdometerOut" type="number">
+                                </mat-form-field>
+                                <!--Kilométrage à l'arrivée-->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.OdometerIn' | translate}}</mat-label>
+                                    <input matInput placeholder="OdometerIn" name="OdometerIn"
+                                        formControlName="OdometerIn" type="number">
+                                </mat-form-field>
+                            </div>
+                        </mat-tab>
+                        <!--Poids(kg)-->
+                        <mat-tab label="{{'PlannedMission.Weight' | translate }}">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                        <mat-label>{{'PlannedMission.WeightLoaded' | translate}}</mat-label>
+                                        <input matInput placeholder="WeightLoaded" name="WeightLoaded"
+                                            formControlName="WeightLoaded" type="number">
+                                        <span matSuffix>Kg</span>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                        <mat-label>{{'PlannedMission.PriceOfWeightLoaded' | translate}}</mat-label>
+                                        <input matInput placeholder="Height" name="Height"
+                                            formControlName="PriceOfWeightLoaded" type="number">
+                                        <span matSuffix>DT</span>
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+
+                        </mat-tab>
+                        <mat-tab label="{{'PlannedMission.EstimatedTotalFuelConsumed' | translate }}">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                            <div fxLayout="row" fxLayoutAlign="space-between none" >
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" fxLayoutGap="20px">
+                                    <mat-label>{{'PlannedMission.EstimatedTotalFuelConsumed' | translate}}</mat-label>
+                                    <input matInput placeholder="Estimated Total Fuel Consumed"
+                                        name="EstimatedTotalFuelConsumed" formControlName="EstimatedTotalFuelConsumed"
+                                        type="number">
+                                </mat-form-field>
+                                <!-- <button  *ngIf="pageType ==='edit'" matSuffix mat-button mat-icon-button ><mat-icon color="primary">cached</mat-icon></button> -->
+                              </div>
+                              <div fxLayout="row" fxLayoutAlign="space-between none" >
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'PlannedMission.RealTotalFuelConsumed' | translate}}</mat-label>
+                                    <input matInput placeholder="Real Total Fuel Consumed" name="RealTotalFuelConsumed"
+                                        formControlName="RealTotalFuelConsumed" type="number">
+                                </mat-form-field>
+                                <button *ngIf="pageType ==='edit'" matSuffix mat-button mat-icon-button (click)='calculRealTotalFuelConsumed()'><mat-icon color="primary">cached</mat-icon></button>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                    </mat-tab-group>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

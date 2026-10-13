@@ -1,0 +1,251 @@
+
+
+  @import "src/@fuse/scss/fuse";
+
+
+
+  #products {
+    .Filters{
+      margin-right: 1%;
+    }
+    .app-table-wrapper {
+      overflow: scroll;
+      height: 65%;
+    }
+    //   mat-form-field{
+    //     margin: 5px 25px 0 25px;
+    //     width: calc(100% - 50px);
+    //   }
+      
+    // }
+    .DataTable{
+      width: 100%;
+    }
+
+    button.nothing {
+        background: transparent;
+        border: none;
+    }
+    
+      .top-bg {
+
+          @include media-breakpoint('lt-md') {
+              height: 256px;
+          }
+      }
+
+      #Sorter {
+        border-radius: 5px;
+        height: 50px;
+        padding: 7px;
+        margin: 10px;
+        border: solid 2px lightgray;
+        width: calc(100% - 200px);
+      }
+      mat-header-cell{
+          cursor: pointer;
+      }
+  }
+
+  .products-table {
+      flex: 1 1 auto;
+      border-bottom: 1px solid rgba(0, 0, 0, .12);
+      max-height: 320px;
+      overflow: scroll;
+
+
+      .mat-header-row {
+          min-height: 64px;
+      }
+
+      .product {
+          position: relative;
+          cursor: pointer;
+          height: 84px;
+      }
+
+      .mat-cell {
+          min-width: 0;
+          display: flex;
+          align-items: center;
+      }
+
+      .mat-column-id {
+          flex: 0 1 84px;
+      }
+
+      .mat-column-image {
+          flex: 0 1 84px;
+
+          .product-image {
+              width: 52px;
+              height: 52px;
+              border: 1px solid rgba(0, 0, 0, .12);
+          }
+      }
+      .Scolling_wigh{
+        width: 200%;
+        overflow: scroll;
+      }
+      .mat-column-category {
+          flex: 0 1 240px;
+      }
+
+      .mat-column-price {
+          flex: 0 1 160px;
+      }
+
+      .mat-column-quantity {
+          flex: 0 1 160px;
+      }
+
+      .mat-column-active {
+          flex: 0 1 80px;
+      }
+
+      .quantity-indicator {
+          display: inline-block;
+          vertical-align: middle;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          margin-right: 8px;
+
+          & + span {
+              display: inline-block;
+              vertical-align: middle;
+          }
+      }
+
+      .active-icon {
+          border-radius: 50%;
+      }
+  }
+
+  .tooltip{
+    position: relative;
+    display: inline-block;
+    
+  }
+  .tooltip .tooltiptxt{
+    visibility: hidden; 
+    width: 44px;
+    background-color: #1d1b1b;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+  }
+  .tooltip:hover .tooltiptxt{
+    visibility: visible;
+  }
+  .tot{
+    position: relative;
+    display: inline-block;
+    
+  }
+ .tottxt{
+    visibility: hidden;
+    width: 52px;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+  }
+ .tot:hover .tottxt{
+    visibility: visible;
+  }
+  .row_effect:hover{
+    background-color: #c8c8c8;
+  }
+  .red_backs{
+      background-color: #ffe5e5;
+  }
+  .hidetool{
+      visibility: hidden;
+  }
+  .tooltip_aff{
+    position: relative;
+    display: inline-block;
+    
+  }
+  .tooltip_aff .tooltiptxt_aff{
+    visibility: hidden; 
+    width: 44px;
+    background-color: #039be5;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+  }
+  .tooltip_aff:hover .tooltiptxt_aff{
+    visibility: visible;
+  }
+  .removing_Items{
+    display:none;
+  }
+  .action_button{ 
+    background: transparent;
+    border: 0;
+  }
+  .action_button_supp{   
+    color: #f44336;
+    background: transparent;
+    border: 0;
+  }
+
+
+.DataTable, #gridContainer{
+  height: 100%;
+}
+  .ActionsBtns{
+    position: absolute;
+    left: 0;
+  }
+
+::ng-deep i {
+  font-family: DXIcons !important;
+ // box-shadow: 0px 0px 5px 1px red;
+}
+
+.filter-section{
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 45px;
+}
+.example-margin {
+  margin: 0 5px;
+}
+.table-container{
+  max-height: calc(100% - 70px);
+  width: 200%;
+}
+.red-block{
+  background-color: #ffe5e5;
+  width: 90%;
+  height: 100%;
+  padding-left: 5%;
+}
+.green-block{
+  background-color: #b7faa9;
+  height: 100%;
+  width: 90%;
+  padding-left: 5%;
+}

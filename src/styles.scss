@@ -1,0 +1,99 @@
+
+@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
+@import "../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
+
+// Import Fuse core library
+@import "@fuse/scss/core";
+
+// Import app.theme.scss
+@import "app/app.theme";
+//leaflet styles
+//@import "~leaflet/dist/leaflet.css";
+
+//Shared Interfaces Styles
+@import "./src/environments/environment.scss";
+
+
+.custom-dialog-container .mat-dialog-container {
+    padding: 0px !important;
+}
+
+.orient-mission-dialog .mat-dialog-container,
+.orient-form-dialog .mat-dialog-container,
+.orient-dash-dialog .mat-dialog-container {
+    padding: 0 !important;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.orient-pick-panel.mat-select-panel {
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    max-height: 320px;
+}
+
+.orient-pick-panel.mat-select-panel .mat-option {
+    height: auto !important;
+    min-height: 56px;
+    line-height: 1.25 !important;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    overflow: hidden;
+    align-items: center;
+    white-space: normal;
+}
+
+.orient-pick-panel .mat-option-text {
+    display: block;
+    line-height: 1.25;
+    white-space: normal;
+    overflow: hidden;
+}
+
+.orient-pick-panel .mat-pseudo-checkbox {
+    margin-top: 0;
+    align-self: center;
+}
+
+.orient-pick-option {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.orient-pick-option__title,
+.orient-pick-option__sub {
+    display: block;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.orient-pick-option__title {
+    font-weight: 600;
+    color: #212121;
+}
+
+.orient-pick-option__sub {
+    font-size: 12px;
+    font-weight: 400;
+    color: #616161;
+}
+
+.ag-theme-alpine {
+    @include ag-theme-alpine();
+}
+
+
+.mat-tab-body.mat-tab-body-active{
+    overflow: hidden;
+
+}
+
+
+i.fas{
+    font-family: 'Font Awesome 5 Free' !important;
+}
+

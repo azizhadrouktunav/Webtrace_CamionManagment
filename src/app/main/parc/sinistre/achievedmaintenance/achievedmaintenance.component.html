@@ -1,0 +1,156 @@
+<div id="product" class="MainContainer page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/parc/sinistre'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <span class="logo-text h1" >
+                    {{'NAV.AchievedMaintenance' | translate}}  of  {{CarMatricule}}
+                  </span>
+
+            </div>
+            <!-- / APP TITLE -->
+            <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                    <div class="search">
+                        <input id="searchBtn"  #filter placeholder="Filtrer les données"  (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                        <label for="searchBtn">
+                            <mat-icon class="grey-700-fg">search</mat-icon>
+                        </label>
+                    </div>
+                </div>
+                   
+         <button mat-fab
+                color="warn"
+                class="add-document-button"
+                (click)="addRepair()"
+                aria-label="Add document" [hidden]="disabled"
+                >
+            <mat-icon>add</mat-icon>
+        </button>
+        </div>
+        <!-- / HEADER -->
+     <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+                        <div class="products tab-content p-24" fusePerfectScrollbar>
+                            <mat-table class="maintenances-table"
+                            #table [dataSource]="dataSource"
+                            matSort
+                            [@animateStagger]="{value:'50'}"
+                            fusePerfectScrollbar>
+                            <!-- MaintenanceTypeString -->
+                            <ng-container matColumnDef="DateCompletion">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >DateCompletion</mat-header-cell>
+                            <mat-cell *matCellDef="let repair" >
+                            <p class="text-truncate">
+                                {{repair.DateCompletionGMT | localizedDate}}
+                            </p>
+                            </mat-cell>
+                            <mat-footer-cell *matFooterCellDef> <b>Total</b>  </mat-footer-cell>
+                            </ng-container>
+                            <!-- IsReminderByEnum Column -->
+                            <ng-container matColumnDef="MileageCompletion">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>MileageCompletion</mat-header-cell>
+                            <mat-cell *matCellDef="let repair">
+                            <p class="text-truncate">{{repair.MileageCompletion}}</p>
+                            </mat-cell>
+                            </ng-container> 
+                            
+                            <!-- Cost Column -->
+                            <ng-container matColumnDef="Cost">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Cost</mat-header-cell>
+                            <mat-cell *matCellDef="let repair">
+                            <p class="text-truncate">{{repair.Cost}}</p>
+                            </mat-cell>
+                            <mat-footer-cell *matFooterCellDef [ngStyle] ="{'color':'red'}"> {{getTotalCost() | currency: 'TND'}} </mat-footer-cell>
+                            </ng-container> 
+                            <!-- Frequency Column --> 
+                            <ng-container matColumnDef="PaidCost">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >PaidCost</mat-header-cell>
+                            <mat-cell *matCellDef="let repair">
+                             <p class="total-price text-truncate">
+                                 {{repair.PaidCost}}
+                             </p>
+                            </mat-cell>
+                            <mat-footer-cell *matFooterCellDef [ngStyle] ="{'color':'green'}"> {{getTotalPaidCost() | currency: 'TND'}} </mat-footer-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="PaidDate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header >PaidDate</mat-header-cell>
+                                <mat-cell *matCellDef="let repair">
+                                 <p class="total-price text-truncate">
+                                    {{repair.PaidDateLocal| localizedDate}}
+                                 </p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- WarnMeBefore Column -->
+                            <ng-container matColumnDef="Description">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                            <mat-cell *matCellDef="let repair">
+                            <p class="text-truncate">
+                               {{repair.Description}}
+                            </p>
+                            </mat-cell>
+                            </ng-container>
+                            <!-- Reference Column -->
+                            <ng-container matColumnDef="InvoiceReference">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>InvoiceReference</mat-header-cell>
+                            <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+                             <p class="text-truncate">{{repair.InvoiceReference}}</p>
+                            </mat-cell>
+                            </ng-container>
+                            <!-- Reference Column -->
+                            <ng-container matColumnDef="Supplier">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Supplier</mat-header-cell>
+                            <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+                            <p class="text-truncate">{{repair.Supplier}}</p>
+                            </mat-cell>
+                            </ng-container>        
+                            <!-- Date Column -->
+                            <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>actions</mat-header-cell>
+                            <mat-cell *matCellDef="let repair" fxHide fxShow.gt-sm>
+                                <div fxLayout="row" fxLayoutAlign="space-around">
+                                  <button mat-icon-button color="primary" (click)="editRepair('edit', repair)"><mat-icon>edit</mat-icon></button>
+                                  <button mat-icon-button color="warn" (click)="deleteRepair(repair)"><mat-icon>delete_outline</mat-icon></button>
+                                </div>
+                              </mat-cell>
+                            </ng-container>
+                            
+                            <mat-header-row *matHeaderRowDef="displayedColumns_; sticky:true"></mat-header-row>
+                            
+                            <mat-row *matRowDef="let repair columns: displayedColumns_;"
+                              class="maintenance"
+                              matRipple
+                             >
+                            </mat-row>
+                            <mat-footer-row *matFooterRowDef="tableFooterColumns"></mat-footer-row>
+                            </mat-table>
+                            <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[10, 25, 100]">
+                            </mat-paginator>
+                        </div>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+</div>

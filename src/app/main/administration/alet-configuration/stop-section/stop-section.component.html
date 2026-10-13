@@ -1,0 +1,59 @@
+<mat-expansion-panel ><!--*ngIf="Stopvisinility == true"-->
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+       {{'AlertConfiguration.StopSection.StopSectionTitle' | translate}}
+      </mat-panel-title>
+      <mat-panel-description>
+        
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <form [formGroup]="StopSection">
+        <div>
+            <div class="space-between">
+                <div *ngIf="defaultParams?.HardSoftSupportLongStopAlarm == true"><!---->
+                    <mat-checkbox formControlName="activateStoplongperiodAlarm" class="margintop" (change)="changeLongStopStatus($event)" style="margin-right: 5%;">
+                        {{'AlertConfiguration.StopSection.StopLongPeriod' | translate}}
+                    </mat-checkbox>
+                    <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="55">
+                        <input matInput [ngxMatDatetimePicker]="pickerstart" placeholder="Choose a date"
+                            formControlName="stopTimeLimit">
+                        <mat-datepicker-toggle matSuffix [for]="pickerstart"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #pickerstart [color]="color"></ngx-mat-datetime-picker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="defaultParams?.HardSoftSupportLongStopAlarm == true"><!---->
+                    <mat-checkbox formControlName="GenerateAlertWhitoutSendPosition" fxFlex="100" class="margintop">
+                       <p class="red-A700-fg">{{'AlertConfiguration.StopSection.StopLongPeriodAlarm' | translate}} </p>
+                    </mat-checkbox>
+                </div>
+            </div>
+            <div class="space-around" *ngIf="defaultParams?.HardwareSupportHardStopAlarm == true"><!---->
+                <mat-checkbox formControlName="activateHardStoppedAlarm" fxFlex="30" class="margintop" (change)="changeStopPlusStatus($event)">
+                    {{'AlertConfiguration.StopSection.StopPeriodSup' | translate}}
+                </mat-checkbox>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="60">
+                    <mat-label></mat-label>
+                    <input matInput formControlName="stopPeriodTime" type="number">
+                </mat-form-field> 
+            </div>
+            <div class="space-between" *ngIf="defaultParams?.HardSoftSupportStopDetectionWithAccOnAlarm">
+                <mat-checkbox formControlName="activateStopAlarmWithContactOnOff" fxFlex="30" class="margintop" (change)="changeStopInfStatus($event)">
+                    {{'AlertConfiguration.StopSection.StopPeriodInf' | translate}}
+                </mat-checkbox>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="40">
+                    <mat-label></mat-label>
+                    <input matInput formControlName="StopWithContactOnOffPeriod" type="number">
+                </mat-form-field> 
+                <mat-checkbox formControlName="addMotorStatusOnAlarm" fxFlex="50" class="margintop red-A700-fg">
+                    {{'AlertConfiguration.StopSection.MotorStatus' | translate}}
+                </mat-checkbox>
+            </div>
+        </div>
+    </form>
+   
+    <mat-action-row>
+        <button type="button" mat-button color="warn" (click)="DefaultStop()">{{'AlertConfiguration.GeneralSection.DefaultParams' | translate}}</button>
+        <button type="button" mat-button color="#26bcfb" (click)="stopSabmit(StopSection)">{{'AlertConfiguration.ConductSection.SendParms' | translate}}</button>
+    </mat-action-row>
+</mat-expansion-panel>

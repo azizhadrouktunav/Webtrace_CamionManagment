@@ -1,0 +1,262 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate}}</span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" style="background: #e4e4e4;" fusePerfectScrollbar>
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'NAV.ContractInformation' | translate}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span class="example-spacer"></span>
+                            <mat-icon>library_books</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div formGroupName="Contract">
+                        <div fxLayout="row">
+
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.ContractRef' | translate}}</mat-label>
+                                    <input matInput type="number" placeholder="pick a number"
+                                        formControlName="ContractRef" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.ContractType' | translate}}</mat-label>
+                                    <mat-select formControlName="ContractType" required>
+                                        <mat-option value="2">{{'NAV.Borrow' | translate}}</mat-option>
+                                        <mat-option value="1">{{'NAV.Rent' | translate}}</mat-option>
+
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row">
+
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.ContractStartDateGMT' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="picker1" formControlName="ContractStartDateGMT"
+                                        required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.ContractEndDateGMT' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="picker2" formControlName="ContractEndDateGMT"
+                                        required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row">
+
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.FirstDriver' | translate}}</mat-label>
+                                    <mat-select formControlName="FirstDriver" required>
+                                        <mat-option *ngFor="let driver of DriverList" [value]="driver.key">
+                                            {{driver.FullName}}
+                                        </mat-option>
+
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.SecondDriver' | translate}}</mat-label>
+                                    <mat-select formControlName="SecondDriver" required>
+                                        <mat-option *ngFor="let driver of DriverList" [value]="driver.key">
+                                            {{driver.FullName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </div>
+                    <mat-action-row>
+                        <button type="button" mat-button color="primary" (click)="nextStep()">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'NAV.Payments' | translate}}
+
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span class="example-spacer"></span>
+                            <mat-icon>payment</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div formGroupName="Payment">
+
+                        <div fxLayout="row">
+
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="25">
+                                    <mat-label>{{'NAV.ActivationCost' | translate}}</mat-label>
+                                    <input matInput type="number" placeholder="pick a number"
+                                        formControlName="ActivationCost" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="25">
+                                    <mat-label>{{'NAV.Cost' | translate}}</mat-label>
+                                    <input matInput type="number" placeholder="pick a number" formControlName="Cost"
+                                        required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="25">
+                                    <mat-label>{{'NAV.GazFuelLevelPercent' | translate}}</mat-label>
+                                    <input matInput type="number" placeholder="pick a number"
+                                        formControlName="GazFuelLevelPercent" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="25">
+                                    <mat-label>{{'NAV.WarnMeBeforeNDay' | translate}}</mat-label>
+                                    <input matInput type="number" placeholder="pick a number"
+                                        formControlName="WarnMeBeforeNDay" required>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row">
+
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="30">
+                                    <mat-label>{{'NAV.Paymentof' | translate}}</mat-label>
+                                    <input matInput type="number" placeholder="pick a number"
+                                        formControlName="Paymentof" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="35">
+
+                                    <mat-label>{{'NAV.PaymentFreq' | translate}}</mat-label>
+
+
+                                    <mat-select formControlName="foreach" required>
+                                        <mat-option value="21">{{'NAV.Inthisdate' | translate}}</mat-option>
+                                        <mat-option value="17">{{'NAV.Day' | translate}}</mat-option>
+                                        <mat-option value="18">{{'NAV.Week' | translate}}</mat-option>
+                                        <mat-option value="19">{{'NAV.Month' | translate}}</mat-option>
+                                        <mat-option value="20">{{'NAV.Year' | translate}}</mat-option>
+
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="35">
+                                    <mat-label>{{'NAV.From' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="picker3" formControlName="From" required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker3></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </div>
+                    <mat-action-row>
+                        <button type="button" mat-button color="warn" (click)="prevStep()">Previous</button>
+                        <button type="button" mat-button color="primary" (click)="nextStep()">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'NAV.Vehicleattheentry' | translate}}
+
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span class="example-spacer"></span>
+                            <mat-icon>directions_car</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div formGroupName="carentry">
+
+                        <div fxLayout="row">
+
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.Dateofentry' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="picker5" formControlName="Dateofentry" required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker5></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.Mileage' | translate}}</mat-label>
+                                    <input matInput type="number" placeholder="pick a number" formControlName="Mileage">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-action-row>
+                        <button type="button" mat-button color="warn" (click)="prevStep()">Previous</button>
+                        <button type="button" mat-button color="primary" (click)="nextStep()">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+                <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                             {{'NAV.Vehicleattheexit' | translate}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span class="example-spacer"></span>
+                            <mat-icon>directions_car</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div formGroupName="carexit">
+
+                        <div fxLayout="row">
+
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.Dateofexit' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="picker4" formControlName="Dateofexit" required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker4></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.Mileage' | translate}}</mat-label>
+                                    <input matInput type="number" placeholder="pick a number"
+                                        formControlName="Mileage2">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </div>
+                    <mat-action-row>
+                        <button type="button" mat-button color="warn" (click)="prevStep()">Previous</button>
+                        <button type="button" mat-button color="primary" (click)="nextStep()">End</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+        </form>
+        <!--  -->
+
+    </div>
+    <div mat-dialog-actions class="m-0 p-16 mat-dialog-actions" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()" [disabled]="!myForm.valid"
+            class="button">{{'NAV.Save' | translate}}</button>
+    </div>
+</div>

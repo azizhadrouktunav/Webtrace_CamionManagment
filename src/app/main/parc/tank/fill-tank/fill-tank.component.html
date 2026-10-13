@@ -1,0 +1,36 @@
+
+<!-- <h1 matDialogTitle>{{ 'FillTank' | translate}}</h1>
+<div mat-dialog-content>
+    <mat-form-field appearance="outline" class="center w-70-p">
+        <mat-label>{{ 'FillingInL' | translate}}</mat-label>
+        <input matInput
+               type="number"
+               [formControl]="operationCapacityInL">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions class="pt-24">
+    <button  mat-button color="primary"
+    class="save-button"
+    (click)="matDialogRef.close(operationCapacityInL)"
+    [disabled]="operationCapacityInL.invalid">{{'Update' | translate}}</button>
+    <button mat-button  (click)="matDialogRef.close()">{{'Cancel' | translate}}</button>
+</div> -->
+
+<h1 mat-dialog-title>{{ 'FillTank' | translate}}</h1>
+<div mat-dialog-content>
+  
+    <mat-form-field>
+        <mat-label>{{ 'FillingInL' | translate}}</mat-label>
+        <input matInput
+               type="number"
+               [formControl]="operationCapacityInL">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button  (click)="matDialogRef.close()">{{'Cancel' | translate}}</button>
+  <button  mat-button color="primary"
+  class="save-button"
+  (click)="matDialogRef.close(operationCapacityInL)"
+  [disabled]="operationCapacityInL.invalid">{{'Update' | translate}}
+</button>
+</div>

@@ -1,0 +1,212 @@
+<div id="report" class="page-layout simple right-sidebar inner-scroll">
+
+    
+
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+
+        <!-- HEADER -->
+        <div class="header accent p-24" >
+
+           
+
+           
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <span class="h2">
+                    <!-- APP TITLE -->
+                    <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+
+                        <button mat-icon-button [routerLink]="'/reports/trajetreport'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                        <span class="logo-text h1">
+                            {{'NAV.trajetreport' | translate}} 
+                        </span>
+                    </div>
+                    <!-- / APP TITLE -->
+                </span>
+                <span class="h5 secondary-text"> {{'NAV.Dashboard' | translate}}
+                    {{CarMatricule}} {{'NAV.Between' | translate}}
+                    {{startdate | localizedDate}}    {{'NAV.and' | translate}} {{enddate| localizedDate}}
+                </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="exportIcon">
+                    <img (click)="downloadPdf()" src="../../../../assets/icons/pdf.webp" class="pdf" title="Export as pdf file" height="50px">
+                    <img (click)="downloadExcel()" src="../../../../assets/icons/excel.png" class="excel" title="Export as excel file" height="50px">
+                </div>
+            </div>
+
+        
+
+           
+
+        </div>
+
+       
+    <div class="container">
+
+        <div class="left mr-lg-70">
+
+
+            <div fxLayout="column" fxLayoutAlign="start"
+                 fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+
+                <!-- Widget 2 -->
+                <div class="widget" fxFlex="100" fxFlex.gt-sm="150">
+
+                    <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
+                        <mat-progress-bar mode="determinate" [value]="progressbarValue" ></mat-progress-bar>
+                        
+                        <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h2 pr-16"> {{'NAV.DetailsTrajet' | translate}}</div>
+                        
+                            <div>
+                              
+                                <button mat-icon-button [matMenuTriggerFor]="card20Menu" aria-label="more">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                        
+                                <mat-menu #card20Menu="matMenu">
+                                    <button  (click)="exportpdf()" fxLayout="row" fxLayoutAlign="start center" mat-menu-item>
+                                        <span> {{'NAV.ToPDFFile' | translate}}</span>
+                                    </button>
+                                    <button  (click)="exportexcel()" fxLayout="row" fxLayoutAlign="start center" mat-menu-item>
+                                        <span> {{'NAV.ToExcelFile' | translate}}</span>
+                                    </button>
+                                    
+                                </mat-menu>
+                            </div>
+                        </div>
+                        <div class="h-400 w-100-p">
+                            <div class="position-relative h-400 pb-16">
+                                <div id="ExampleTable"  #ExampleTable class="content-card">
+                                    <mat-table [dataSource]="datasource" matSort class="products-table" 
+                                        fusePerfectScrollbar>
+                        
+                                       
+                                     
+                                        <ng-container matColumnDef="Car">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{'NAV.TrackingObject' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-xs>
+                                                <p class="price text-truncate">
+                                                    {{element.Car}}
+                                                </p>
+                                            </mat-cell>
+                                        </ng-container>
+                                        
+                                        <ng-container matColumnDef="DateDeparture">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs> {{'NAV.DateDeparture' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-xs>
+                                                <p class="price text-truncate">
+                                                    {{element.DateDeparture }}
+                                                </p>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="DeparturePlace">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> {{'NAV.DeparturePlace' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span>
+                                                    {{element.DeparturePlace}}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
+                                       
+                        
+                                        <ng-container matColumnDef="ArrivalDate">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> {{'NAV.ArrivalDate' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span>
+                                                    {{element.ArrivalDate }}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="ArrivalPlace">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> {{'NAV.ArrivalPlace' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span>
+                                                    {{element.ArrivalPlace}}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="TripTime">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> {{'NAV.TripTime' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span>
+                                                    {{element.TripTime}}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="SpeedAvg">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> {{'NAV.SpeedAvg' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span>
+                                                    {{element.SpeedAvg}}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="SpeedMax">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> {{'NAV.SpeedMax' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span>
+                                                    {{element.SpeedMax}}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="Distance">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> {{'NAV.Distance' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span>
+                                                    {{element.Distance}}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="StopTime">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> {{'NAV.StopTime' | translate}}</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span>
+                                                    {{element.StopTime}}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
+                                        <mat-header-row  *matHeaderRowDef="displayedColumns; sticky:true" class="Scolling_wigh"></mat-header-row>
+                                        <mat-row [ngClass]="{'make-gold': element.isOverSpeed == true}" *matRowDef="let element; columns: displayedColumns;" class="element" matRipple
+                                            class="Scolling_wigh"></mat-row>
+                        
+                        
+                                    </mat-table>
+                                    <mat-toolbar style="background-color: white;width:calc(100%);">
+                                           
+                                        <mat-paginator #paginator [pageSize]="50"
+                                        [pageSizeOptions]="[50, 100, 200]">
+                                    </mat-paginator>
+                        
+                                    </mat-toolbar>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- / Widget 2 -->
+
+              
+               
+
+            </div>
+            </div>
+
+      
+    </div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+    fullScreenBackdrop: 'true',
+   
+    primaryColour: '#e2f000', 
+    secondaryColour: '#e2f000', 
+    tertiaryColour: '#e2f000' }" ></ngx-loading>
+</div>

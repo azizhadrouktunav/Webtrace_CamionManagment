@@ -1,0 +1,108 @@
+<div id="monitor-tanks" class="page-layout simple right-sidebar inner-scroll">
+
+
+
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+
+        <!-- HEADER -->
+        <nav class="nav-bar accent">
+        </nav>
+
+
+        <!-- CONTENT -->
+        <div class="container">
+            <div class="content p-24">
+
+                <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+        fullScreenBackdrop: 'true',
+       
+        primaryColour: '#0068f0', 
+        secondaryColour: '#0068f0', 
+        tertiaryColour: '#0068f0' }">
+                </ngx-loading>
+
+                <div *ngIf="!loading" style="width:100%">
+
+                    <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxFlex="100">
+
+                        <div class="fuse-card m-8" *ngFor="let pompe of myPompes;trackBy:trackByTankId;let index = index;"
+                            fxFlex="30">
+                            <div class="p-12" fxLayout="row" fxLayoutAlign="space-between center">
+
+                                <div class="pr-16">
+                                    <div class="h1 ">{{pompe.Name_}}</div>
+
+                                </div>
+                                <div class="card-divider mb-0"></div>
+
+                                <div>
+                                    
+                                </div>
+
+                            </div>
+
+                            <div class="p-16 h-450" fxLayout="row" fxLayoutAlign="center center">
+                               <!--  -->
+                               
+                                    <div style="width: 70%; ">
+                                       <ngx-picture *ngIf="!pompe.NozzleState && !pompe.NozzleState2 "  src="assets/images/pompe.png" alt="pompe" >
+                                        </ngx-picture>
+                                       <ngx-picture style="height: 330px" *ngIf="pompe.NozzleState || pompe.NozzleState2"  src="assets/images/pompeon.png" alt="pompe" >
+                                        </ngx-picture>                                 </div>
+                                        <div class="py-16">
+
+                                            <div style="flex-grow: 1; color: green;">
+                                                <div style="display: flex; justify-content: flex-end ;font-size: 20px;" >Face 1</div>
+
+                                                <div style="display: flex; justify-content: flex-end ;font-size: 35px;" class="segments7">{{ pompe.Amount }}</div>
+                                                <div style="display: flex; justify-content: flex-end;font-size: 35px;" class="segments7">{{ pompe.Volume }}</div>
+                                                <div style="display: flex; justify-content: flex-end;font-size: 20px;" class="segments7">{{ pompe.Price }}</div>
+                                                <div style="display: flex; justify-content: flex-end;font-size: 15px;color: black;">{{ pompe.FirstName }} {{ pompe.LastName }}</div>
+
+                                            </div>
+                                            <div style="flex-grow: 1; margin-top: 10px; color: green;">
+                                                <div style="display: flex; justify-content: flex-end;font-size: 20px;">Face 2</div>
+
+                                                <div style="display: flex; justify-content: flex-end ;font-size: 35px;" class="segments7">{{ pompe.Amount2 }}</div>
+                                                <div style="display: flex; justify-content: flex-end;font-size: 35px;" class="segments7">{{ pompe.Volume2 }}</div>
+                                                <div style="display: flex; justify-content: flex-end;font-size: 20px;" class="segments7">{{ pompe.Price2 }}</div>
+                                                <div style="display: flex; justify-content: flex-end;font-size: 15px;color: black;">{{ pompe.FirstName2}} {{ pompe.LastName2 }}</div>
+
+                                            </div>
+                                            </div>
+                                    
+                                </div>
+                            <div class="card-divider mb-0"></div>
+                           
+                            <div class="py-16">
+
+
+                                <div class="px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div fxLayout="row" fxLayoutAlign="left">
+                                        <mat-icon>local_gas_station</mat-icon>
+
+                                        <strong *ngIf="!pompe.NozzleState && !pompe.NozzleState2" class="h4" style="text-transform: uppercase;">
+                                          Livraison terminée
+                                       </strong>
+                                       <strong *ngIf="pompe.NozzleState || pompe.NozzleState2" class="h4" style="text-transform: uppercase;">
+                                          Livraison en cours
+                                       </strong>
+                                    </div>
+                                </div>
+
+                               
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+               <div class="no-tanks"  *ngIf="myPompes.length === 0 && !loading">
+             Pas de pompes connectées   
+                         
+            </div> 
+            </div>
+            <!-- / CONTENT -->
+        </div>
+    </div>
+</div>

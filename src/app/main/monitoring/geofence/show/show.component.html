@@ -1,0 +1,56 @@
+<div class="dialog-content-wrapper mat-caption">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+            <button mat-icon-button (click)="changeLeftSidenavView('geofence')">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <span class="title dialog-title">{{dialogTitle | translate }}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+<div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+
+    <!-- USER MOOD -->
+    <form [formGroup]="geofenceZoneForm" fxLayout="column">
+
+        <mat-form-field appearance="outline" class="w-100-p">
+            <mat-label>{{'Common.Vehicle' | translate }}</mat-label>
+                <mat-select formControlName="TrakingObject" required (selectionChange)="selectedVehicle($event)">
+                    <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.id">{{vehicle.name}}</mat-option>
+                </mat-select>
+        </mat-form-field>  
+        <mat-selection-list #zoneList (selectionChange)="onGroupsChange(zoneList.selectedOptions.selected)"  formControlName="zone" required>
+            <mat-list-option *ngFor="let zone of zoneGoefence" [value]="zone">{{zone.Value.Name}}</mat-list-option>
+        </mat-selection-list>
+
+    </form>
+    <!-- / USER MOOD -->
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <!-- add button -->
+        <button
+                mat-button color="primary"
+                class="save-button"
+                (click)="showGeofence()"
+                [disabled]="geofenceZoneForm.invalid"
+                aria-label="SHOW">
+            {{'Geofence.ShowOnMap' | translate }}
+        </button>
+        <!-- /add button -->
+
+        <!-- delete button -->
+        <button 
+                mat-button color="accent"
+                class="mr-8"
+                (click)="deleteZone(geofenceZoneForm)"
+                aria-label="Delete"
+                matTooltip="Delete">
+        {{'Common.Delete' | translate }}
+    </button>
+
+        <!-- /delete button -->
+    </div>
+</div>

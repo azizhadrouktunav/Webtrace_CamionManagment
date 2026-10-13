@@ -1,0 +1,130 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" fusePerfectScrollbar>
+
+        <form name="maintenanceForm" [formGroup]="maintenanceForm" class="event-form w-100-p" fxLayout="column" fxFlex>
+
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'PARC.MaintenanceType' | translate}}*</mat-label>
+                <mat-select formControlName="MaintenanceTypeEnum">
+                    <mat-option *ngFor="let type of maintenanceTypeEnum" [value]="type.id">
+                      {{type.name | translate}}
+                    </mat-option>
+                  </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'PARC.PlanningType' | translate}}</mat-label>
+                <mat-select formControlName="IsReminderBy" (selectionChange)="changed($event)">
+                    <mat-option *ngFor="let mode of isReminderBy" [value]="mode.id">
+                       {{mode.name | translate}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="IsReminderBy_ == 1 || IsReminderBy_ == 2">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50" formGroupName="Odometer">
+                    <mat-label>{{'PARC.CurrentMileage' | translate}}</mat-label>
+                    <input matInput name="end" formControlName="CurrentMileage">
+                    <span matSuffix>{{HourOrKm | translate}}</span>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50" formGroupName="Odometer">
+                    <mat-label>{{'PARC.FrequencyEach' | translate}}</mat-label>
+                    <input matInput name="start" formControlName="MaintenanceFrequence" type="number" step="1" min="1">
+                    <span matSuffix>{{HourOrKm | translate}}</span>
+                </mat-form-field>               
+            </div> 
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="IsReminderBy_ == 1 ||IsReminderBy_ == 2">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="50" formGroupName="Odometer">
+                    <mat-label>{{'PARC.NextMaintenance' | translate}}*</mat-label>
+                    <input matInput formControlName="NextDueMileage" (click)="updateValue()">
+                    <span matSuffix>{{HourOrKm | translate}}</span>
+                    <mat-error *ngIf="maintenanceForm.get('Odometer').get('NextDueMileage').hasError('required')">
+                        
+                    </mat-error>
+                    <mat-error *ngIf="maintenanceForm.get('Odometer').get('NextDueMileage').errors?.nonPositive">
+                        Le nombre doit être supérieur à 0 !
+                    </mat-error>
+                    <mat-error *ngIf="maintenanceForm.get('Odometer').get('NextDueMileage').hasError('min')">
+                        La valeur du prochain entretien doit être supérieure ou égale au kilométrage actuel!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="IsReminderBy_== 0">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50"  formGroupName="Date" *ngIf="oneTime">
+                    <mat-label>{{'Maintenance.Starting' | translate}}</mat-label>
+                    <input matInput formControlName="RecuringFrequencyNYearMonthWeekDay" type="number" step="1" min="1">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50" formGroupName="Date">
+                    <mat-label>{{'PARC.PlanningType' | translate}}</mat-label>
+                    <mat-select formControlName="RecurringMode" (selectionChange)="changedMode($event)" >
+                        <mat-option *ngFor="let mode of recurringMode" [value]="mode.id">
+                          {{mode.name | translate}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="IsReminderBy_== 0">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50"  formGroupName="Date" *ngIf="showDays">
+                    <mat-label>{{'NAV.ConsidredDay' | translate}}</mat-label>
+                    <mat-select formControlName ="EnabledDayOfWeekes" name="EnabledDayOfWeekes" multiple (selectionChange)="changedDays($event)" >
+                        <mat-option *ngFor="let day of days" [value]="day.id">{{day.name | translate}}</mat-option>
+                      </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100-p">
+                    <input matInput [ngxMatDatetimePicker]="picker" 
+                    placeholder="Choose a date" formControlName="BeginStartRecurringDateGMT">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #picker
+                    [showSpinners]="showSpinners" 
+                    [showSeconds]="showSeconds"
+                    [touchUi]="touchUi"
+                    [color]="color"
+                    ></ngx-mat-datetime-picker>
+                </mat-form-field>
+            </div> 
+           
+        <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+            <mat-label>{{'PARC.WarnMeBeforeNDay' | translate}}*</mat-label>
+            <input matInput formControlName="WarnMeBeforeNDayKm" type="number" min="1" step="1">
+            <span matSuffix>{{HourOrKm | translate}}</span>
+        </mat-form-field> 
+         
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16 mat-dialog-actions" fxLayout="row" fxLayoutAlign="space-between center">
+
+       <!--  <button *ngIf="action ==='edit'"
+                mat-button color="primary"
+                class="mr-8 button mat-raised-button mat-warn"
+                (click)="matDialogRef.close(['delete',maintenanceForm])"
+                aria-label="Delete"
+                matTooltip="Delete">
+            {{'PARC.Delete' | translate}}
+        </button> -->
+
+        <button *ngIf="action !== 'edit'"
+                mat-button color="primary"
+                class="save-button button mat-raised-button mat-accent"
+                (click)="matDialogRef.close(maintenanceForm)"
+                [disabled]="maintenanceForm.invalid"
+                aria-label="ADD">
+            {{'PARC.Add' | translate}}
+        </button>
+
+        <button *ngIf="action === 'edit'" aria-label="SAVE" [disabled]="maintenanceForm.invalid" (click)="matDialogRef.close(['save', maintenanceForm])" class="save-button mat-raised-button mat-button-base mat-accent Submit_btn">
+            {{'PARC.Save' | translate}}
+        </button>
+
+    </div>
+</div>

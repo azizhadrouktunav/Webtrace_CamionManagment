@@ -1,0 +1,185 @@
+<div id="orders" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+
+                <mat-icon>recent_actors</mat-icon>
+                <span class="h1">
+                    {{'NAV.Beneficiarymanagement' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" (keyup)="applyFilter($event)" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+
+
+
+            <!-- ADD BUTTON -->
+
+            <button class="add-button mat-fab mat-warn" color="warn" mat-fab="" (click)='add()'>
+                <span class="mat-button-wrapper">
+                    <mat-icon class="mat-icon notranslate ng-tns-c37-17 material-icons mat-icon-no-color" role="img"
+                        aria-hidden="true">add</mat-icon>
+                </span>
+                <div class="mat-button-ripple mat-ripple mat-button-ripple-round" matripple=""></div>
+                <div class="mat-button-focus-overlay"></div>
+            </button>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+           <!--  <form name="dateForm" [formGroup]="dateForm" (ngSubmit)="onSubmit()" class="box dateForm"
+            style="padding:15px" (keydown.enter)="onSubmit()" fxFlex="1 0 auto" fxLayout="row"
+            fxLayoutAlign="center">
+            <button mat-icon-button color="accent">
+                <mat-icon class="grey-700-fg">timer</mat-icon>
+            </button>
+
+            <button class="submit" type="submit" mat-icon-button color="accent">
+                <mat-icon>done</mat-icon>
+            </button>
+
+            <mat-form-field class="pr-sm-8">
+                <mat-label>{{'Beneficiary.StartDate' | translate}}</mat-label>
+                <input matInput [ngxMatDatetimePicker]="pickerStart" name="start" formControlName="start"
+                    placeholder="Choose a date" required>
+                    <mat-error *ngIf="dateForm.get('start').hasError('required')">
+                        Start date is required
+                    </mat-error>
+                    <mat-error *ngIf="error.isError">
+                        End date should be grater then start date.
+                    </mat-error>
+                <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker  enableMeridian = "true"
+                                          showSeconds="true" #pickerStart>
+                </ngx-mat-datetime-picker>
+            </mat-form-field>
+            
+            <mat-form-field class="pr-sm-8">
+                <mat-label>{{'Beneficiary.EndDate' | translate}}</mat-label>
+                <input [ngxMatDatetimePicker]="pickerEnd" matInput name="end" formControlName="end"
+                    placeholder="Choose a date" required>
+                    <mat-error *ngIf="dateForm.get('end').hasError('required')">
+                        End date is required
+                    </mat-error>
+                <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker  enableMeridian = "true"
+                                          showSeconds="true" #pickerEnd>
+                </ngx-mat-datetime-picker>
+            </mat-form-field>
+
+            </form> -->
+            <mat-table class="orders-table" #table [dataSource]="dataSource" id="beneficiaries" matSort
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+            <!-- Name -->
+            <ng-container matColumnDef="Name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Beneficiary.Name' | translate}}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let beneficiary">
+                    <p class="text-truncate">
+                        {{beneficiary.FirstName}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+            <!-- Department -->
+            <ng-container matColumnDef="Adresse">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Adresse
+                </mat-header-cell>
+                <mat-cell *matCellDef="let beneficiary">
+                    {{beneficiary.Adresse}}
+                </mat-cell>
+            </ng-container>
+            <!-- Account -->
+            <ng-container matColumnDef="Email">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Email
+                </mat-header-cell>
+                <mat-cell *matCellDef="let beneficiary">
+                    {{beneficiary.Email}}
+                </mat-cell>
+            </ng-container>
+            <!-- Immatriculation Column -->
+            <ng-container matColumnDef="Telephone">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Telephone
+                </mat-header-cell>
+                <mat-cell *matCellDef="let beneficiary">
+                    {{beneficiary.Telephone }}
+                </mat-cell>
+            </ng-container>
+            <!-- Driver Column -->
+            <ng-container matColumnDef="Web">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Web</mat-header-cell>
+                <mat-cell *matCellDef="let beneficiary">
+                    {{beneficiary.Web }}
+                </mat-cell>
+            </ng-container>
+            <!-- Creation_date Column -->
+            <ng-container matColumnDef="Creation_date">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Beneficiary.CreationDate' | translate}}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let beneficiary">
+                    {{beneficiary.SaveDate| date:'dd/MM/yyyy HH:mm:ss'}}
+                </mat-cell>
+            </ng-container>
+            <!-- other columns -->
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm></mat-header-cell>
+                <mat-cell *matCellDef="let beneficiary" fxHide fxShow.gt-sm>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <button mat-button-toggle mat-icon-button color="accent" (click)="edit('edit',beneficiary)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-button-toggle mat-icon-button color="warn" (click)="delete(beneficiary)" [disabled]="isDisabledDelete">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+            <mat-row *matRowDef="let beneficiary; columns: displayedColumns;" class="product" matRipple></mat-row>
+        </mat-table>
+            <div class="no-results" [style.display]="dataSource.filteredData.length == 0 ? '' : 'none'">
+                <h4>{{'NAV.NoResult' | translate}}</h4>
+            </div>
+            <mat-toolbar [hidden]="disabled">
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                    <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                    </mat-icon>
+                    <img (click)="exportTable()" src="assets/icons/excel.png" class="excel"
+                        title="Export as excel file">
+                </div>
+                <span class="example-spacer"></span>
+
+                <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                    [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </mat-toolbar>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

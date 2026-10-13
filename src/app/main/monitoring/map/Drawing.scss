@@ -1,0 +1,38 @@
+::ng-deep {
+    .Point {
+        // https://www.iconpacks.net/icons/2/free-location-pin-icon-2965-thumb.png
+        background-image: url(https://freepngimg.com/thumb/map/94717-angle-icons-sphere-pen-computer-location-marker.png);
+        background-size: cover;
+        padding: 30px;
+
+        &:hover {
+            cursor: grab;
+        }
+        
+        &:active{
+            cursor: grabbing;
+        }
+    }
+
+    .LineStart, .LinePoint, .LineEnd{
+        background-size: cover;
+        background: white;
+        border: solid 5px blue;
+        border-radius: 50px;
+        padding: 5px;
+    }
+
+    .circleCenter, .rayonPoint{
+        background: white;
+        border: solid 5px blue;
+        border-radius: 50px;
+        padding: 5px;
+    }
+
+    .polyPoint {
+        background: white;
+        border: solid 4px blue;
+        padding: 4px;
+        border-radius: 100%;
+    }
+}

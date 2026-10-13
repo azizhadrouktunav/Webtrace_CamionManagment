@@ -1,0 +1,41 @@
+@import "src/@fuse/scss/fuse";
+
+#report {
+
+
+
+    .center {
+        overflow: hidden;
+
+        .header {
+            position: relative;
+            height: 120px;
+            min-height: 120px;
+            max-height: 120px;
+
+           
+
+          
+        }
+
+        .content {
+            flex: 1 1 auto;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+    .mat-header-cell {
+        padding: 8px 8px 8px 0;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    
+      }
+      
+      .mat-cell {
+        padding: 8px 8px 8px 0;
+        text-align: center;
+        justify-content:center;
+      }
+}

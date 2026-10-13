@@ -1,0 +1,169 @@
+<div id="report" class="page-layout simple right-sidebar inner-scroll">
+
+    
+
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+
+        <!-- HEADER -->
+        <div class="header accent p-24" >
+
+           
+
+           
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <span class="h2">
+                    <!-- APP TITLE -->
+                    <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+
+                        <button mat-icon-button [routerLink]="'/reports/temperaturereport'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                        <span class="logo-text h1">
+                            {{'NAV.TemperatureReport' | translate}} 
+                        </span>
+                    </div>
+                    <!-- / APP TITLE -->
+                </span>
+                <span class="h5 secondary-text"> {{'NAV.Dashboard' | translate}}
+                    {{CarMatricule}} {{'NAV.Between' | translate}}
+                    {{startdate | localizedDate}}    {{'NAV.and' | translate}} {{enddate| localizedDate}}
+                </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="exportIcon">
+                    <img (click)="downloadPdf()" src="../../../../assets/icons/pdf.webp" class="pdf" title="Export as pdf file" height="50px">
+                    <img (click)="downloadExcel()" src="../../../../assets/icons/excel.png" class="excel" title="Export as excel file" height="50px">
+                </div>
+            </div>
+
+        
+
+           
+
+        </div>
+    <div class="container">
+
+    <div *ngIf="cars != null" style="padding: 1% 0%;">
+        <div class="mr-lg-32" *ngIf="cars.length == 1">
+            <div class="fuse-card auto-width">
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="h2 pr-16">
+                        {{'NAV.TemperatureChart' | translate}} 
+                    </div>
+                    <div>
+                      
+                    </div>
+                </div>
+                <div id="chart"  #chart class="position-relative h-480 pb-16">
+                    <ngx-charts-line-chart 
+                        [view]="[chart.offsetWidth, chart.offsetHeight - 55]"
+                        [scheme]="colorScheme" 
+                        [results]="single" 
+                        [gradient]="gradient"
+                        [xAxis]="showXAxis" 
+                        [yAxis]="showYAxis" 
+                        [legend]="showLegend" 
+                        [legendPosition]="legendPosition"
+                        [showXAxisLabel]="showXAxisLabel" 
+                        [showYAxisLabel]="showYAxisLabel" 
+                        [xAxisLabel]="xAxisLabel"
+                        [yAxisLabel]="yAxisLabel"
+                        [xAxisTickFormatting]="xAxisTickFormatting">
+                    </ngx-charts-line-chart>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+        <div id="ExampleTable" #ExampleTable class="content-card">
+            <div fxLayout="row wrap" fxLayoutAlign="start start">
+                <mat-progress-bar mode="determinate" [value]="progressbarValue" ></mat-progress-bar>
+            </div>
+            <mat-table [dataSource]="datasource" matSort class="products-table" fusePerfectScrollbar>
+                
+                <ng-container matColumnDef="CarMatricule">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sor t-header fxShow.gt-md>
+                        {{'NAV.TrackingObject' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
+
+                        <p class="price text-truncate">
+                            {{element.Matricule}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="BeginDateLocalString">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sor t-header fxShow.gt-md>
+                        {{'NAV.AcquisitionTime' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
+                        <p class="price text-truncate">
+                            {{convertDate(element.Date)}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="MaxTemp">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                        Température maximale
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-xs style="flex-grow: 1;">
+                        <p class="price text-truncate" style="white-space: normal;">
+                            {{element.MaxTemperature}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="MinTemp">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        Température minimale</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.MinTemperature}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="MaxHum">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        Humidité maximale</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span >
+                            {{element.MaxHumidity}} %
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="MinHum">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                        Humidité minimale</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.MinHumidity}} %
+                        </span>
+                    </mat-cell>
+                </ng-container>
+
+
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="Scolling_wigh">
+                </mat-header-row>
+                <mat-row [ngClass]="{'make-gold': element.isOverSpeed == true}"
+                    *matRowDef="let element; columns: displayedColumns;" class="element" matRipple
+                    class="Scolling_wigh"></mat-row>
+
+
+            </mat-table>
+            <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+
+                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
+                </mat-paginator>
+
+            </mat-toolbar>
+        </div>
+    
+    </div> 
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+    fullScreenBackdrop: 'true',
+   
+    primaryColour: '#e2f000', 
+    secondaryColour: '#e2f000', 
+    tertiaryColour: '#e2f000' }" ></ngx-loading>
+</div>

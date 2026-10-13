@@ -1,0 +1,50 @@
+<div *ngIf="Type==1">
+    <mat-list>
+
+        <mat-list-item *ngFor="let doc of listReminder">
+
+            <mat-icon mat-list-icon>note</mat-icon>
+            <div mat-line>{{doc.CarName}}</div>
+            <div mat-line> {{doc.DocumentTypeString}} </div>
+        </mat-list-item>
+    </mat-list>
+</div>
+
+<div *ngIf="Type==2">
+    <mat-list>
+
+        <mat-list-item *ngFor="let acc of listReminder">
+
+            <mat-icon mat-list-icon>note</mat-icon>
+            <div mat-line>{{acc.CarName}}</div>
+            <div mat-line> {{acc.MaintenanceTypeString}} </div>
+
+        </mat-list-item>
+    </mat-list>
+</div>
+<div *ngIf="Type==3">
+    <mat-list>
+
+        <mat-list-item *ngFor="let car of listReminder">
+
+            <mat-icon mat-list-icon>commute</mat-icon>
+            <div mat-line>{{car.FullName}}</div>
+            <div mat-line> {{car.AcquisitionTimeString}} </div>
+            <div mat-line> {{'NAV.InCirculation' | translate}} </div>
+
+        </mat-list-item>
+    </mat-list>
+</div>
+<div *ngIf="Type==4">
+    <mat-list>
+
+        <mat-list-item *ngFor="let car of listReminder">
+
+            <mat-icon mat-list-icon>commute</mat-icon>
+            <div mat-line>{{car.FullName}}</div>
+            <div mat-line> {{car.AcquisitionTimeString}} </div>
+            <div mat-line> {{'NAV.InStop' | translate}}  </div>
+
+        </mat-list-item>
+    </mat-list>
+</div>

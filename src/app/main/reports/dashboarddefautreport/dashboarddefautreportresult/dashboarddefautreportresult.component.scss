@@ -1,0 +1,254 @@
+
+
+@import "src/@fuse/scss/fuse";
+
+#report {
+
+    .main-widget {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content {
+        display: flex;
+        flex: 1 1 auto;
+        padding: 32px;
+        min-width: 0;
+
+        @include media-breakpoint('lt-lg') {
+            flex-direction: column;
+        }
+
+        .left {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            min-width: 0;
+
+            .widget {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+        }
+
+        .right {
+            display: flex;
+            flex: 0 0 auto;
+            width: 320px;
+            min-width: 320px;
+            max-width: 320px;
+
+            @include media-breakpoint('lt-lg') {
+                flex: 1 0 100%;
+                margin-top: 32px;
+                width: 100%;
+                min-width: 0;
+                max-width: none;
+            }
+
+            .fuse-card  {
+
+                @include media-breakpoint('lt-lg') {
+                    width: 100%;
+                    min-width: 0;
+                    max-width: none;
+                   
+                }
+            }
+           
+        }
+    }
+
+    .center {
+        overflow: hidden;
+
+        .header {
+            position: relative;
+            height: 120px;
+            min-height: 120px;
+            max-height: 120px;
+
+           
+
+          
+        }
+
+        .container {
+            flex: 1 1 auto;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+  /*  .alert-card {
+        width: 330px;
+        height: 150px;
+        margin: 17px;
+        display: inline-block;
+        
+        .mat-card-title-group{
+            width: 80%;
+
+            img{
+                position: absolute;
+                right: 16px;
+                top: 8px;
+                width: 50px !important;
+                height: 50px !important;
+            }
+        }
+
+        .mat-card-title {
+            height: auto !important;
+        }
+
+        .chips {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            overflow: hidden;
+            max-height: 75px;
+            position: absolute;
+            bottom: 13px;
+            width: 295px;
+            font-weight: bolder;        
+            
+            .chip {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                .count{
+                    background-color: red;
+                    background-color: red;
+                    border-radius: 10px;
+                    margin: 3px;
+                    padding: 3px;
+                    font-size: 9px;
+                    color: white;
+                }
+            }
+        }
+
+
+    }
+}
+mat-chip {
+    max-width: 250px;
+  }
+  .hidden {
+    display: none !important;
+  }
+ 
+  .make-gold {
+    background-color: #ffe5e5
+    //#AFff5f49
+}
+.mat-header-cell {
+    padding: 8px 8px 8px 0;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+  }
+  
+  .mat-cell {
+    padding: 8px 8px 8px 0;
+    text-align: center;
+    justify-content:center;
+  }
+#chart { 
+    background: white;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+
+    ngx-charts-number-card{
+        border: solid 2px lightgray;
+        border-radius: 10px;
+        margin: 10px;
+    }
+}
+
+.mat-row .mat-column-Speed .ColorOverSpeed   
+{
+  color:red !important;
+}*/
+
+
+
+/*::ng-deep {
+    .alert-card{
+        .mat-card-header-text{
+            margin: 0 !important;
+        }
+    }
+}*/
+
+.alerts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+  padding: 1rem;
+}
+
+.alert-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: auto; /* Allow shrinking */
+  min-height: 120px; /* Optional minimum */
+  max-height: 400px; /* Optional max for very long cards */
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.mat-card-header {
+  align-items: center;
+}
+
+.alert-content {
+  width: 100%;               
+  font-size: 16px;
+  padding: 16px;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 250px; 
+}
+
+.chip {
+  background-color: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: fit-content;
+  max-width: 100%;
+}
+
+.truncate {
+  /* Don't need any truncation now */
+  display: inline-block;
+}
+
+
+
+
+
+}
+   

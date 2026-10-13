@@ -1,0 +1,175 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitleTire | translate}}</span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" fusePerfectScrollbar>
+        <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                    <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <!-- -->
+                        <mat-label>{{'PARC.TireId' | translate}}</mat-label>
+                        <input matInput
+                               type="number"
+                               formControlName="TireId" [ngModel]="data.TireId" />
+
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.Brand' | translate}}</mat-label>
+
+                        <input matInput
+                               type="text"
+                               formControlName="Brand" [ngModel]="data.Brand" />
+
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                    <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <!-- -->
+                        <mat-label>{{'PARC.Size' | translate}}</mat-label>
+                        <input matInput
+                               type="number" formControlName="Size" [ngModel]="data.Size" />
+
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.Type' | translate}}</mat-label>
+
+                        <input matInput type="text" [ngModel]="data.Type"
+                               formControlName="Type" />
+
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <mat-form-field appearance="outline" class="w-100-p" >
+
+                <mat-label>{{'PARC.Cost' | translate}}</mat-label>
+
+                <input matInput type="number" formControlName="Cost" [ngModel]="data.Cost" />
+
+            </mat-form-field>
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <!-- -->
+                        <mat-label>{{'PARC.PurchasedDateLocal' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker1" formControlName="PurchasedDateLocal" required [ngModel]="data.PurchasedDateLocal">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.MileageWhenPurchased' | translate}}</mat-label>
+
+                        <input matInput type="number" formControlName="MileageWhenPurchased" [ngModel]="data.MileageWhenPurchased" />
+
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                    <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <!-- -->
+                        <mat-label>{{'PARC.DateExpiredWarrantyLocal' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="DateExpiredWarrantyLocal" required [ngModel]="data.DateExpiredWarrantyLocal">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.MileageExpiredWarranty' | translate}}</mat-label>
+
+                        <input matInput
+                               type="number" formControlName="MileageExpiredWarranty" [ngModel]="data.MileageExpiredWarranty" />
+
+                    </mat-form-field>
+
+                </div>
+            </div>
+
+            <mat-form-field appearance="outline" class="w-100-p">
+
+                <mat-label>{{'PARC.HowIsObtainedStr' | translate}}</mat-label>
+
+                <mat-select formControlName="HowIsObtained"  >
+                    <mat-option value="0">{{'PARC.ComeWithNewCar' | translate}}</mat-option>
+                    <mat-option value="1">{{'PARC.ComeWithUsedCar' | translate}}</mat-option>
+                    <mat-option value="2">{{'PARC.PurchasedAsUsed' | translate}}</mat-option>
+                    <mat-option value="3">{{'PARC.PurchasedAsNew' | translate}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.CurrentHeightOfTreadWearInMm' | translate}}</mat-label>
+                        <input matInput type="number" [ngModel]="data.CurrentHeightOfTreadWearInMm"
+                               formControlName="CurrentHeightOfTreadWearInMm" />
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.Dealer' | translate}}</mat-label>
+
+                        <input matInput type="text" formControlName="Dealer" [ngModel]="data.Dealer" />
+
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.ContactNameDealer' | translate}}</mat-label>
+                        <input matInput type="text" [ngModel]="data.ContactNameDealer"
+                               formControlName="ContactNameDealer" />
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+
+                        <mat-label>{{'PARC.TelDealer' | translate}}</mat-label>
+
+                        <input matInput type="tel" formControlName="TelDealer" [ngModel]="data.TelDealer" />
+
+                    </mat-form-field>
+                </div>
+            </div>
+            
+        </form>
+
+    </div>
+    <div mat-dialog-actions class="m-0 p-16 mat-dialog-actions" fxLayout="row" fxLayoutAlign="end center">
+
+        <button mat-raised-button color="accent" (click)="onSubmit()" type="submit" class="button" [disabled]="!dataForm.valid">{{ActionType | translate}}</button>
+
+
+    </div>
+</div>
+
+

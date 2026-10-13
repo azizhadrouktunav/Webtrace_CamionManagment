@@ -1,0 +1,272 @@
+<div id="product" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/parc/tire-management'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <mat-icon>build</mat-icon>
+                <span class="h1">
+                   {{'PARC.UpdateDiagramAxleWheelOfThisCar' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+          
+            <!-- / SEARCH -->
+
+
+           
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+
+            <div class="content-card" style="height: 100%;" fxLayout="row" cdkDropListGroup>
+                <div class="TireList" cdkDropList (cdkDropListDropped)="dropPrin($event)" [cdkDropListData]="ListTires">
+                    <div class="Tire" cdkDrag *ngFor="let tire of ListTires" id="{{ tire.TireId }}">
+                        <img src="assets/icons/flags/tire2.png" width="50" height="30">N°{{ tire.TireId }}
+                    </div>
+                </div>
+                <div class="AxleDiagram">
+                    
+                    <div class="MainAxle" fxLayout="row" fxLayoutAlign="space-around center">
+                        <img class="ArrowHead" src="assets/images/arrow.png">
+                        <div *ngIf="axle1" class="Axle" fxLayout="column" fxLayoutAlign="space-between stretch">
+                            <div class="right TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle1LOut" class="TirePlace" id="axle1LOut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle1LOut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                                <div *ngIf="axle1IN" cdkDropList [cdkDropListData]="ListTiresAxle1LIn" class="TirePlace"  id="axle1LIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle1LIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="left TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle1ROut" class="TirePlace"  id="axle1ROut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle1ROut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                <div  *ngIf="axle1IN" cdkDropList [cdkDropListData]="ListTiresAxle1RIn" class="TirePlace"  id="axle1RIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle1RIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!--Axle 2-->
+                        <div *ngIf="axle2" class="Axle" fxLayout="column" fxLayoutAlign="space-between stretch">
+                            <div class="right TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle2LOut" class="TirePlace" id="axle2LOut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle2LOut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                                <div *ngIf="axle2IN" cdkDropList [cdkDropListData]="ListTiresAxle2LIn" class="TirePlace"  id="axle2LIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle2LIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="left TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle2ROut" class="TirePlace"  id="axle2ROut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle2ROut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                <div  *ngIf="axle2IN" cdkDropList [cdkDropListData]="ListTiresAxle2RIn" class="TirePlace"  id="axle2RIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle2RIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                        <!--Axle 3-->
+                        <div *ngIf="axle3" class="Axle" fxLayout="column" fxLayoutAlign="space-between stretch">
+                            <div class="right TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle3LOut" class="TirePlace" id="axle3LOut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle3LOut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                                <div *ngIf="axle3IN" cdkDropList [cdkDropListData]="ListTiresAxle3LIn" class="TirePlace"  id="axle3LIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle3LIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="left TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle3ROut" class="TirePlace"  id="axle3ROut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle3ROut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                <div  *ngIf="axle3IN" cdkDropList [cdkDropListData]="ListTiresAxle3RIn" class="TirePlace"  id="axle3RIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle3RIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!--Axle 4-->
+                        <div *ngIf="axle4" class="Axle" fxLayout="column" fxLayoutAlign="space-between stretch">
+                            <div class="right TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle4LOut" class="TirePlace" id="axle4LOut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle4LOut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                                <div *ngIf="axle4IN" cdkDropList [cdkDropListData]="ListTiresAxle4LIn" class="TirePlace"  id="axle4LIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle4LIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="left TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle4ROut" class="TirePlace"  id="axle4ROut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle4ROut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                <div  *ngIf="axle4IN" cdkDropList [cdkDropListData]="ListTiresAxle4RIn" class="TirePlace"  id="axle4RIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle4RIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                          <!--Axle 5-->
+                          <div *ngIf="axle5" class="Axle" fxLayout="column" fxLayoutAlign="space-between stretch">
+                            <div class="right TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle5LOut" class="TirePlace" id="axle5LOut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle5LOut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                                <div *ngIf="axle5IN" cdkDropList [cdkDropListData]="ListTiresAxle5LIn" class="TirePlace"  id="axle5LIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle5LIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="left TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle5ROut" class="TirePlace"  id="axle5ROut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle5ROut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                <div  *ngIf="axle5IN" cdkDropList [cdkDropListData]="ListTiresAxle5RIn" class="TirePlace"  id="axle5RIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle5RIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                          <!--Axle 6-->
+                          <div *ngIf="axle6" class="Axle" fxLayout="column" fxLayoutAlign="space-between stretch">
+                            <div class="right TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle6LOut" class="TirePlace" id="axle6LOut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle6LOut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                                <div *ngIf="axle5IN" cdkDropList [cdkDropListData]="ListTiresAxle6LIn" class="TirePlace"  id="axle6LIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle6LIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="left TirePlaceContainer" fxLayout="column" fxLayoutAlign="space-evenly none">
+
+                                <div cdkDropList [cdkDropListData]="ListTiresAxle6ROut" class="TirePlace"  id="axle6ROut"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle6ROut" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                <div  *ngIf="axle6IN" cdkDropList [cdkDropListData]="ListTiresAxle6RIn" class="TirePlace"  id="axle6RIn"
+                                    (cdkDropListDropped)="drop($event)">
+                                    <div class="PlacedTire" *ngFor="let tire of ListTiresAxle6RIn" cdkDrag>
+                                        N°{{ tire.TireId }}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                       
+                       
+                    </div>
+                </div>
+            </div>
+            <!-- / CONTENT -->
+
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

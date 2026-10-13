@@ -1,0 +1,221 @@
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>departure_board</mat-icon>
+                <span class="h1">
+                    {{'NAV.BorrowedRentalCarContractManagement' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+            <!-- <div id="selectCar" class="select">
+                <mat-form-field>
+                    <mat-select [(ngModel)]="selectedOption" (ngModelChange)="updatetable()">
+                        <mat-option *ngFor="let trackingObject of trackingObjects" :key="trackingObject.Key"
+                            value={{trackingObject.Key}}>{{trackingObject.FullName}}</mat-option>
+                    </mat-select>
+                    <mat-icon style="font-size: xx-large;" color="white">commute</mat-icon>
+                </mat-form-field>
+            </div> -->
+            <form [formGroup]="vehicules" id="selectCar" class="select"  fxLayout="row" style="margin-top: 85px; margin-right: 10px;"> 
+                <input
+                            matInput
+                            #typeInput
+                            type="text"
+                            formControlName="cars"
+                            class="autoCompleteInput"
+                            [matAutocomplete]="auto"/>
+                            <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" (optionSelected)="selected($event.option)"  [displayWith]="displayFn">
+                                <mat-option *ngFor="let trackingObject of filteredOptions | async" [value]="trackingObject.Key" >
+                                    {{trackingObject.FullName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-icon style="font-size: xx-large;" color="white">commute</mat-icon>
+            </form>
+            <!-- / ADD BUTTON -->
+            <button mat-fab color="warn" class="add-button" (click)="addBorrowedRentalCarContract()"
+                aria-label="Add contract" [hidden]="disabled">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div id="ExampleTable" class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+
+                    <table class="products-table" matTableExporter [dataSource]="dataSource" matSort multiTemplateDataRows
+                        #exporter="matTableExporter" mat-table>
+
+
+                        <ng-container matColumnDef="ContractType">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.ContractType' | translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <button mat-icon-button  [ngClass]="{'hidden':  element.ShowReminder == false}"
+                                    color="warn" (click)="adjustContract(element)">
+
+                                    <mat-icon>
+                                        snooze
+                                    </mat-icon>
+                                </button>
+
+                                {{element.ContractTypeString}} </mat-cell>
+
+                        </ng-container>
+                        <ng-container matColumnDef="ContractStartDate" class="make-gold">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                {{'NAV.ContractStartDateGMT' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.ContractStartDate| localizedDate}} </mat-cell>
+
+                        </ng-container>
+
+                        <ng-container matColumnDef="ContractEndDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.ContractEndDateGMT' | translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.ContractEndDate| localizedDate}} </mat-cell>
+
+                        </ng-container>
+                        <ng-container matColumnDef="ActivationCost">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.ActivationCost' | translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.ActivationCost}} </mat-cell>
+
+                        </ng-container>
+                        <ng-container matColumnDef="RecurringCost">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.RecurringCost' | translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.PaidCostFrequenceString}} </mat-cell>
+
+                        </ng-container>
+                        <ng-container matColumnDef="FirstDriver">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.FirstDriver' | translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.FirstDriverString}} </mat-cell>
+
+                        </ng-container>
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef>
+                                <a><button color="accent" mat-raised-button [hidden]="disabled"
+                                        (click)="navigatetoplanning()">
+                                        <mat-icon>date_range
+                                        </mat-icon>Planning
+                                    </button></a>
+
+                            </mat-header-cell>
+
+                            <mat-cell *matCellDef="let element; let i=index;" class="CRUDIcons">
+                                <button mat-icon-button matTooltip="Éditer" color="Green" (click)="editBorrowedRentalCarContract(element)">
+                                  <mat-icon aria-label="create">create</mat-icon>
+                                </button>
+
+                                <button mat-icon-button matTooltip="Payments" color="accent" (click)="navigate(element)">
+                                  <mat-icon aria-label="Delete">payment</mat-icon>
+                                </button>
+
+                                <button mat-icon-button matTooltip="Supprimer" color="warn" (click)="deleteBorrowedRentalCarContract(element)" [disabled]="isDisabledDelete">
+                                  <mat-icon aria-label="Delete">delete</mat-icon>
+                                </button>
+
+                                <button class="boutonarticle" mat-icon-button mat-icon-button
+                                    [ngClass]="{'hidden':  element.ShowExpiredContract == false || element.ContractType == 2}"
+                                    color="accent" (click)="renouveler(element)">
+
+                                    <mat-icon>autorenew</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                        <ng-container matColumnDef="expandedDetail">
+                            <td mat-cell *matCellDef="let element" [attr.colspan]="tableColumns.length">
+                                <div class="example-element-detail"
+                                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                    <!-- <div class="example-element-diagram">
+             <img src="assets/images/document/rental.png" width="70" height="30" >
+  
+              div  class="example-element-position"> {{element.FirstDriver}} </div>
+              <div class="example-element-symbol"> {{element.SecondDriver}} </div>
+              <div class="example-element-name"> {{element.GazFuelLevelPercent}} </div>
+              <div class="example-element-weight"> {{element.WarnMeBeforeNDay}} </div> 
+            </div> -->
+                                    <div class="example-element-description">
+                                        <mat-chip-list aria-label="Fish selection">
+                                            <mat-chip>{{'NAV.ContractRef' | translate}} :{{element.ContractRef}}
+                                            </mat-chip>
+                                            <mat-chip>{{'NAV.WarnMeBeforeNDay' | translate}} :
+                                                {{element.WarnMeBeforeNDay}} day(s)</mat-chip>
+                                            <mat-chip> {{'NAV.SecondDriver' | translate}} :
+                                                {{element.SecondDriverString}} </mat-chip>
+                                            <mat-chip>{{'NAV.GazFuelLevelPercent' | translate}}
+                                                :{{element.GazFuelLevelPercent}} %</mat-chip>
+                                            <mat-chip color="warn" selected>Cost : {{element.Cost}} </mat-chip>
+
+                                        </mat-chip-list>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="tableColumns" class="example-element-row"></mat-header-row>
+                        <mat-row [ngClass]="{'make-gold': element.ShowReminder == true}"
+                            *matRowDef="let element; columns: tableColumns;" class="example-element-row"
+                            [class.example-expanded-row]="expandedElement === element"
+                            (click)="expandedElement = expandedElement === element ? null : element">
+                            
+                        </mat-row>
+                        
+                        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+                    </table>
+                    <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+                        <h4>{{'NAV.NoResult' | translate}}</h4>
+                    </div>
+
+
+                    <mat-toolbar style="background-color: white;width:calc(100% - 65px);" [hidden]="disabled">
+                        <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                            <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                            </mat-icon>
+                            <img (click)="exportExcel()" src="assets/icons/excel.png" class="excel"
+                                title="Export as excel file">
+                        </div>
+                        <span class="example-spacer"></span>
+                        <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="5"
+                            [pageSizeOptions]="[1, 5, 10]">
+                        </mat-paginator>
+
+                    </mat-toolbar>
+
+
+            </div>
+        </div>
+    </div>

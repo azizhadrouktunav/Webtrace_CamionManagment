@@ -1,0 +1,181 @@
+<div id="maintenances" class="MainContainer page-layout carded fullwidth tabbed inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>build</mat-icon>
+                <span class="h1">
+                    {{ 'Maintenance.pageTitle' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+                <form [formGroup]="vehicules" id="selectCar" class="select"  fxLayout="row" style="margin-top: 85px; margin-right: 10px;"> 
+                    <input
+                                matInput
+                                #typeInput
+                                class="autoCompleteInput"
+                                type="text"
+                                formControlName="cars"
+                                [matAutocomplete]="auto"/>
+                                <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" (optionSelected)="onSelectedCar($event.option)"  [displayWith]="displayFn">
+                                    <mat-option *ngFor="let trackingObject of filteredOptions | async" [value]="trackingObject.id">
+                                        {{trackingObject.name}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-icon style="font-size: xx-large;" color="white">commute</mat-icon>
+                </form>
+            
+                    
+                <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" placeholder="Filtrer les données" (keyup)="filter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn"><mat-icon class="grey-700-fg">search</mat-icon></label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+            <button mat-fab color="warn" class="add-button" aria-label="Add entretien"
+                (click)="add()" *ngIf="selectedValue">
+                <mat-icon>add</mat-icon>
+            </button>
+            <!-- / ADD EVENT BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <div class="content">
+
+                <mat-tab-group fxLayout="column" fxFlex #tabGroup (selectedTabChange)="tabChanged($event)">
+                    <mat-tab label="{{'Maintenance.MaintenanceMngmnt' | translate}}">
+                        <div class="tab-content">
+                            <!-- PUT YOUR TAB CONTENT HERE -->
+                            <table mat-table  #table [dataSource]="dataSource" matSort
+                            [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+                            <!-- IsReminderByEnum Column -->
+                            <ng-container matColumnDef="IsReminderByEnum">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Maintenance.DateKmEngineHours' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let maintenance">
+                                    <mat-icon *ngIf="maintenance.IsReminderByEnum === 0">event</mat-icon>
+                                    <mat-icon *ngIf="maintenance.IsReminderByEnum === 1">shutter_speed</mat-icon>
+                                    <mat-icon *ngIf="maintenance.IsReminderByEnum === 2"> local_gas_station</mat-icon>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- MaintenanceTypeString -->
+                            <ng-container matColumnDef="MaintenanceTypeString">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'Maintenance.MaintenanceType' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let maintenance" fxHide fxShow.gt-sm>
+                                    <button mat-icon-button *ngIf="maintenance.ShowReminder" color="warn"
+                                        (click)="adjustMaintenance(maintenance)">
+                                        <mat-icon>
+                                            snooze
+                                        </mat-icon>
+                                    </button>
+                                    <p class="text-truncate">
+                                        {{maintenance.MaintenanceTypeString }}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Frequency Column -->
+                            <ng-container matColumnDef="MaintenanceFrequenceString">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>{{'Maintenance.FrequencyEach' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let maintenance" fxHide fxShow.gt-md>
+                                    <p class="text-truncate">
+                                        {{maintenance.MaintenanceFrequenceString}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- WarnMeBefore Column -->
+                            <ng-container matColumnDef="WarnMeBeforeNDayKmString">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Maintenance.WarnMeBefore' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let maintenance">
+                                    <p class="text-truncate">
+                                        {{maintenance.WarnMeBeforeNDayKmString}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="CurrentMileage">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PARC.CurrentMileage' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let maintenance">
+                                    <p class="text-truncate">
+                                        {{maintenance.CurrentMileage}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- Reference Column -->
+                            <ng-container matColumnDef="NextMaintenance">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'Maintenance.NextMaintenance' | translate}} 
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let maintenance" fxHide fxShow.gt-sm>
+                                    <p class="text-truncate">{{maintenance.NextMaintenance}}</p>
+                                </mat-cell>
+                            </ng-container>
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'actions' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let maintenance" fxHide fxShow.gt-sm>
+            <div fxLayout="row" fxLayoutAlign="space-around">
+              <button mat-icon-button color="primary" (click)="editMaintenance('edit', maintenance)"><mat-icon>edit</mat-icon></button>
+              <a mat-icon-button color="accent"  [routerLink] = "['/parc/app-maintenance/repairs-log' , maintenance.Car , maintenance.Id  , maintenance.MaintenanceType]"><mat-icon>launch</mat-icon></a>
+              <button mat-icon-button color="warn" (click)="deleteMaintenance(maintenance)" [disabled]="isDisabledDelete"><mat-icon>delete_outline</mat-icon></button>
+            </div>
+          </mat-cell>
+      </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+        <mat-row *matRowDef="let maintenance; columns: displayedColumns;"
+                [ngStyle]="{'background-color':maintenance.ShowReminder == true ? '#ffe5e5' : 'transparent' }">
+        </mat-row>
+                            </table>
+        
+                       <mat-toolbar class="fuse-white-bg" fxLayout="row" fxLayoutAlign="space-between none">
+                        <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                            <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                            </mat-icon>
+                            <img (click)="exportExcel()" src="assets/icons/excel.png" class="excel"
+                                title="Export as excel file">
+                        </div>
+                        <span class="spacer"></span>
+                           <mat-paginator class="last-item" #paginator
+                           [length]="dataSource.filteredData.length"
+                           [pageIndex]="0"
+                           [pageSize]="5"
+                           [pageSizeOptions]="[5, 10, 25, 100]">
+                   </mat-paginator>
+                <!-- <span class="example-spacer"></span> -->
+                      </mat-toolbar> 
+           <div class="no-results" [style.display]="dataSource.filteredData.length == 0 ? '' : 'none'">
+               <h4>P{{'NAV.NoResult' | translate}}</h4>
+           </div>
+                            <!-- / PUT YOUR TAB CONTENT HERE -->
+                        </div>
+                    </mat-tab>
+                   
+                    <mat-tab label="{{'Maintenance.RepairsMngmnt' | translate}}">
+                        <div class="tab-content">
+                            <!-- PUT YOUR TAB CONTENT HERE -->
+                            <app-repairs [id]="selectedValue" [searchkey] ="searchkey" [newRepair]="newRepair"></app-repairs>
+                            <!-- / PUT YOUR TAB CONTENT HERE -->
+                        </div>
+                    </mat-tab>
+
+        </mat-tab-group>
+        </div>
+    <!-- / CONTENT CARD -->
+
+</div>
+<!--/ CENTER-->
+    </div>
+
+</div>

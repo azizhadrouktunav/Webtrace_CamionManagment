@@ -1,0 +1,16 @@
+@import "src/@fuse/scss/fuse";
+.space-between{
+    display: flex;
+    justify-content: space-between;
+  }
+.space-around{
+    display: flex;
+    justify-content: space-around;
+}
+.centring{
+    display: flex;
+    justify-content: center;
+}
+.margin-top{
+    margin-top: 2%;
+}

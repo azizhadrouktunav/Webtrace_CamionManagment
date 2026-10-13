@@ -1,0 +1,257 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" style="background: #e4e4e4;" fusePerfectScrollbar>
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'NAV.UserName' | translate}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span class="example-spacer"></span>
+                            <mat-icon>account_box</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div formGroupName="User">
+                        <div fxLayout="row">
+
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="30">
+                                    <mat-label> {{'NAV.colLogin' | translate}}
+                                    </mat-label>
+                                    
+                                    <input matInput placeholder="Login" formControlName="Login">
+                                    <mat-error>Login Required!</mat-error>
+
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="30">
+                                    <mat-label>{{'NAV.lbUserFirstName' | translate}} </mat-label>
+                                    <input matInput placeholder="FirstName" formControlName="FirstName">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="30">
+                                    <mat-label>{{'NAV.lbUserLastName' | translate}} </mat-label>
+                                    <input matInput placeholder="LastName" formControlName="LastName">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                    <mat-action-row>
+                        <button type="button" mat-button color="primary" (click)="nextStep()">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [disabled]="isDisabled"  [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'NAV.Password' | translate}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span class="example-spacer"></span>
+                            <mat-icon>phonelink_lock</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div formGroupName="Password">
+
+                        <div fxLayout="row">
+
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="30">
+                                    <mat-label>{{'NAV.Password' | translate}} </mat-label>
+                                    <input [readonly]="disabled" [type]="hide ? 'password' : 'text'" matInput
+                                        formControlName='password'>                                        
+                                       
+                                        <mat-error >
+                                            Mot de passe obligatoire et contient au moins 6 caractères!
+                                        </mat-error>
+                                    <mat-icon matSuffix (click)="hide = !hide">
+                                        {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+<!--                                     <mat-hint> {{'NAV.lbInsertPassword' | translate}} </mat-hint>
+ -->                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="30">
+                                    <mat-label>{{'NAV.lbRepetedPassword' | translate}} </mat-label>
+
+                                    <input [readonly]="disabled" [type]="hide ? 'password' : 'text'" matInput
+                                        formControlName='verifyPassword' [errorStateMatcher]="errorMatcher">
+                                       
+                                        <mat-error >
+                                            Passwords do not match
+                                        </mat-error>
+                                    <mat-icon matSuffix (click)="hide = !hide">
+                                        {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                   
+                                </mat-form-field>
+
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <mat-action-row>
+                        <button type="button" mat-button color="warn" (click)="prevStep()">Previous</button>
+                        <button type="button" mat-button color="primary" (click)="nextStep()">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                             {{'NAV.Departemant' | translate}}/{{'NAV.Speciality' | translate}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span class="example-spacer"></span>
+                            <mat-icon>location_city</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div formGroupName="Department">
+
+                        <div fxLayout="row">
+                            <mat-radio-group formControlName="ViewAllTrackingObkjects" aria-label="Select an option"
+                                (change)="radioChange($event)">
+                                <mat-radio-button value="1">{{'NAV.rbAllDepartment' | translate}} </mat-radio-button>
+                                <mat-radio-button value="2">{{'NAV.ThisDepartment' | translate}}  </mat-radio-button>
+                                <mat-radio-button value="3">{{'NAV.Speciality' | translate}}</mat-radio-button> 
+                              
+                            </mat-radio-group>
+
+                        </div>
+                       
+                        <div *ngIf="IdChoice==2">
+                            <mat-form-field appearance="outline" [fxFlex]="noshrink" class="mr-12" style="width: 100%;">
+                                <mat-label> {{nametype | translate}}</mat-label>
+
+                                <input type="text" matInput [matAutocomplete]="auto" formControlName="AccessDepartment" >
+                            </mat-form-field>
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDep">
+                                <!-- <app-select-check-all [model]="myForm.get('Department').get('AccessDepartment')" [values]="trackingObjects">
+                                </app-select-check-all> -->
+                                <mat-option *ngFor="let obj of filteredOptions | async" [value]="obj">
+                                    <div (click)="optionClicked($event, obj)">
+                                        <mat-checkbox [checked]="obj.selected" (change)="toggleSelection(obj)"
+                                            (click)="$event.stopPropagation()">
+                                            {{obj.value}}
+                                        </mat-checkbox>
+                                    </div>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>  
+                        <div *ngIf="IdChoice==3">
+                        
+                         <mat-form-field appearance="outline" [fxFlex]="noshrink" class="mr-12" style="width: 100%;">
+                                <mat-label> {{nametype | translate}}</mat-label>
+
+                                <input type="text" matInput [matAutocomplete]="autoSpec" formControlName="AccessSpeciality" >
+                            </mat-form-field>
+                            <mat-autocomplete #autoSpec="matAutocomplete" [displayWith]="displaySpec">
+                                <!-- <app-select-check-all [model]="myForm.get('Department').get('AccessDepartment')" [values]="trackingObjects">
+                                </app-select-check-all> -->
+                                <mat-option *ngFor="let obj of filteredSpeciality | async" [value]="obj">
+                                    <div (click)="optionClickedSpec($event, obj)">
+                                        <mat-checkbox [checked]="obj.selected" (change)="toggleSelectionSpec(obj)"
+                                            (click)="$event.stopPropagation()">
+                                            {{obj.value}}
+                                        </mat-checkbox>
+                                    </div>
+                                </mat-option>
+                            </mat-autocomplete>
+                       <!--      <div class="dx-fieldset">
+                        
+                                <div>
+                                    <div class="dx-field"></div>
+                                    <div>
+                                        <dx-drop-down-box [(value)]="treeBoxValueSep" [inputAttr]="{ 'aria-label': 'Owner' }" valueExpr="Id"
+                                            displayExpr="Name" placeholder="Select a value..." [showClearButton]="true"
+                                            [dataSource]="ListSpeciality" (onValueChanged)="onDropDownBoxValueChangedSep()">
+                                            <div *dxTemplate="let data of 'content'">
+                                                <dx-tree-view #treeViewComponent [dataSource]="ListSpeciality" dataStructure="plain"
+                                                    keyExpr="Id" selectionMode="multiple" showCheckBoxesMode="normal"
+                                                    [selectNodesRecursive]="false" displayExpr="Name" [selectByClick]="true"
+                                                    (onContentReady)="onTreeViewReadySep($event)"
+                                                    (onItemSelectionChanged)="onTreeViewSelectionChangedSep($event)" [searchEnabled]="true">
+                                                </dx-tree-view>
+                                            </div>
+                                        </dx-drop-down-box>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <mat-action-row>
+                        <button type="button" mat-button color="warn" (click)="prevStep()">Previous</button>
+                        <button type="button" mat-button color="primary" (click)="nextStep()">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+                <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{'NAV.lbChangeAccessRightsOfCurrentAccount' | translate}}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <span class="example-spacer"></span>
+                            <mat-icon>pan_tool</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div formGroupName="Access">
+
+                        <div fxLayout="row">
+                            <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                                <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+                                    <button mat-icon-button disabled></button>
+                                    <mat-checkbox class="checklist-leaf-node"
+                                        [checked]="checklistSelection.isSelected(node)"
+                                        (change)="checklistSelection.toggle(node);">{{node.name}}</mat-checkbox>
+
+                                </mat-tree-node>
+                                <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+                                    <button type="button" mat-icon-button matTreeNodeToggle
+                                        [attr.aria-label]="'toggle ' + node.filename">
+                                        <mat-icon class="mat-icon-rtl-mirror">
+                                            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                        </mat-icon>
+                                    </button>
+                                    <mat-checkbox [checked]="descendantsAllSelected(node)"
+                                        [indeterminate]="descendantsPartiallySelected(node)"
+                                        (change)="todoItemSelectionToggle(node)">{{node.name}}</mat-checkbox>
+                                </mat-tree-node>
+                            </mat-tree>
+                        </div>
+
+                    </div>
+                    <mat-action-row>
+                        <button type="button" mat-button color="warn" (click)="prevStep()">Previous</button>
+                        <button type="button" mat-button color="primary" (click)="nextStep()">End</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+        </form>
+        <!--[disabled]="!myForm.valid"  -->
+
+    </div>
+    <div mat-dialog-actions class="m-0 p-16 mat-dialog-actions" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()" [disabled]="!myForm.valid"
+            class="button">{{'NAV.Save' | translate}}</button>
+    </div>
+</div>

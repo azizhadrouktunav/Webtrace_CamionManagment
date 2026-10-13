@@ -1,0 +1,63 @@
+<div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" >
+
+  <form name="form" [formGroup]="form" >
+    <div fxLayout="row">
+                 <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+                  
+      <mat-form-field appearance="outline" class="pl-8" fxFlex="50">
+          <mat-label> {{'Common.Vehicle' | translate }}</mat-label>
+         <input matInput aria-label="Vehicle" [matAutocomplete]="auto" formControlName="trackingObject" required
+                matTooltip="Type to filter the vehicle list"
+                matTooltipPosition="before">
+         <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" [displayWith]="displayVehicle">
+           <mat-option  *ngFor="let obj of filteredVehicles | async" [value]="obj">
+                 {{obj.FullName}}
+           </mat-option>
+         </mat-autocomplete>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" class="pl-8" fxFlex="50">
+        <mat-label>{{'NAV.StartDate' | translate }}</mat-label>
+        <input matInput [ngxMatDatetimePicker]="start_picker" 
+                        placeholder="Choose a date" 
+                        formControlName="start">
+        <mat-error *ngIf="form.get('start').hasError('mustBeMoreThan') && (form.get('start').dirty || form.get('start').touched)
+                         && (form.get('end').dirty || form.get('end').touched)">
+                {{'Common.Month_max_between_start_end' | translate }}
+        </mat-error>
+        <mat-datepicker-toggle matSuffix [for]="start_picker">
+        </mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #start_picker
+                                 enableMeridian = "true"
+                                 showSeconds="true">
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
+  </div></div>
+  <div fxLayout="row">
+    <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+   
+     
+  
+        <mat-form-field appearance="outline" class="pl-8" fxFlex="100">
+          <mat-label>{{'NAV.EndDate' | translate }}</mat-label>
+          <input name="end" matInput [ngxMatDatetimePicker]="end_picker" 
+                          placeholder="Choose a date" 
+                          formControlName="end">
+          <mat-datepicker-toggle matSuffix [for]="end_picker">
+          </mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #end_picker
+                                   enableMeridian = "true"
+                                   showSeconds="true">
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+        </div></div>
+        <div class="px-24 pb-12" fxLayout="row" fxLayoutAlign="end center">
+          <button mat-raised-button
+                  class="mat-primary compose-dialog-button w-100-p"
+                  (click)="matDialogRef.close(form);"
+                  aria-label="Submit">
+               {{'appliquer' | translate}}
+          </button>
+        </div>
+  </form> 
+  </div>

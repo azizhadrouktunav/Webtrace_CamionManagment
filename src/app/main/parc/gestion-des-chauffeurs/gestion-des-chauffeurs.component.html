@@ -1,0 +1,230 @@
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="space-around center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center" *ngIf="!isCommandListVisible">
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>airline_seat_recline_normal</mat-icon>
+                <span class="h1">
+                    {{'NAV.List_drivers_title' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+             <!-- / ADD BUTTON -->
+             <button mat-fab color="warn" class="add-button" (click)='addDriver()'
+                aria-label="Add document" [hidden]="disabled">
+                <mat-icon>add</mat-icon>
+            </button>
+            
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="app-table-wrapper">
+            <mat-table [dataSource]="dataSource" matSort class="table-container">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="Nfamille">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.Family_name' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <p class="text-truncate">{{element.FirstName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Category Column -->
+                <ng-container matColumnDef="Prenom">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{'NAV.Prénom' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
+                        <p class="category text-truncate">
+                            {{element.LastName}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Price Column -->
+                <ng-container matColumnDef="Etat">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{'NAV.Etat' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-xs>
+                        <p class="price text-truncate">
+                            {{element.DriverStatus}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Quantity Column -->
+                <ng-container matColumnDef="Departemant">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Departemant' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.DepartmentString}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <!-- Quantity Column -->
+                <ng-container matColumnDef="Code_personnel">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.CPersonnel' | translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.DriverCode}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Quantity Column -->
+                <ng-container matColumnDef="Email">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm >{{'NAV.email' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.Email}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <!-- Quantity Column -->
+                <ng-container matColumnDef="ntel">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Nmobile' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.Tel}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="CIN">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.driverCIN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.CIN}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="N_permis">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.permis' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.DriverLicenseNumber}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Current_car">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Véhicule_util' | translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.CurrentTransportationName}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Seal">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Carte fermeture Smartlock
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.ElockSealCardId}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Unseal">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Carte ouverture Smartlock
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.ElockUnsealCardId}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <!-- Active Column -->
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs></mat-header-cell>
+                    <mat-cell *matCellDef="let row" fxHide fxShow.gt-xs>
+
+                       
+
+
+
+                        <button mat-icon-button [matMenuTriggerFor]="card20Menu" aria-label="more">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+        
+                        <mat-menu #card20Menu="matMenu">
+                            
+
+
+                            <button fxLayout="row" fxLayoutAlign="start center" mat-menu-item (click)="editDriver(row)">
+                                <div class="tooltip">
+                                    <mat-icon>create</mat-icon><span >{{'NAV.Update' | translate}}</span>
+                                </div>
+                            </button>
+                            <button fxLayout="row" fxLayoutAlign="start center" mat-menu-item (click)="delete(row)" [disabled]="isDisabledDelete">
+                                <div class="tot">
+                                    <mat-icon>delete_outline</mat-icon><span >{{'NAV.Remove' | translate}}</span>
+                                </div>
+                            </button>
+                           <button fxLayout="row" fxLayoutAlign="start center" mat-menu-item (click)="LstCar(row)">
+                                <div class="tot">
+                                    <mat-icon>create</mat-icon><span >{{'NAV.BtnCarDriver' | translate}}</span>
+                                </div>
+                            </button>
+                        </mat-menu>
+
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="Scolling_wigh"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" class="product" matRipple class="Scolling_wigh"></mat-row>
+
+
+            </mat-table>
+        </div>
+            <mat-toolbar style="background-color: white;width:calc(100% - 11px); height: 51px;" [hidden]="disabled">
+
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 160px;">
+                    <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                    </mat-icon>
+                    <img (click)="exportExcel()" src="assets/icons/excel.png" class="excel" title="Export as excel file">
+                    <mat-icon (click)="openCommandList()" class="pdf" title="ouvrir la liste des commandes">list
+                    </mat-icon>
+                </div>
+                <span class="spacer"></span>
+                <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+
+            </mat-toolbar>
+            <div *ngIf="isCommandListVisible === true" style="max-height: 400px;overflow: auto;margin-top: -20px;">
+                <button mat-fab color="warn" style="margin-bottom: -20px;" class="add-button hide-button" (click)="hideCommdListTable()"
+                    aria-label="Add document" >
+                    <mat-icon>visibility_off</mat-icon>
+                </button>
+                <app-commands-driver-component></app-commands-driver-component>    
+            </div>
+        
+        <!-- / CONTENT CARD -->
+
+
+     
+    </div>
+    <!-- / CENTER -->
+</div>

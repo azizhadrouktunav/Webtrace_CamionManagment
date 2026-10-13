@@ -1,0 +1,18 @@
+.orient-toolbar .orient-filter {
+  width: 150px;
+  font-size: 13px;
+}
+
+.orient-toolbar ::ng-deep .orient-filter .mat-form-field-wrapper {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.orient-toolbar ::ng-deep .orient-filter .mat-form-field-subscript-wrapper {
+  display: none;
+}
+
+.orient-toolbar ::ng-deep .orient-filter .mat-form-field-infix {
+  padding: 0.6em 0;
+  border-top: 0.6em solid transparent;
+}

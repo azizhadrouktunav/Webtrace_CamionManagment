@@ -1,0 +1,151 @@
+<div class="p-24 mb-8 border-bottom">
+    <!-- <div class="h2">{{'CardCoupon.Details' | translate}}</div> -->
+    <!-- <button mat-flat-button (click)="addTank()"><mat-icon>add_circle</mat-icon></button> -->
+    <button mat-fab color="warn" class="add-button" (click)="addTank()" style="position: fixed;top: 100px;">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
+
+<!-- WIDGET GROUP -->
+
+
+ <div class="widget-group" *fuseIfOnDom [@animateStagger]="{value:'50'}" style="height: calc(100% - 100px);">
+
+     <!-- WIDGET 11 -->
+     <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" style="height: 100%;margin:0 0 50px 0;">
+            <!-- <div fxFlex class="py-16 h3">Tanks</div> -->
+            <ngx-charts-bar-vertical-stacked 
+                *fuseIfOnDom 
+                [scheme]="colorScheme" 
+                [results]="ngxData.data"
+                [gradient]="gradient" 
+                [xAxis]="xAxis"
+                [yAxis]="yAxis" 
+                [legend]="legend"
+                [legendPosition]="legendPosition"
+                [showXAxisLabel]="showXAxisLabel" 
+                [showYAxisLabel]="showYAxisLabel" 
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" 
+                [legendTitle]="Legend" 
+                (select)="onSelect($event)" >
+            </ngx-charts-bar-vertical-stacked>
+     </fuse-widget>
+     <!-- WIDGET 11 -->
+     <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget">
+
+         <!-- Front -->
+         <div class="fuse-widget-front">
+
+             
+             <!-- ADD BUTTON -->
+            <!-- <button mat-fab color="warn add-button"  (click)="addTank()" *ngIf="whichButton ==0">
+                <mat-icon>add</mat-icon>
+            </button> -->
+            <!-- / ADD BUTTON -->
+
+<mat-table #table [dataSource]="dataSource" matSort>
+
+<!-- Name Column -->
+<ng-container matColumnDef="Name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'TankName' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+        <p class="text-truncate">
+            {{element.Name}}
+        </p>
+    </mat-cell>
+ </ng-container>
+ <!-- Type Column -->
+<ng-container matColumnDef="FuelType">
+   <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FuelType' | translate}}</mat-header-cell>
+   <mat-cell *matCellDef="let element">
+       <p class="text-truncate font-weight-600" [ngClass]="{'orange-500': element.FuelType === 1, 
+                                                            'purple-500': element.FuelType === 2,
+                                                            'orange-200': element.FuelType === 3}">{{element.FuelTypeString | translate}}</p>
+   </mat-cell>
+</ng-container>
+
+ <!-- FuelLevelInPercent Column -->
+<ng-container matColumnDef="FuelLevelInPercent">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FuelLevel' | translate}} (%)</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+        <p class="text-truncate">
+            {{element.FuelLevelInPercent}}
+        </p>
+    </mat-cell>
+ </ng-container>
+ <!-- Remaining Column -->
+<ng-container matColumnDef="Remaining">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'EmptyQuantity' | translate}} </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+        <p class="text-truncate">
+            {{element.EmptyQuantity}}
+        </p>
+    </mat-cell>
+ </ng-container>
+<!-- FuelContainerCapacityInL Column -->
+<ng-container matColumnDef="FuelContainerCapacityInL">
+   <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FuelContainerCapacityInL' | translate}}
+   </mat-header-cell>
+   <mat-cell *matCellDef="let element">
+       <p class="text-truncate">
+           {{element.FuelContainerCapacityInL}}
+       </p>
+   </mat-cell>
+</ng-container>
+
+<!-- TotalFuelConsumptionInL Column -->
+<ng-container matColumnDef="TotalFuelConsumptionInL">
+   <mat-header-cell *matHeaderCellDef mat-sort-header >{{'TotalFuelConsumptionInL' | translate}} 
+   </mat-header-cell>
+   <mat-cell *matCellDef="let element">
+       <p class="text-truncate">
+           {{element.TotalFuelConsumptionInL}}
+       </p>
+   </mat-cell>
+</ng-container>
+
+<!-- FuelLevelInL Column -->
+<ng-container matColumnDef="FuelLevelInL">
+   <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FuelLevelInL' | translate}} 
+   </mat-header-cell>
+   <mat-cell *matCellDef="let element">
+       <p class="text-truncate">
+           {{element.FuelLevelInL}}
+       </p>
+   </mat-cell>
+</ng-container>
+ <!-- actions Column -->
+ <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>actions</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+        <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #moreMenu="matMenu">
+            <button mat-icon-button color="primary" (click) = "updateTank('edit', element)"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button color="accent" (click) = "fillTank(element)"><mat-icon>local_gas_station</mat-icon></button>
+            <button mat-icon-button color="warn" (click)="deleteTank(element.Id)"><mat-icon>delete_outline</mat-icon></button>
+          
+        </mat-menu>
+    </mat-cell>
+</ng-container>
+<mat-header-row
+   *matHeaderRowDef="displayedColumns"></mat-header-row>
+<mat-row *matRowDef="let element; columns: displayedColumns;">
+</mat-row>
+</mat-table>
+<mat-paginator
+[length]="this.dataSource?.filteredData.length"
+[pageIndex]="0"
+[pageSize]="5"
+[pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+</div>
+<!-- / Front -->
+
+     </fuse-widget>
+     <!-- / WIDGET 11 -->
+ </div>
+ <!-- / WIDGET GROUP -->
+ 

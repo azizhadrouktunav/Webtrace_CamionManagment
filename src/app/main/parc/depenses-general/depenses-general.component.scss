@@ -1,0 +1,161 @@
+@import "src/@fuse/scss/fuse";
+
+
+
+
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+td, th {
+    width: 25%;
+}
+
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: #777;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+}
+
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+}
+
+.example-element-description {
+    padding: 16px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+div button {
+    display: inline-block;
+}
+
+table ng-container th {
+    font-weight: bold;
+    font-size: 18px;
+}
+.headerDet {
+    background-color: rgb(66, 191, 247);
+}
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+
+#dashboard-analytics {
+
+    .main-widget {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content {
+        display: flex;
+        flex: 1 1 auto;
+        padding: 32px;
+        min-width: 0;
+
+        @include media-breakpoint('lt-lg') {
+            flex-direction: column;
+        }
+
+        .left {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            min-width: 50%;
+            min-height: 450px;
+            margin-right: 10px;
+
+            .widget {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+
+            .fuse-card {
+                width: 100%;
+                min-width: 100%;
+                max-width: none;
+                flex: 1 1 50%;
+            }
+
+            .item-value {
+                font-size: 15px !important;
+                margin-top: -6px;
+                margin-left: 11px;
+            }
+        }
+
+        .right {
+            
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            min-width: 50%;
+            min-height: 450px;
+            margin-right: 10px;
+
+            /*min-width: 320px;
+            max-width: 320px;*/
+            .widget {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+
+            .fuse-card {
+                width: 100%;
+                min-width: 100%;
+                max-width: none;
+                flex: 1 1 50%;
+                //position: absolute !important;
+            }
+        }
+    }
+
+    .advanced-pie-legend .legend-items-container .legend-items {
+        overflow: scroll !important;
+    }
+}
+[_nghost-nwe-c40] .back[_ngcontent-nwe-c40], [_nghost-nwe-c40] .front[_ngcontent-nwe-c40] {
+    position: relative !important;
+}
+
+
+::ng-deep .chart-legend .legend-labels {
+    white-space: pre-wrap !important;
+}
+
+

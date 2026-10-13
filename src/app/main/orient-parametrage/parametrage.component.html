@@ -1,0 +1,38 @@
+<div class="orient-page">
+  <div class="orient-page-header">
+    <div class="orient-page-header__text">
+      <h1 class="orient-page-header__title">Paramétrage</h1>
+      <p class="orient-page-header__subtitle">Gestion des postes</p>
+    </div>
+  </div>
+
+  <div class="orient-postes">
+    <mat-card class="orient-postes__card">
+      <mat-card-title>Gestion des postes</mat-card-title>
+      <mat-card-content>
+        <div class="orient-shift-row" *ngFor="let shift of shifts">
+          <mat-form-field appearance="outline" class="orient-shift-row__field">
+            <mat-label>Titre</mat-label>
+            <input matInput [(ngModel)]="shift.label" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="orient-shift-row__field">
+            <mat-label>Description</mat-label>
+            <input matInput [(ngModel)]="shift.description" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="orient-shift-row__field orient-shift-row__status">
+            <mat-label>Statut</mat-label>
+            <mat-select [(ngModel)]="shift.active">
+              <mat-option [value]="true">Actif</mat-option>
+              <mat-option [value]="false">Non actif</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="button" (click)="saveShifts()">
+          Enregistrer les postes
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+import { FleetAlert } from '../types/fleet';
+
+export const alerts: FleetAlert[] = [
+{ id: 'ALT-1042', time: '14:18', truckId: 'TRK-003', driverId: 'DRV-03', missionId: 'NAVIRE-001', type: 'port_excess', zone: 'Port de Sfax · Quai 4', durationMin: 3, level: 'critical', status: 'open', message: 'Déchargement à 8 min (standard 5 min)' },
+{ id: 'ALT-1040', time: '14:05', truckId: 'TRK-007', driverId: 'DRV-07', missionId: 'NAVIRE-001', type: 'workshop_excess', zone: 'Atelier mécanique Salin', durationMin: 18, level: 'warning', status: 'acknowledged', message: 'Passage atelier de 18 min' },
+{ id: 'ALT-1039', time: '13:58', truckId: 'TRK-002', driverId: 'DRV-02', missionId: 'NAVIRE-001', type: 'stock_excess', zone: 'Stock 01 · Salin Principal', durationMin: 2, level: 'warning', status: 'open', message: 'Chargement rallongé de 2 min sur un voyage' },
+{ id: 'ALT-1033', time: '11:47', truckId: 'TRK-009', driverId: 'DRV-09', missionId: 'NAVIRE-001', type: 'route_delay', zone: 'Trajet aller', durationMin: 2, level: 'warning', status: 'resolved', message: 'Trajet aller rallongé de 2 min sur un voyage' },
+{ id: 'ALT-1041', time: '14:11', truckId: 'TRK-014', driverId: 'DRV-14', missionId: 'NAVIRE-002', type: 'route_delay', zone: 'Trajet aller', durationMin: 6, level: 'critical', status: 'open', message: 'Trajet aller à 17 min (standard 11 min)' },
+{ id: 'ALT-1036', time: '13:22', truckId: 'TRK-016', driverId: 'DRV-16', missionId: 'NAVIRE-002', type: 'long_stop', zone: 'Rue Okba Ibn Nafaa', durationMin: 7, level: 'warning', status: 'resolved', message: 'Arrêt prolongé sur le trajet retour' },
+{ id: 'ALT-1032', time: '10:15', truckId: 'TRK-018', driverId: 'DRV-18', missionId: 'NAVIRE-003', type: 'stock_excess', zone: 'Stock 01 · Salin Principal', durationMin: 5, level: 'info', status: 'resolved', message: 'Chargement à 15 min (standard 10 min)' },
+{ id: 'ALT-1031', time: '09:40', truckId: 'TRK-015', driverId: 'DRV-15', missionId: 'NAVIRE-002', type: 'port_excess', zone: 'Port de Sfax · Quai 4', durationMin: 4, level: 'warning', status: 'resolved', message: 'File d’attente trémie de déchargement' },
+{ id: 'ALT-1030', time: '11:20', truckId: 'TRK-019', driverId: 'DRV-19', missionId: 'NAVIRE-004', type: 'route_delay', zone: 'Trajet aller', durationMin: 4, level: 'warning', status: 'resolved', message: 'Trajet aller rallongé de 4 min sur un voyage' }];

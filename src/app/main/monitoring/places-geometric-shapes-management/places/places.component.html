@@ -1,0 +1,106 @@
+<div id="places" class="page-layout simple fullwidth">
+
+  <!-- HEADER -->
+  <div class="h-20 fuse-white-bg" fxLayout="row" fxLayoutAlign="start center">
+
+         <!-- SEARCH -->
+         <div class="search-wrapper mx-32 mx-md-0">
+          <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon class="primary--fg">search</mat-icon>
+              <input #filter placeholder="{{'Common.searchLocation' | translate }}">
+          </div>
+      </div>
+      <!-- / SEARCH -->
+  </div> 
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+       <mat-table class="table-way custom-table" [dataSource]="dataSource" matSort
+                  [@animateStagger]="{value:'50'}"
+                  fusePerfectScrollbar>
+       <!-- Checkbox Column -->
+       <!-- <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+           <mat-checkbox (change)="$event ? masterToggle($event.checked) : null"
+                          [checked]="hasSelectedPlaces"
+                          [indeterminate]="isIndeterminate">
+          </mat-checkbox> 
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox [(ngModel)]="checkboxes[row.Id]" (ngModelChange)="onSelectedChange(row)"
+                        (click)="$event.stopPropagation()">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container> -->
+      <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+
+       <!-- location Column -->
+       <ng-container matColumnDef="location">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Common.Name' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.NamePlace}} </mat-cell>
+      </ng-container>
+      <!-- icon Column -->
+      <ng-container matColumnDef="icon">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+        <mat-cell *matCellDef="let element"><img *ngIf="element.m_icon" src="{{element.m_icon.MediumName}}"></mat-cell>
+      </ng-container>
+
+       <!-- visibility Column -->
+       <ng-container matColumnDef="visibility">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Common.PlaceAccessType' | translate}}</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.PlaceAccessTypeString}}</mat-cell>
+      </ng-container>
+      <!-- description Column -->
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> {{'Common.Description' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Description}}</mat-cell>
+      </ng-container>
+      <!-- Actions Column -->
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button *ngIf="!isMock" mat-icon-button color="primary" (click) = "editPlace(element)"><mat-icon>edit</mat-icon></button>
+            <button *ngIf="!isMock" mat-icon-button color="accent" (click) = "showPlace(element)"><mat-icon class="blue-fg">public</mat-icon></button>
+            <button mat-icon-button color="warn" (click)="deletePlace(isMock ? element.id : element.Id)"><mat-icon>delete_outline</mat-icon></button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row class="table-header-row" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row class="table-row" *matRowDef="let element; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-toolbar class="fuse-white-bg">
+  <mat-toolbar-row fxLayout="row" fxLayoutAlign="start center">
+
+    <mat-icon (click)='exportpdf()' class="pdf red-fg" matTooltip="Export as PDF">picture_as_pdf
+    </mat-icon>
+    <button mat-icon-button (click)="exportExcel()" class="excel" matTooltip="Export as CSV">
+      <img src="assets/icons/excel.png" class="h-24 w-24" />
+    </button>
+    <mat-paginator #paginator
+                  [length]="dataSource?.filteredData?.length"
+                  [pageIndex]="0"
+                  [pageSize]="25"
+                  [pageSizeOptions]="[ 25,50, 100]">
+  </mat-paginator>
+  </mat-toolbar-row>
+</mat-toolbar>
+  </div>
+  <!-- / CONTENT -->
+
+</div>

@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+.orient-detail {
+  margin: 0;
+}
+
+.orient-detail > div {
+  display: flex;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.orient-detail dt {
+  flex: 0 0 110px;
+  margin: 0;
+  color: #667085;
+}
+
+.orient-detail dd {
+  margin: 0;
+}

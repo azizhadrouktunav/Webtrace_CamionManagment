@@ -1,0 +1,60 @@
+navbar-horizontal-style-1 {
+
+}
+
+navbar {
+
+    &.horizontal-style-1 {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        width: 100%;
+        height: 56px;
+        max-height: 56px;
+        min-height: 56px;
+    }
+}
+
+.badge {
+    position: absolute;
+    
+    font-size: 12px;
+    border-radius: 50%;
+   
+    background-color: #ff0000; 
+    border: 4px solid #ff0000;
+    color: #ffffff;
+    text-align: center;
+  }
+  .notification-wrapper .notification-content {
+    position: absolute;
+    top: 55px;
+    right: 5px;
+    width: 350px;
+    height: 70vh;
+    background-color: whitesmoke;
+    z-index: 300;
+    overflow: scroll;
+  }
+  
+  .notification-wrapper .notification-header {
+    padding: 5px;
+    color: #ffffff;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 10; 
+  }
+  
+  .notification-wrapper .notification-header .label {
+    display: inline-block;
+    width: 90%;
+    text-align: center;
+    font-weight: 500;
+  }  
+
+  .LogoImg{
+    height: 50px;
+    width: 55px;
+    margin-top: 10px;
+}

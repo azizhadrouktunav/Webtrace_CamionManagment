@@ -1,0 +1,225 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate}}</span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" fusePerfectScrollbar>
+        <form [formGroup]="addsinistreForm" (ngSubmit)="onSubmit()">
+
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.Reference' | translate}}</mat-label>
+                        <input matInput formControlName="DossierReference">
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.InsuranceNme' | translate}}</mat-label>
+                        <mat-select formControlName="InsuranceName" required>
+                            <mat-option  *ngFor="let assurance of assurances " value="{{assurance.Id}}">{{assurance.Name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.AccidentType' | translate}}</mat-label>
+                        <mat-select formControlName="AccidentType" (selectionChange)="change($event)" required>
+                            <mat-option value="1">{{'NAV.RoadAccident' | translate}}</mat-option>
+                            <mat-option value="6">{{'NAV.RoadAccident2' | translate}}</mat-option>
+                            <mat-option value="2">{{'NAV.Brokenwindows' | translate}}</mat-option>
+                            <mat-option value="3">{{'NAV.Waterdamage' | translate}}</mat-option>
+                            <mat-option value="4">{{'NAV.Fire' | translate}}</mat-option>
+                            <mat-option value="5">{{'NAV.Steal' | translate}}</mat-option>
+                            <mat-option value="-1">{{'NAV.Other' | translate}}</mat-option>
+
+                        </mat-select>
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.AccidentDateGMT' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="AccidentDateGMT" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.AccidentLocationFullName' | translate}}</mat-label>
+                        <mat-select formControlName="AccidentLocationFullName" (selectionChange)="changePlace($event)" required>
+                            <mat-option *ngFor="let place of PlaceList" [value]="place.key">{{place.NamePlace}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" >
+                        <mat-label>{{'NAV.driver' | translate}}</mat-label>
+                        <input matInput aria-label="Driver" [matAutocomplete]="auto" formControlName="FirstDriver" required>
+                        <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" [displayWith]="displayDriver">
+                        <mat-option *ngFor="let driver of filteredOptions | async" [value]="driver.key">
+                            {{driver.FullName}}
+                        </mat-option>
+                        </mat-autocomplete>
+                                <mat-icon matSuffix class="secondary-text">accessibility</mat-icon>
+                                <mat-error>Selecter le chauffeur</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- <div class="inputs-info">
+                <p *ngIf="!mapIsVisisbale" style="max-width: 400px;">{{'NAV.SelectOtherInfo' | translate}}</p>
+                <p *ngIf="mapIsVisisbale">{{'NAV.MapClickInfo' | translate}}</p>
+            </div> -->
+            <div *ngIf="mapIsVisisbale">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                    <mat-label>Longtitude</mat-label>
+                    <input matInput formControlName="Long">
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>Latitude</mat-label>
+                        <input matInput formControlName="Lat">
+
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="map-container" *ngIf="mapIsVisisbale"
+            > 
+            <!-- <div id="map"></div> -->
+                <div class="map-frame">
+                    <app-sinister-map (longLatEmitter)="getSelectedLongLat($event)"></app-sinister-map>
+                </div>
+            
+            </div>
+            <div fxLayout="row">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.Details' | translate}}</mat-label>
+                        <input matInput formControlName="Details">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.Dammage' | translate}}</mat-label>
+                        <input matInput formControlName="Dammage">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxLayout="row" *ngIf="changevalue == '6'">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.Driver2' | translate}}</mat-label>
+                        <input matInput formControlName="Driver2">
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.InsuranceNme2' | translate}}</mat-label>
+                        <mat-select formControlName="InsuranceName2" required>
+                            <mat-option  *ngFor="let assurance of assurances " value="{{assurance.Id}}">{{assurance.Name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div fxLayout="row" *ngIf="changevalue == '6'">
+
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.Matricule' | translate}}</mat-label>
+                        <input matInput formControlName="Matricule">
+
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.DriverLicenseExpirationDate' | translate}}</mat-label>
+                        <input matInput formControlName="DriverLicenseExpirationDate">
+
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div fxLayout="row" *ngIf="changevalue == '1' || changevalue == '6'">
+
+                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                    <mat-label></mat-label>
+                    <mat-slide-toggle formControlName="Injured"><span class="text-invisible">
+                            <h3>{{'NAV.Injured' | translate}}!</h3>
+                        </span></mat-slide-toggle>
+                    <textarea matInput hidden></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                    <mat-label></mat-label>
+                    <mat-slide-toggle formControlName="OtherDamage"><span class="text-invisible">
+                            <h3>{{'NAV.OtherDamage' | translate}}!</h3>
+                        </span></mat-slide-toggle>
+                    <textarea matInput hidden></textarea>
+                </mat-form-field>
+
+
+
+            </div>
+            <div fxLayout="row">
+                <div class="files-list">
+                    <div class="single-file" *ngFor="let file of files; let i = index">
+                        <div class="file-icon" style="width: 50px">
+
+                        </div>
+                        <div class="info">
+                            <h4 class="name">
+                                {{ file?.name }}
+                            </h4>
+                            <p class="size">
+                                {{ formatBytes(file?.size) }}
+                            </p>
+                            <app-progress [progress]="file?.progress"></app-progress>
+                        </div>
+
+                        <div class="delete" (click)="deleteFile(i)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="18" viewBox="0 0 14 18">
+                                <path fill="#B1B1B1" fill-rule="nonzero"
+                                    d="M1 16c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v10zm3.17-7.83a.996.996 0 0 1 1.41 0L7 9.59l1.42-1.42a.996.996 0 1 1 1.41 1.41L8.41 11l1.42 1.42a.996.996 0 1 1-1.41 1.41L7 12.41l-1.42 1.42a.996.996 0 1 1-1.41-1.41L5.59 11 4.17 9.58a.996.996 0 0 1 0-1.41zM10.5 1L9.79.29C9.61.11 9.35 0 9.09 0H4.91c-.26 0-.52.11-.7.29L3.5 1H1c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1h-2.5z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <div mat-dialog-actions class="m-0 p-16 mat-dialog-actions" fxLayout="row" fxLayoutAlign="end center">
+        <div class="file-uploader" *ngIf="changevalue == '1' || changevalue == '6'">
+
+            <input hidden type="file" id="file" #uploader multiple (change)="fileBrowseHandler($event.target.files)">
+
+           <button type="button" mat-icon-button matTooltip="Attach a file" (click)="uploader.click()">
+                <mat-icon>attach_file</mat-icon>
+            </button> 
+
+        </div>
+        <button mat-raised-button color="accent" type="submit" (click)="onSubmit()" class="button"
+            [disabled]="!addsinistreForm.valid">{{'NAV.Save' | translate}}</button>
+
+
+    </div>
+</div>

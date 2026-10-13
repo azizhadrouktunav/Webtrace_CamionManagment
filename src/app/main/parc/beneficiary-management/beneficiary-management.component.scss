@@ -1,0 +1,127 @@
+@import "src/@fuse/scss/fuse";
+
+
+
+
+    #orders {
+        height: calc(100% - 30px);
+        max-height: 100%;
+        >.center{
+          height: 100%;
+          >.content-card{
+            height: 100%;
+            .mat-tab-body-wrapper{
+              height: 100%;
+            }
+            
+          }
+        }
+        
+        .mat-toolbar {
+            background:white;
+            margin-top: 5px;  
+            width: calc(100% - 65px);
+            position: absolute;
+            bottom: 0; 
+            mat-paginator {
+                position: absolute;
+                right: 0;
+            }
+          }
+    }
+
+    .mat-tab-group,
+    .mat-tab-body-wrapper,
+    .tab-content {
+        flex: 1 1 auto;
+        max-width: 100%;
+    }
+
+    .orders-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+
+        .mat-header-row {
+            min-height: 64px;
+        }
+
+        .order {
+            position: relative;
+            cursor: pointer;
+            height: 84px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .mat-column-id {
+            flex: 0 1 84px;
+        }
+
+        .mat-column-image {
+            flex: 0 1 84px;
+
+            .product-image {
+                width: 52px;
+                height: 52px;
+                border: 1px solid rgba(0, 0, 0, .12);
+            }
+        }
+
+        .mat-column-buttons {
+            flex: 0 1 80px;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+    }
+
+    .add-button {
+        position: absolute;
+        top: 107px;
+        left: 7px;
+        z-index: 200;
+      }
+      .mat-fab .mat-button-wrapper{
+        padding:0px !important;
+    }
+    
+ 
+
+        .mat-error{
+            position: absolute;
+            top: 110px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .pdf{
+            color: red;
+            font-size: 30px;
+            cursor: pointer;
+          }
+          
+          .excel {
+            height: 30px;
+            cursor: pointer;
+          }

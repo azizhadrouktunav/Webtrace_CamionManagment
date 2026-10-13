@@ -1,0 +1,196 @@
+
+  @import "src/@fuse/scss/fuse";
+
+
+
+    .products-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        overflow: scroll;
+
+
+        .mat-header-row {
+            min-height: 64px;
+        }
+
+        .product {
+            position: relative;
+            cursor: pointer;
+            height: 84px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .mat-column-id {
+            flex: 0 1 84px;
+        }
+
+        .mat-column-image {
+            flex: 0 1 84px;
+
+            .product-image {
+                width: 52px;
+                height: 52px;
+                border: 1px solid rgba(0, 0, 0, .12);
+            }
+        }
+
+        .mat-column-category {
+            flex: 0 1 240px;
+        }
+
+        .mat-column-price {
+            flex: 0 1 160px;
+        }
+
+        .mat-column-quantity {
+            flex: 0 1 160px;
+        }
+
+        .mat-column-active {
+            flex: 0 1 80px;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+    }
+
+    .tooltip{
+      position: relative;
+      display: inline-block;
+      
+    }
+    .tooltip .tooltiptxt{
+      visibility: hidden; 
+      width: 44px;
+      background-color: #1d1b1b;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: -1%;
+      left: -24%;
+      margin-left: -60x;
+    }
+    .tooltip:hover .tooltiptxt{
+      visibility: visible;
+    }
+    .tot{
+      position: relative;
+      display: inline-block;
+      
+    }
+   .tottxt{
+      visibility: hidden;
+      width: 52px;
+      background-color: #f44336;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 12%;
+      left: -12%;
+      margin-left: -60x;
+    }
+   .tot:hover .tottxt{
+      visibility: visible;
+    }
+    .row_effect:hover{
+      background-color: #c8c8c8;
+    }
+    .Scolling_wigh{
+      width: 200%;
+      overflow: scroll;
+    }
+    .check_box_header{
+      margin-left: 5px;
+    margin-right: 0;
+    margin-bottom: 3px;
+    }
+    .tooltip_aff{
+      position: relative;
+      display: inline-block;
+      
+    }
+    .tooltip_aff .tooltiptxt_aff{
+      visibility: hidden; 
+      width: 44px;
+      background-color: #039be5;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: -1%;
+      left: -24%;
+      margin-left: -60x;
+    }
+    .tooltip_aff:hover .tooltiptxt_aff{
+      visibility: visible;
+    }
+    .app-table-wrapper {
+      overflow-x: scroll;
+    }
+    
+    .app-table {
+      font-size: 8px;
+    }
+    
+    .mat-cell {
+      padding: 10px;
+      text-align: center;
+      min-width: 150px;
+    }
+    
+    .mat-header-cell {
+      padding: 10px;
+      text-align: center;
+
+    }
+    .pdf{
+      color: red;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    .blue{
+      color: lightblue;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    .excel {
+      height: 30px;
+      cursor: pointer;
+    }
+    .spacer {
+      flex: 1 1 auto;
+    }
+    .hide-button{
+      position: absolute;
+      left: 0.5%;
+      top: 67%;
+    }
+   

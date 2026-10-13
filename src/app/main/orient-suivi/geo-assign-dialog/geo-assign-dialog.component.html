@@ -1,0 +1,31 @@
+<div class="orient-geo-assign">
+  <h2 mat-dialog-title>{{ isRoute ? 'Enregistrer un itinéraire' : 'Affecter la forme' }}</h2>
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="orient-geo-assign__full">
+      <mat-label>Nom</mat-label>
+      <input matInput [(ngModel)]="name" />
+    </mat-form-field>
+
+    <div *ngIf="!isRoute" class="orient-geo-assign__kinds">
+      <p class="orient-geo-assign__label">Affectation</p>
+      <mat-radio-group [(ngModel)]="kind" class="orient-geo-assign__radios">
+        <mat-radio-button *ngFor="let k of kinds" [value]="k.id">{{ k.label }}</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <mat-form-field appearance="outline" class="orient-geo-assign__full" *ngIf="isRoute">
+      <mat-label>Direction</mat-label>
+      <mat-select [(ngModel)]="direction">
+        <mat-option value="aller">Aller</mat-option>
+        <mat-option value="retour">Retour</mat-option>
+        <mat-option value="alternatif">Alternatif</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="button" [disabled]="!(name || '').trim()" (click)="save()">
+      Enregistrer
+    </button>
+  </mat-dialog-actions>
+</div>

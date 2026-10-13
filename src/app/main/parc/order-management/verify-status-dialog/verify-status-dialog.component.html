@@ -1,0 +1,59 @@
+<!-- 
+<div class="dialog-content-wrapper verify-dialog">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'PlannedMission.CheckStatus' | translate}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0">
+         
+        <mat-list>
+            <div mat-subheader>{{'PlannedMission.StatusMission' | translate}} : <span>{{StatusMission}}</span></div>
+            <mat-list-item >
+              <div mat-line>{{'PlannedMission.EstimatedTotalFuelConsumed' | translate}} : <span>{{EstimatedTotalFuelConsumed}}</span></div>
+              <div mat-line>{{'PlannedMission.RealTotalFuelConsumed' | translate}} : <span>{{RealTotalFuelConsumed}}</span></div>
+            </mat-list-item>
+        </mat-list>
+    </div>
+
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button   class="mat-accent mr-16" (click)="matDialogRef.close(true)"></button>
+            <button mat-button  (click)="matDialogRef.close()" aria-label="Close dialog">Cancel</button>
+        </div>
+</div> -->
+
+
+<!-- Dialog -->
+<h1 mat-dialog-title>{{'PlannedMission.CheckStatus' | translate}}</h1>
+<div mat-dialog-content>
+    <ul>
+        
+        <li>
+            {{'PlannedMission.StatusMission' | translate}}
+            <ul>
+                <li>{{StatusMission}}</li>
+            </ul>
+        </li>
+        <li>
+            {{'PlannedMission.EstimatedTotalFuelConsumed' | translate}}
+            <ul>
+                <li>{{EstimatedTotalFuelConsumed}}</li>
+            </ul>
+        </li>
+        <li>
+            {{'PlannedMission.RealTotalFuelConsumed' | translate}}
+            <ul>
+                <li>{{RealTotalFuelConsumed}}</li>
+            </ul>
+        </li>
+       
+    </ul>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="matDialogRef.close()" aria-label="Close dialog">{{'PARC.Cancel' | translate }}</button>
+  <button mat-button (click)="matDialogRef.close(true)" cdkFocusInitial>{{'NAV.Update' | translate}}</button>
+</div>

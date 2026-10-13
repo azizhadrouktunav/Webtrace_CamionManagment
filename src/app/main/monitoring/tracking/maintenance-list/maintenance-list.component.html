@@ -1,0 +1,100 @@
+<div class="MaintenanceListContainer">
+    <h3 mat-dialog-title>
+        <img class="w-32 h-32" src="{{img}}"/> &nbsp;<span class="mat-title">{{ data.title | translate }}</span> <span> &nbsp; {{ matricule }}</span>&nbsp;&nbsp;
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </h3>
+
+    <!-- MaintenanceReminderToDo -->
+     <ng-container *ngIf="id == 11">
+        <mat-list>
+            <div mat-subheader>{{ data.type | translate }}</div>
+            <mat-list-item *ngFor="let reminder of reminderList">
+                 <div mat-line>{{reminder.MaintenanceTypeString}}</div>
+                 <button mat-icon-button class="red-500-fg" (click)="adjustMaintenance(reminder)">
+                    <mat-icon>alarm_on</mat-icon>
+                  </button>
+                <!-- <div mat-line> {{folder.updated | date}} </div> -->
+            </mat-list-item>
+        </mat-list>
+     </ng-container>
+     <!--  BorrowedRentalCarContractExpiredJSONToDo -->
+     <ng-container *ngIf="id == 22">
+        <mat-list>
+            <div mat-subheader>{{ data.type | translate }}</div>
+            <mat-list-item *ngFor="let reminder of reminderList">
+                <div mat-line>{{reminder.ContractTypeString}}</div>
+                <button mat-icon-button class="red-500-fg" (click)="adjustExpiredContract(reminder)">
+                   <mat-icon>alarm_on</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+     </ng-container>
+     <!-- CarDocumentReminderJSONToDo -->
+     <ng-container *ngIf="id == 33">
+        <mat-list>
+            <div mat-subheader>{{ data.type | translate  }}</div>
+            <mat-list-item *ngFor="let reminder of reminderList">
+                 <div mat-line>{{reminder.DocumentTypeString}}</div>
+                 <div mat-line>{{parseJsonDate(reminder.ExpiryDateGMTForWT) | localizedDate }}</div>
+                 <button mat-icon-button class="red-500-fg" (click)="adjustDocument(reminder)">
+                    <mat-icon>alarm_on</mat-icon>
+                 </button>
+                <!-- <div mat-line> {{folder.updated | date}} </div> -->
+            </mat-list-item>
+        </mat-list>
+     </ng-container>
+     <!-- AccidentDetailsReminderJSONToDo -->
+     <ng-container *ngIf="id == 44">
+        <mat-list>
+            <div mat-subheader>{{ data.type | translate }}</div>
+            <mat-list-item *ngFor="let reminder of reminderList">
+                 <div mat-line class="mat-subheading-2"> {{reminder.AccidentTypeEnumString}} </div>
+                 <span mat-line class="mat-subheading-1">{{reminder.AccidentStatusEnumString}}</span>
+                 <span mat-line class="mat-caption">{{parseJsonDate(reminder.AccidentDateGMT) | localizedDate }}</span>
+                 <button mat-icon-button class="red-500-fg" (click)="adjustAccident(reminder)">
+                    <mat-icon>alarm_on</mat-icon>
+                 </button>
+            </mat-list-item>
+        </mat-list>
+     </ng-container>
+     <!-- CardCouponReminderJSON -->
+     <ng-container *ngIf="id == 55">
+        <mat-list>
+            <div mat-subheader>{{ data.type | translate }}</div>
+            <mat-list-item *ngFor="let reminder of reminderList">
+                 <div mat-line>{{reminder.name}}</div>
+                 <mat-icon mat-list-icon></mat-icon>
+                <!-- <div mat-line> {{folder.updated | date}} </div> -->
+            </mat-list-item>
+        </mat-list>
+     </ng-container>
+     <!-- BorrowedRentalCarContractJSONToDo -->
+     <ng-container *ngIf="id == 66">
+        <mat-list>
+            <div mat-subheader>{{ data.type | translate }}</div>
+            <mat-list-item *ngFor="let reminder of reminderList">
+                <div mat-line>{{reminder.ContractTypeString}}</div>
+                <button mat-icon-button class="red-500-fg" (click)="adjustPayment(reminder)">
+                   <mat-icon>alarm_on</mat-icon>
+                </button>
+           </mat-list-item>
+        </mat-list>
+     </ng-container>
+     <!--BorrowedRentalCarContractExpiredJSONToDo  -->
+     <ng-container *ngIf="id == 77">
+        <mat-list>
+            <div mat-subheader>{{ data.type | translate }}</div>
+            <mat-list-item *ngFor="let reminder of reminderList">
+                 <div mat-line>{{reminder.ContractTypeString}}</div>
+                 <span mat-line class="mat-caption">{{parseJsonDate(reminder.CarOutDateLocal) | localizedDate }}</span>
+                 <button mat-icon-button class="red-500-fg" (click)="adjustExpiredContract(reminder)">
+                    <mat-icon>alarm_on</mat-icon>
+                 </button>
+            </mat-list-item>
+        </mat-list>
+     </ng-container>
+    
+     
+</div>

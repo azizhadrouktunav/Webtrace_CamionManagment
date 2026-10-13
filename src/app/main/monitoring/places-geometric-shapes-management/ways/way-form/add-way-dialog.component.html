@@ -1,0 +1,38 @@
+<h5 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" 
+    cdkDragHandle>{{dialogTitle | translate }}</h5>
+<div mat-dialog-content>
+    <form>
+        <mat-form-field appearance="outline" fxFlex class="w-100-p">
+            <mat-label>{{'Common.Name' | translate }}</mat-label>
+            <mat-icon matSuffix class="secondary-text">streetview</mat-icon>
+            <input matInput name="name" [formControl] ="name" required>
+            <mat-error *ngIf="name.hasError('required')">
+                Name is required
+            </mat-error>
+            <mat-error *ngIf="name.hasError('unavailable')">
+                {{msgError}}
+            </mat-error>
+        </mat-form-field>
+      </form>
+</div>
+<div mat-dialog-actions>
+        <button *ngIf="action === 'edit'"
+                mat-button color="primary"
+                class="save-button"
+                (click)="matDialogRef.close(['save', name])"
+                [disabled]="name.invalid"
+                aria-label="SAVE">
+        {{'Common.Save' | translate }}
+        </button>
+        <button 
+            *ngIf="action !== 'edit'"
+            mat-button
+            color="primary"
+            class="save-button"
+            (click)="closeAdd()"
+            [disabled]="formInvalid"
+            aria-label="ADD">
+       {{'Common.Add' | translate }}
+</button>
+<button mat-button (click)="matDialogRef.close()">{{'Common.Cancel'| translate }}</button>
+</div>

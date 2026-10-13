@@ -1,0 +1,128 @@
+<div class="orient-page orient-page--wide">
+  <div class="orient-page-header">
+    <div class="orient-page-header__text">
+      <h1 class="orient-page-header__title">Gestion de véhicules</h1>
+      <p class="orient-page-header__subtitle">Liste des véhicules, chauffeurs, équipements et kilométrage.</p>
+    </div>
+    <div class="orient-page-header__actions">
+      <button mat-stroked-button type="button" (click)="exportPdf()" [disabled]="!visibleTrucks().length">PDF</button>
+      <button mat-stroked-button type="button" (click)="exportExcel()" [disabled]="!visibleTrucks().length">Excel</button>
+      <button mat-raised-button type="button" class="orient-btn-icon-end" (click)="startAdd()">
+        Ajouter un véhicule <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="orient-table-card">
+    <div class="orient-toolbar">
+      <div class="orient-search">
+        <mat-icon class="orient-search__icon">search</mat-icon>
+        <input
+          class="orient-search__input"
+          type="search"
+          [ngModel]="query"
+          (ngModelChange)="onQueryChange($event)"
+          placeholder="Filtrer les données…"
+          aria-label="Rechercher un véhicule"
+        />
+      </div>
+      <div class="orient-tabs" role="tablist">
+        <button
+          *ngFor="let tab of statusTabs"
+          type="button"
+          role="tab"
+          class="orient-tabs__btn"
+          [class.orient-tabs__btn--active]="statusFilter === tab.id"
+          [attr.aria-selected]="statusFilter === tab.id"
+          (click)="setStatusFilter(tab.id)"
+        >
+          {{ tab.label }}
+          <span class="orient-tabs__count">{{ tab.count }}</span>
+        </button>
+      </div>
+      <div class="orient-datetime-filter">
+        <mat-icon>event</mat-icon>
+        <input
+          type="datetime-local"
+          [ngModel]="filterAtValue"
+          (ngModelChange)="onFilterAtChange($event)"
+          aria-label="Filtrer par date et heure"
+        />
+      </div>
+    </div>
+
+    <mat-card-content class="orient-table-scroll">
+      <table mat-table [dataSource]="dataSource" matSort class="orient-table">
+        <ng-container matColumnDef="icon">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <img class="orient-vehicle-icon" [src]="row.iconUrl || 'assets/images/logos/fuse.svg'" alt="" />
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="fullName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom Complet</th>
+          <td mat-cell *matCellDef="let row">{{ row.plate }} · {{ row.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom de Département</th>
+          <td mat-cell *matCellDef="let row">{{ row.department || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="driver">
+          <th mat-header-cell *matHeaderCellDef>Nom de Chauffeur</th>
+          <td mat-cell *matCellDef="let row">{{ driverName(row) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="brand">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Marque</th>
+          <td mat-cell *matCellDef="let row">{{ row.brand || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="model">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Modèle</th>
+          <td mat-cell *matCellDef="let row">{{ row.model || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="year">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Année</th>
+          <td mat-cell *matCellDef="let row">{{ row.year || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fuelType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Type d'énergie</th>
+          <td mat-cell *matCellDef="let row">{{ row.fuelType || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="mileage">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Kilométrage</th>
+          <td mat-cell *matCellDef="let row">{{ row.mileage != null ? row.mileage : '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fuelCapacity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Capacité</th>
+          <td mat-cell *matCellDef="let row">{{ row.fuelCapacity != null ? row.fuelCapacity : '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="simCardNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Numéro de puce</th>
+          <td mat-cell *matCellDef="let row">{{ row.simCardNumber || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="equipmentSerial">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Équipement</th>
+          <td mat-cell *matCellDef="let row">{{ row.equipmentSerial || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button type="button" [matMenuTriggerFor]="truckMenu" aria-label="Actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #truckMenu="matMenu">
+              <button mat-menu-item type="button" (click)="startEdit(row)">Modifier</button>
+              <button mat-menu-item type="button" (click)="showPlanning(row)">
+                Afficher planning Mission du camion
+              </button>
+              <button mat-menu-item type="button" (click)="remove(row)">Supprimer</button>
+            </mat-menu>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]" showFirstLastButtons></mat-paginator>
+      <p class="orient-empty" *ngIf="!dataSource.data.length">Aucun véhicule.</p>
+    </mat-card-content>
+  </mat-card>
+</div>

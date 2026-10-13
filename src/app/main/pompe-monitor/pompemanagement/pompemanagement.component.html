@@ -1,0 +1,109 @@
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>local_gas_station</mat-icon>
+                <span class="h1">
+                  {{'Pompes' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn"><mat-icon class="grey-700-fg">search</mat-icon></label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+            
+
+            <button mat-fab color="warn" class="add-button" (click)="addPompe()" aria-label="Add pompe" >
+                <mat-icon>add</mat-icon>
+            </button>
+
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <mat-table class="pompes_table"  #table [dataSource]="dataSource"
+                  matSort
+                  [@animateStagger]="{value:'50'}"
+                  fusePerfectScrollbar>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Name' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let pompe">
+                        <p class="text-truncate">
+                            {{pompe.Name}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Capacity Column -->
+                <ng-container matColumnDef="GasStationAttendant">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'NAV.GasStationAttendant' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let pompe">
+                        <p class="text-truncate">
+                            {{pompe.GasStationAttendant.FirstName}}  {{pompe.GasStationAttendant.LastName}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- Level Column -->
+                 <ng-container matColumnDef="equipment">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'Equipment' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let pompe">
+                        <p class="text-truncate">
+                            {{pompe.Equipment}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                  
+    
+   
+    
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+        <mat-cell *matCellDef="let pompe">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <button mat-button-toggle mat-icon-button color="accent" (click) = "updatePompe(pompe)"><mat-icon>edit</mat-icon></button>
+                <button mat-button-toggle mat-icon-button color="warn"(click)="deletePompe(pompe)" ><mat-icon>delete</mat-icon></button>
+            </div>
+        </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+    <mat-row *matRowDef="let pompe; columns: displayedColumns;"
+              class="order"
+             matRipple>
+</mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator
+            [length]="dataSource.filteredData.length"
+            [pageIndex]="0"
+            [pageSize]="10"
+            [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+        </div>
+           
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

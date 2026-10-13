@@ -1,0 +1,40 @@
+<div class="orient-form-dlg">
+  <header class="orient-form-dlg__header">
+    <div>
+      <h2 class="orient-form-dlg__title">{{ dialogTitle }}</h2>
+      <p class="orient-form-dlg__subtitle" *ngIf="base">{{ base.id }}</p>
+    </div>
+    <button mat-icon-button type="button" (click)="cancel()" aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="orient-form-dlg__body">
+    <div class="orient-form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput [(ngModel)]="formName" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>IMO</mat-label>
+        <input matInput [(ngModel)]="formImo" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Port</mat-label>
+        <mat-select [(ngModel)]="formPortId">
+          <mat-option *ngFor="let p of ports" [value]="p.id">{{ p.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="orient-form-full">
+        <mat-label>Notes</mat-label>
+        <textarea matInput rows="2" [(ngModel)]="formNotes"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <footer class="orient-form-dlg__footer">
+    <span class="orient-form-dlg__spacer"></span>
+    <button mat-button type="button" (click)="cancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="button" (click)="save()">Enregistrer</button>
+  </footer>
+</div>

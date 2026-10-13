@@ -1,0 +1,146 @@
+<div class="dialog-content-wrapper" style="width: 700px;">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'NAV.Edititem' | translate}}</span>
+            <button mat-icon-button (click)="closeDialog()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" fusePerfectScrollbar >
+
+        <form [formGroup]="profileForm" class="event-form w-100-p" fxLayout="column" fxFlex>          
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="w-100-p" fxFlex="50">
+                    <mat-label>{{'NAV.Category' | translate}}</mat-label>
+                    <mat-error>{{'NAV.Alert_requared' | translate}}</mat-error>
+                    <input
+                    matInput
+                    #typeInput
+                    type="text"
+                    aria-label="Category"
+                    formControlName="Category"
+                    required
+                    [matAutocomplete]="auto"/>
+                    <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" (optionSelected)="optionSelected($event.option)">
+                        <mat-option *ngFor="let cat of filteredOptions | async" [value]="cat">
+                            {{cat}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <button *ngIf="showAddButton && typeInput.value" matSuffix mat-button mat-icon-button (click)="addOption()"><mat-icon matTooltip='Add "{{typeInput.value}}"'>add</mat-icon></button>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100-p" fxFlex="50">
+                    <mat-label>{{'NAV.Model' | translate}}</mat-label>
+                    <mat-error>{{'NAV.Alert_requared' | translate}}.</mat-error>
+                    <input
+                    matInput
+                    #ModelInput
+                    type="text"
+                    aria-label="Model"
+                    formControlName="Model"
+                    required
+                    [matAutocomplete]="auto1"/>
+                    <mat-autocomplete [panelWidth]="'auto'" #auto1="matAutocomplete" (optionSelected)="optionSelectedModel($event.option)">
+                        <mat-option *ngFor="let model of filteredOptionsModel | async" [value]="model">
+                            {{model}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <button *ngIf="showAddButton1 && ModelInput.value" matSuffix mat-button mat-icon-button (click)="addOptionModel()"><mat-icon matTooltip='Add "{{ModelInput.value}}"'>add</mat-icon></button>
+                </mat-form-field>
+
+            </div>
+
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.DriverName' | translate}}</mat-label>
+                    <mat-error>{{'NAV.Alert_requared' | translate}}.</mat-error>
+                    <input matInput formControlName="Nom">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.reference' | translate}}</mat-label>
+                    <input matInput formControlName="refrence">
+                </mat-form-field>
+
+            </div>
+            
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                
+                <mat-form-field appearance="outline" fxFlex="50">
+                    <mat-label>{{'NAV.Constructeur' | translate}}</mat-label>
+                    <mat-select formControlName="Constructeur">
+                        <mat-option *ngFor="let for of FornisseursList" [value]="for.ID">{{for.Name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">person_outline</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50">
+                    <mat-label>{{'NAV.Departement' | translate}}</mat-label>
+                    <mat-select formControlName="Departement">
+                        <mat-option *ngFor="let dept of DepartementList" [value]="dept.Id">{{dept.Name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">account_balance</mat-icon>
+                </mat-form-field>
+            </div>
+                
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.N°Serie' | translate}}</mat-label>
+                        <input matInput formControlName="Serie">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.barcode' | translate}}</mat-label>
+                        <input matInput formControlName="Code">
+                    </mat-form-field>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+
+                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.prixunitaire' | translate}}</mat-label>
+                        <input matInput formControlName="Prix" type="number">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.prixventeuni' | translate}}</mat-label>
+                        <input matInput formControlName="vente" type="number">
+                    </mat-form-field>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.Dimension' | translate}}</mat-label>
+                        <input matInput formControlName="Dimension" type="number">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.TVA' | translate}}</mat-label>
+                        <input matInput formControlName="TVA" type="number">
+                    </mat-form-field>
+
+            </div>
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16 mat-dialog-actions" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <button  mat-button color="primary"
+                class="save-button mat-raised-button mat-button-base mat-accent Submit_btn"
+                (click)="onaccept()"
+                [disabled]="profileForm.invalid"
+                aria-label="ADD">
+                {{'NAV.Edit' | translate}}
+        </button>
+
+    </div>
+</div>

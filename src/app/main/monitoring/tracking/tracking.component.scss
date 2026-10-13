@@ -1,0 +1,436 @@
+::ng-deep #MonitoringTable {
+
+    .dx-datagrid {
+
+        .dx-row,
+        .dx-datagrid-pager {
+            background: white;
+        }
+
+        &,
+        .dx-header-row {
+            background:#1974a1;
+
+
+            //#039be5; //#6d7fe0;
+            
+        }
+        .dx-datagrid-header-panel
+{
+    background: white;
+}
+
+        .dx-header-row * {
+            color: white;
+            font-weight: 400;
+            font-size: 14px;
+
+        }
+        /*.dx-datagrid-columns-separator-transparent {
+            background-color: #039be5;
+        }
+        col.dx-col-fixed {
+            background: transparent !important;
+        }
+*/
+       
+
+        td,
+        tr {
+            text-align: center !important;
+            border: none !important;
+            padding: 2px !important;
+            line-height: 40px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        td:nth-last-child(1):not(.dx-group-cell):not(.dx-cell-focus-disabled) {
+            right: 0;
+            position: sticky;
+            background: white;
+        }
+
+        .dx-data-row,
+        .dx-row-alt {
+            td {
+                transition: background .25s;
+            }
+
+           /* &:hover {
+                td {
+                    background: #92a4ff !important
+                }
+            }*/
+        }
+
+        .dx-datagrid-group-closed,
+        .dx-datagrid-group-opened {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-align: left !important;
+        }
+
+        .dx-master-detail-cell {
+            background: #f5f5fb !important; //f5f5fb
+        }
+
+        .CarDetails {
+            height: max-content;
+            overflow: hidden;
+            animation: animateHeight .45s;
+           // padding: 0 15px 0 0;
+
+            .Graphs {
+                height: max-content;
+                overflow: hidden;
+                background: white;
+                border-radius: 10px;
+                //margin: 17px 0 17px 17px;
+                width: max-content;
+                min-width: 90vw;
+
+                .iconsList {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    padding: 25px 25px 0;
+                    
+                    .AlertItem {
+                        max-width: 7%;
+                       // min-width: 20px;
+                        width: 30px;
+                        opacity: 0.15;
+                        filter: contrast(0.4);
+
+                        &.visibleIcon {
+                            opacity: 1;
+                            filter: contrast(1);
+                        }
+                    }
+
+                    
+                }
+            }
+
+            .LogLine {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin: 0 20px;
+                line-height: 20px;
+            }
+
+            .GraphsSquares {
+
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                width: 20%; // not logic at all , but it works
+                height: calc(100% - 40px);
+
+                text {
+                    font-size: 18px;
+                    font-weight: 500;
+
+                    tspan:nth-child(1) {
+                        font-size: 50px;
+                    }
+                }
+            }
+        }
+
+        tr.dx-row.dx-group-row {
+            background: #c8d8ff !important;
+            border-top: solid white 2px !important;
+            cursor: pointer;
+
+            td,
+            .dx-datagrid-group-closed,
+            .dx-datagrid-group-opened {
+                color: #337ab7
+                ;
+                height: 25px;
+                line-height: 25px;
+                text-align: left !important;
+            }
+        }
+
+        // tr.dx-row.dx-group-row {
+
+        //      .dx-datagrid-group-opened, .dx-datagrid-group-closed{
+        //         background: #45557b; //#009688;
+        //     }
+        // }
+    }
+    .DashItem {
+        max-width: 25%;
+         width: 25px;
+         margin-right: 5px;
+    }
+    .CarName{
+        &.redName {
+            color: red;
+        }
+
+        &.greenName{
+            color: green;
+        }
+
+        &.grayName {
+            color: gray;
+            opacity: 0.4;
+        }
+    }
+
+    .contactState{
+
+        &.greenContact .mat-icon{
+            color: white;
+            background: green;
+            border-radius: 50px;
+            font-size: 15px;
+            padding-top: 5px;
+        }
+
+        &.redContact .mat-icon{
+            color: white;
+            background: red;
+            border-radius: 50px;
+            font-size: 15px;
+            padding-top: 5px;
+        }
+    }
+
+    .horodatage{
+
+        &.GreenTime .mat-icon{
+            color: white;
+            background: green;
+            border-radius: 50px;
+            font-size: 15px;
+            padding-top: 5px;
+        }
+
+        &.redTime .mat-icon{
+            color: white;
+            background: red;
+            border-radius: 50px;
+            font-size: 15px;
+            padding-top: 5px;
+        }
+    }
+
+    .EngineState{
+
+        &.greenEngine .mat-icon{
+            color: white;
+            background: green;
+            border-radius: 50px;
+            font-size: 15px;
+            padding-top: 5px;
+        }
+
+        &.redEngine .mat-icon{
+            color: white;
+            background: red;
+            border-radius: 50px;
+            font-size: 15px;
+            padding-top: 5px;
+        }
+    }
+
+    
+}
+
+::ng-deep {
+    .MonitoringTableCarMenu .mat-menu-content button .ng-fa-icon {
+        color: #676767;
+        font-size: 20px;
+        padding: 0 15px 0 0;
+    }
+
+    .mat-menu-item:hover {
+        background-color: gray;
+    }
+    
+    .StatsFilters {
+        position: absolute;
+        bottom: 0;
+        height: 48px;
+        width: max-content;
+        left: 0;
+        right: 0;
+        margin: auto;
+        z-index: 59;
+        display: flex;
+        background: white;
+        margin-bottom: 6px;
+
+        .item {
+            padding: 10px;
+            cursor: pointer;
+
+            &.active{
+                color: white;
+                margin-right: 25px;
+
+                &.connected fa-icon {
+                    background: green;
+                    border-radius: 50px;
+                    padding: 10px;
+                    position: absolute;
+                }
+                &.disConnected fa-icon {
+                    background: red;
+                    border-radius: 50px;
+                    padding: 10px;
+                    position: absolute;
+                }
+                &.unequiped fa-icon {
+                    background: gray;
+                    border-radius: 50px;
+                    padding: 10px;
+                    position: absolute;
+                }
+
+                .ItemValue {
+                    position: absolute;
+                    color: white;
+                    z-index: 9;
+                    margin-left: 12px;
+                    margin-top: 10px;
+                }
+            } 
+
+            &.disabled {
+                pointer-events: none;
+                filter: grayscale(1);
+                opacity: 0.5;
+            }
+
+        }
+    }
+    .dx-datagrid-column-chooser .dx-popup-normal .dx-popup-title {
+        color : transparent;
+    }
+    .dx-placeholder {
+        color : transparent;
+
+    }
+
+
+}
+
+@keyframes animateHeight {
+    0% {
+        max-height: 0px;
+    }
+
+    100% {
+        max-height: 225px;
+    }
+}
+
+.MonitoringAlertsList {
+    display: flex;
+
+    .AlertItem {
+        pointer-events: none;
+        min-width: 25px;
+        max-width: 25px;
+
+        img {
+            width: 25px;
+            height: 25px;
+            opacity: 0.15;
+            filter: contrast(0.4);
+            padding: 3px;
+        }
+
+        &.visibleAlert {
+            pointer-events: all;
+            
+            img {
+                opacity: 1;
+                filter: contrast(1);
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+.hover-class:hover {
+        background-color: #C0C0C0 !important;
+      }
+
+
+      .leaflet-marker-pane > * {
+        transition: transform .3s linear;
+      }
+
+.isLoading{
+    position: absolute;
+    z-index: 499;
+    height: calc(100% - 94px);
+    width: 100%;
+    top: 92px;
+    text-align: center;
+    background: #002233ba;
+    padding:35px
+}
+
+      .lds-ring {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+      }
+      .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border: 8px solid #fff;
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: #fff transparent transparent transparent;
+      }
+      .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+      }
+      .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+      }
+      .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+      }
+      @keyframes lds-ring {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      
+
+
+      #RefreshControl {
+        position: absolute;
+        top: 0;
+        right: 240px;
+    }
+
+    @media only screen and (max-width:768px) {
+        .StatsFilters{
+            display: none;
+        }
+
+    }

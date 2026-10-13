@@ -1,0 +1,153 @@
+@import "src/@fuse/scss/fuse";
+
+.mat-column-actions {
+    min-width: 50px !important;
+    position: sticky;
+    right: 0;
+    background: white;
+}
+
+app-order-management {
+
+    #products {
+        height: calc(100% - 30px);
+        max-height: 100%;
+        >.center{
+          height: 100%;
+          >.content-card{
+            height: 100%;
+            .mat-tab-body-wrapper{
+              height: 100%;
+              
+            }
+            
+          }
+        }
+       
+
+        > .center {
+
+            > .header {
+
+                .add-order-button {
+                    position: absolute;
+                    left: 10px;
+                    top: 110px;
+                    z-index: 200;
+                }
+            }
+        }
+        .break{
+            flex-basis: 100%;
+            height: 0;
+        }
+        .flexItem{
+            width:100%;
+            flex-grow: 1
+        }
+    .example-spacer {
+            flex: 1 1 auto;
+          }
+    }
+    .missions-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+
+        .mat-header-row {
+            min-height: 56px;
+        }
+
+        .product {
+            position: relative;
+            cursor: pointer;
+            height: 84px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .mat-column-id {
+            flex: 0 1 84px;
+        }
+
+        .mat-column-image {
+            flex: 0 1 84px;
+
+            .product-image {
+                width: 52px;
+                height: 52px;
+                border: 1px solid rgba(0, 0, 0, .12);
+            }
+        }
+
+        .mat-column-category {
+            flex: 0 1 240px;
+        }
+
+        .mat-column-price {
+            flex: 0 1 160px;
+        }
+
+        .mat-column-quantity {
+            flex: 0 1 160px;
+        }
+
+        .mat-column-active {
+            flex: 0 1 80px;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+        .mat-row, .mat-header-row {
+            min-width: 2800px;
+            width: 100%;
+          }
+    }
+}
+
+
+#applyButton {
+
+    margin: 20% 0;
+}
+
+
+
+        .mat-error{
+            position: absolute;
+            top: 110px;
+            width: 100%;
+            text-align: center;
+        }
+        .example-loading-shade {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 56px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }

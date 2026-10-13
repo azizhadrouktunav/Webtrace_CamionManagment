@@ -1,0 +1,15 @@
+.header, .dialog-message {
+    text-transform: lowercase;
+}
+.header::first-letter, .dialog-message::first-letter {
+    text-transform: uppercase;
+}
+.btn-cancel {
+    background-color: #02699b;
+    color: #fff;
+    width: 90%;
+    margin-left: 5%;
+    border: none;
+    margin-bottom: 10%;
+    margin-top: 10%;
+}

@@ -1,0 +1,245 @@
+
+
+  @import "src/@fuse/scss/fuse";
+
+
+
+  #products {
+
+    button.nothing {
+        background: transparent;
+        border: none;
+    }
+    
+      .top-bg {
+
+          @include media-breakpoint('lt-md') {
+              height: 256px;
+          }
+      }
+
+      #Sorter {
+        border-radius: 5px;
+        height: 50px;
+        padding: 7px;
+        margin: 10px;
+        border: solid 2px lightgray;
+        width: calc(100% - 200px);
+      }
+      mat-header-cell{
+          cursor: pointer;
+      }
+  }
+
+  .products-table {
+      flex: 1 1 auto;
+      border-bottom: 1px solid rgba(0, 0, 0, .12);
+      max-height: 320px;
+      overflow: scroll;
+
+
+      .mat-header-row {
+          min-height: 64px;
+      }
+
+      .product {
+          position: relative;
+          cursor: pointer;
+          height: 84px;
+      }
+
+      .mat-cell {
+          min-width: 0;
+          display: flex;
+          align-items: center;
+      }
+
+      .mat-column-id {
+          flex: 0 1 84px;
+      }
+
+      .mat-column-image {
+          flex: 0 1 84px;
+
+          .product-image {
+              width: 52px;
+              height: 52px;
+              border: 1px solid rgba(0, 0, 0, .12);
+          }
+      }
+      .Scolling_wigh{
+        width: 200%;
+        overflow: scroll;
+      }
+      .mat-column-category {
+          flex: 0 1 240px;
+      }
+
+      .mat-column-price {
+          flex: 0 1 160px;
+      }
+
+      .mat-column-quantity {
+          flex: 0 1 160px;
+      }
+
+      .mat-column-active {
+          flex: 0 1 80px;
+      }
+
+      .quantity-indicator {
+          display: inline-block;
+          vertical-align: middle;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          margin-right: 8px;
+
+          & + span {
+              display: inline-block;
+              vertical-align: middle;
+          }
+      }
+
+      .active-icon {
+          border-radius: 50%;
+      }
+  }
+
+  .tooltip{
+    position: relative;
+    display: inline-block;
+    
+  }
+  .tooltip .tooltiptxt{
+    visibility: hidden; 
+    width: 44px;
+    background-color: #1d1b1b;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+  }
+  .tooltip:hover .tooltiptxt{
+    visibility: visible;
+  }
+  .tot{
+    position: relative;
+    display: inline-block;
+    
+  }
+ .tottxt{
+    visibility: hidden;
+    width: 52px;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+  }
+ .tot:hover .tottxt{
+    visibility: visible;
+  }
+  .row_effect:hover{
+    background-color: #c8c8c8;
+  }
+  .red_backs{
+      background-color: #ffe5e5;
+  }
+  .hidetool{
+      visibility: hidden;
+  }
+  .tooltip_aff{
+    position: relative;
+    display: inline-block;
+    
+  }
+  .tooltip_aff .tooltiptxt_aff{
+    visibility: hidden; 
+    width: 44px;
+    background-color: #039be5;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+  }
+  .tooltip_aff:hover .tooltiptxt_aff{
+    visibility: visible;
+  }
+  .removing_Items{
+    display:none;
+  }
+  .action_button{ 
+    background: transparent;
+    border: 0;
+  }
+  .action_button_supp{   
+    color: #f44336;
+    background: transparent;
+    border: 0;
+  }
+  #alert_box {
+    position: sticky;
+    bottom: 0;
+}
+
+#gridContainer{
+  position: absolute !important;
+  bottom: 0px !important;
+  top: 20% !important;
+  width: calc(100% - 64px) !important;
+}
+::ng-deep {
+  .dx-datagrid-rowsview .dx-row{
+  height: 50px !important;
+  border-bottom: 1px solid #d2d2d2;
+  padding-top: 20px !important;
+    td{
+      padding-top: 15px;
+    }
+  }
+  .dx-datagrid-rowsview .dx-row:last-child{
+    height: 100% !important;
+  }
+  .dx-datagrid-rowsview .dx-row.dx-group-row:not(.dx-row-focused){
+    height: 100% !important;
+    td{
+      padding-top: 7px !important;
+    }
+  }
+  .dx-datagrid-content .dx-datagrid-table .dx-row {
+    padding-top: 15px;
+  }
+  .dx-datagrid-group-panel .dx-group-panel-item {
+    width: 100%;
+    margin-left: 5%;
+    padding: auto;
+    padding-left: 25px;
+  }
+}
+
+.dx-row td{
+  padding-top: 15px !important;
+}
+
+.exportation{
+  position: absolute;
+  top: calc(100% - 38px);
+  margin-left: 10px;
+  display: flex;
+}

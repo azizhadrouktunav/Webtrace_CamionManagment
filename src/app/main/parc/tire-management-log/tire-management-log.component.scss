@@ -1,0 +1,88 @@
+.example-container {
+    height: 200px;
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+}
+
+tr.mat-footer-row {
+    font-weight: bold;
+}
+
+.mat-table-sticky {
+    border-top: 1px solid #e0e0e0;
+}
+
+mat-table {
+    color: black !important;
+    width: 97%;
+    height: 40%;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptxt {
+    visibility: hidden;
+    width: 44px;
+    background-color: #1d1b1b;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+}
+
+.tooltip:hover .tooltiptxt {
+    visibility: visible;
+}
+
+.tot {
+    position: relative;
+    display: inline-block;
+}
+
+.tottxt {
+    visibility: hidden;
+    width: 74px;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+}
+
+.tot:hover .tottxt {
+    visibility: visible;
+}
+
+.primary {
+    color: red;
+}
+
+.mat-toolbar.mat-white {
+    background: white;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.add-document-button {
+    position: absolute;
+    top: 100px;
+    left: 10px;
+}

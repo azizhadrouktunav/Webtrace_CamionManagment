@@ -1,0 +1,115 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+  
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" fusePerfectScrollbar>
+        <form [formGroup]="addeditForm">
+            <mat-form-field appearance="outline" class="w-100-p">
+              <mat-label>{{'PARC.MaintenanceType' | translate}}</mat-label>
+              <mat-select formControlName="DocumentTypeEnum">
+                  <mat-option *ngFor="let type of types" [value]="type.id">
+                    {{'PARC.'+type.name | translate}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="addeditForm.get('DocumentTypeEnum').hasError('required')">
+                  Please select a type in the list
+              </mat-error>
+          </mat-form-field>
+              <div fxLayout="row">
+               <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+                
+                <mat-form-field  appearance="outline" class="pr-sm-8" fxFlex="50" *ngIf="oneTime">
+                    <mat-label>{{'NAV.Frequence' | translate}}</mat-label>
+                        <input  matInput
+                        type="number"
+                        placeholder="pick a number" formControlName="number">
+                    <mat-error *ngIf="addeditForm.get('number').hasError('required')">
+                        The number is required
+                    </mat-error>
+                    <mat-error *ngIf="addeditForm.get('number').errors?.nonPositive">
+                        The number should be greater than 0!
+                    </mat-error>     
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                  <mat-label>{{'NAV.PaymentFreq' | translate}}</mat-label>
+                  <mat-select formControlName="RecurringMode" (selectionChange)="changedMode($event)" >
+                      <mat-option *ngFor="let mode of recurringMode" [value]="mode.id">
+                        {{mode.name | translate}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+            </div>
+              </div>
+              <mat-form-field appearance="outline" class="w-100-p" *ngIf="showDays">
+                <mat-label>{{'NAV.ConsidredDay' | translate}}</mat-label>
+                <mat-select formControlName ="EnabledDayOfWeekes" name="EnabledDayOfWeekes" multiple (selectionChange)="changedDays($event)" >
+                    <mat-option *ngFor="let day of days" [value]="day.id">{{day.name | translate}}</mat-option>
+                  </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100-p">
+              <input matInput [ngxMatDatetimePicker]="picker" 
+              placeholder="Choose a date" formControlName="BeginStartRecurringDateLocal">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker #picker
+              [showSpinners]="showSpinners" 
+              [showSeconds]="showSeconds"
+              [touchUi]="touchUi"
+              [color]="color"
+              ></ngx-mat-datetime-picker>
+            </mat-form-field>
+              <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'NAV.Reminder' | translate}}</mat-label>
+                <input matInput
+                type="number"
+                placeholder="pick a number" formControlName="WarnMeBeforeNDay">
+                <mat-error *ngIf="addeditForm.get('WarnMeBeforeNDay').hasError('required')">
+                  The number is required
+               </mat-error>
+              <mat-error *ngIf="addeditForm.get('WarnMeBeforeNDay').errors?.nonPositive">
+                  The number should be greater than 0!
+              </mat-error>   
+                   </mat-form-field>
+                 
+        </form>
+       
+    </div>
+   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+    <button *ngIf="action ==='edit'"
+            mat-button color="primary"
+            class="mr-8"
+            (click)="matDialogRef.close(['delete',addeditForm])"
+            aria-label="Delete"
+            matTooltip="Delete">
+            {{'NAV.Remove' | translate}}
+    </button>
+
+    <button *ngIf="action !== 'edit'"
+            mat-button color="primary"
+            class="save-button"
+            (click)="matDialogRef.close(addeditForm)"
+            [disabled]="addeditForm.invalid"
+            aria-label="ADD">
+            {{'NAV.Add' | translate}}
+    </button>
+
+    <button *ngIf="action === 'edit'"
+            mat-button color="primary"
+            class="save-button"
+            (click)="matDialogRef.close(['save', addeditForm])"
+            [disabled]="addeditForm.invalid"
+            aria-label="SAVE">
+            {{'NAV.Save' | translate}}    </button>
+
+</div>
+  </div>
+   
+  
+  

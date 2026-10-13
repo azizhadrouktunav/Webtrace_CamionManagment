@@ -1,0 +1,294 @@
+<div class="orient-fullbleed orient-suivi">
+  <as-split
+    unit="percent"
+    direction="horizontal"
+    [gutterSize]="8"
+    (dragEnd)="onSplitDragEnd()"
+  >
+    <as-split-area [size]="leftSize" class="orient-suivi__left">
+      <div class="orient-suivi__panel">
+        <div class="orient-suivi__toolbar">
+          <div class="orient-suivi__toolbar-left">
+            <span class="orient-suivi__toolbar-label">Véhicule</span>
+            <mat-icon class="orient-suivi__sort-icon">swap_vert</mat-icon>
+          </div>
+          <div class="orient-suivi__toolbar-actions">
+            <button mat-icon-button type="button" matTooltip="Disposition" aria-label="Disposition">
+              <mat-icon>view_column</mat-icon>
+            </button>
+            <button mat-icon-button type="button" matTooltip="Actualiser" aria-label="Actualiser">
+              <mat-icon>refresh</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Rechercher"
+              aria-label="Rechercher"
+              (click)="searchOpen = !searchOpen"
+            >
+              <mat-icon>search</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="orient-suivi__search-wrap" *ngIf="searchOpen">
+          <mat-form-field appearance="outline" class="orient-suivi__search" floatLabel="always">
+            <mat-label>Rechercher</mat-label>
+            <input matInput [(ngModel)]="search" (ngModelChange)="onSearchChange()" placeholder="Immat. ou nom" />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <mat-tab-group
+          class="orient-suivi__tabs"
+          headerPosition="below"
+          animationDuration="0ms"
+          [(selectedIndex)]="selectedTab"
+        >
+          <mat-tab label="Suivi général">
+            <div class="orient-suivi__tab-body">
+              <div class="orient-suivi__table-wrap" fusePerfectScrollbar>
+                <table class="suivi-table">
+                  <thead>
+                    <tr>
+                      <th>Poids essieu 3ème</th>
+                      <th>Heures de moteur</th>
+                      <th>Poids essieu 4ème</th>
+                      <th>Département</th>
+                      <th>Freins rapides</th>
+                      <th class="suivi-table__col-time">
+                        Horodatage
+                        <mat-icon class="suivi-table__sort">arrow_upward</mat-icon>
+                      </th>
+                      <th class="suivi-table__col-menu"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let truck of filteredTrucks; let i = index">
+                      <tr
+                        class="suivi-table__group"
+                        [class.suivi-table__group--selected]="truck.id === selectedTruckId"
+                        (click)="selectTruck(truck)"
+                      >
+                        <td colspan="7">
+                          <mat-icon class="suivi-table__expand">arrow_drop_down</mat-icon>
+                          Véhicule: {{ truck.plate }}
+                        </td>
+                      </tr>
+                      <tr
+                        class="suivi-table__row"
+                        [class.suivi-table__row--alt]="i % 2 === 1"
+                        [class.suivi-table__row--selected]="truck.id === selectedTruckId"
+                        (click)="selectTruck(truck)"
+                      >
+                        <td>{{ truck.axle3Weight != null ? truck.axle3Weight : 0 }}</td>
+                        <td>{{ truck.engineHours || '0:00:00' }}</td>
+                        <td>{{ truck.axle4Weight != null ? truck.axle4Weight : 0 }}</td>
+                        <td>{{ truck.department || '—' }}</td>
+                        <td>{{ truck.fastBrakes != null ? truck.fastBrakes : 0 }}</td>
+                        <td class="suivi-table__col-time">
+                          <span class="suivi-table__age" [ngClass]="ageToneClass(truck)">
+                            <mat-icon>schedule</mat-icon>
+                            {{ fmtAge(truck.lastUpdateSec) }}
+                          </span>
+                        </td>
+                        <td class="suivi-table__col-menu" (click)="$event.stopPropagation()">
+                          <button
+                            mat-icon-button
+                            type="button"
+                            [matMenuTriggerFor]="rowMenu"
+                            (click)="menuTruck = truck"
+                            aria-label="Actions"
+                          >
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+                <mat-menu #rowMenu="matMenu">
+                  <button mat-menu-item type="button" *ngIf="menuTruck" (click)="selectTruck(menuTruck)">
+                    <mat-icon>my_location</mat-icon>
+                    <span>Centrer sur la carte</span>
+                  </button>
+                  <button mat-menu-item type="button" (click)="clearSelection()">
+                    <mat-icon>close</mat-icon>
+                    <span>Désélectionner</span>
+                  </button>
+                </mat-menu>
+                <div class="orient-empty" *ngIf="!filteredTrucks.length">Aucun camion</div>
+              </div>
+
+              <div class="orient-suivi__fleet-summary">
+                <div class="orient-suivi__fleet-count orient-suivi__fleet-count--ok">
+                  <span class="orient-suivi__fleet-num">{{ healthCounts.normal }}</span>
+                  <mat-icon>directions_car</mat-icon>
+                </div>
+                <div class="orient-suivi__fleet-count orient-suivi__fleet-count--alert">
+                  <span class="orient-suivi__fleet-num">{{ healthCounts.alert }}</span>
+                  <mat-icon>directions_car</mat-icon>
+                </div>
+                <div class="orient-suivi__fleet-count orient-suivi__fleet-count--off">
+                  <span class="orient-suivi__fleet-num">{{ healthCounts.offline }}</span>
+                  <mat-icon>directions_car</mat-icon>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Suivi des alertes">
+            <div class="orient-suivi__alerts" fusePerfectScrollbar>
+              <div class="orient-suivi__alert" *ngFor="let alert of alerts">
+                <div class="orient-suivi__alert-head">
+                  <strong>{{ alertTypeLabel[alert.type] }}</strong>
+                  <span [class]="chipClass(alertLevelMeta[alert.level].tone)">
+                    {{ alertLevelMeta[alert.level].label }}
+                  </span>
+                </div>
+                <p>{{ alert.message }}</p>
+                <small>{{ alert.time }} · {{ alertStatusMeta[alert.status].label }}</small>
+                <div class="orient-suivi__alert-actions" *ngIf="alert.status === 'open'">
+                  <button mat-stroked-button color="primary" type="button" (click)="acknowledgeAlert(alert)">
+                    Prendre en compte
+                  </button>
+                  <button mat-stroked-button color="accent" type="button" (click)="resolveAlert(alert)">
+                    Résoudre
+                  </button>
+                </div>
+              </div>
+              <div class="orient-empty" *ngIf="!alerts.length">Aucune alerte</div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Gestion des stops et des circulations">
+            <div class="orient-suivi__stub">
+              <mat-icon>traffic</mat-icon>
+              <p>Gestion des stops et des circulations</p>
+              <small>Disponible en démo limitée</small>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Animation de la trajectoire">
+            <div class="orient-suivi__stub">
+              <mat-icon>timeline</mat-icon>
+              <p>Animation de la trajectoire</p>
+              <small>Sélectionnez un camion pour afficher sa trace sur la carte</small>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </as-split-area>
+
+    <as-split-area [size]="rightSize" class="orient-suivi__right">
+      <div class="orient-suivi__map-shell">
+        <div id="orientMap"></div>
+
+        <div class="orient-suivi__map-tools">
+          <button
+            mat-mini-fab
+            type="button"
+            class="orient-suivi__ctrl"
+            (click)="clearDrawing()"
+            matTooltip="Annuler le dessin"
+          >
+            <mat-icon>auto_fix_off</mat-icon>
+          </button>
+
+          <button
+            mat-mini-fab
+            type="button"
+            class="orient-suivi__ctrl"
+            (click)="toggleOverlays()"
+            matTooltip="Couches"
+          >
+            <mat-icon>layers</mat-icon>
+          </button>
+
+          <button
+            mat-mini-fab
+            type="button"
+            class="orient-suivi__ctrl"
+            (click)="toggleOverlays()"
+            [color]="showOverlays ? 'primary' : undefined"
+            matTooltip="Visibilité des couches"
+          >
+            <mat-icon>visibility</mat-icon>
+          </button>
+
+          <button
+            mat-mini-fab
+            type="button"
+            class="orient-suivi__ctrl"
+            [matMenuTriggerFor]="geoMenu"
+            matTooltip="Opérations géographique"
+          >
+            <mat-icon>explore</mat-icon>
+          </button>
+          <mat-menu #geoMenu="matMenu">
+            <button mat-menu-item type="button" (click)="startGeofence()">
+              <mat-icon>add_location</mat-icon>
+              <span>Ajouter géorepérage</span>
+            </button>
+            <button mat-menu-item type="button" (click)="startRoute()">
+              <mat-icon>add_location</mat-icon>
+              <span>Ajouter un itinéraire</span>
+            </button>
+            <button mat-menu-item type="button" [matMenuTriggerFor]="geoOps" (click)="$event.stopPropagation()">
+              <mat-icon>add_location</mat-icon>
+              <span>Opérations géographique</span>
+            </button>
+            <button mat-menu-item type="button" (click)="openPanel('places')">
+              <mat-icon>location_city</mat-icon>
+              <span>Gestion des emplacements</span>
+            </button>
+            <button mat-menu-item type="button" (click)="openPanel('polygons')">
+              <mat-icon>category</mat-icon>
+              <span>Gestion des polygones</span>
+            </button>
+            <button mat-menu-item type="button" (click)="openPanel('routes')">
+              <mat-icon>streetview</mat-icon>
+              <span>Gestion des routes</span>
+            </button>
+          </mat-menu>
+          <mat-menu #geoOps="matMenu">
+            <button mat-menu-item type="button" (click)="startGeoMarker()">
+              <mat-icon>place</mat-icon>
+              <span>Ajouter un emplacement</span>
+            </button>
+            <button mat-menu-item type="button" (click)="startGeoRoute()">
+              <mat-icon>streetview</mat-icon>
+              <span>Ajouter une route</span>
+            </button>
+            <button mat-menu-item type="button" (click)="startGeoPolygon()">
+              <mat-icon>category</mat-icon>
+              <span>Ajouter un polygone</span>
+            </button>
+          </mat-menu>
+        </div>
+
+        <div class="orient-suivi__geo-panel-wrap" *ngIf="geoPanelMode">
+          <app-orient-geo-manage-panel
+            [mode]="geoPanelMode"
+            [ports]="lastPorts"
+            [stockZones]="lastStock"
+            [workshops]="lastWorkshops"
+            [pauseZones]="lastPause"
+            [routes]="lastRoutes"
+            [highlightId]="highlightShapeId"
+            (closed)="closePanel()"
+            (focusShape)="onFocusShape($event)"
+            (toggleVisibility)="onToggleVisibility($event)"
+          ></app-orient-geo-manage-panel>
+        </div>
+
+        <div class="orient-suivi__legend">
+          <span><i class="lg lg--aller"></i> Trajet aller</span>
+          <span><i class="lg lg--retour"></i> Retour</span>
+          <span><i class="lg lg--port"></i> Port</span>
+          <span><i class="lg lg--stock"></i> Stock</span>
+        </div>
+      </div>
+    </as-split-area>
+  </as-split>
+</div>

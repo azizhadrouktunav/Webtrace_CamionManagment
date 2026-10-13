@@ -1,0 +1,44 @@
+<mat-expansion-panel *ngIf="(defaultParams?.HardSoftSupportFuelStolenDetectionAlarm || defaultParams?.HardwareSupportFuelLevelPercent4FillingAlarm || defaultParams?.HardSoftSupportHighFuelConsumptionAlarm) == true"><!--  -->
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+       {{'AlertConfiguration.FuelSection.FuelSectionTitle' | translate}}
+      </mat-panel-title>
+      <mat-panel-description>
+        
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <form [formGroup]="FuelSection">
+        <div fxLayout="column" fxFlex>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" class="space-between" *ngIf="defaultParams?.HardSoftSupportFuelStolenDetectionAlarm == true"><!--  -->
+                <mat-checkbox formControlName="activateStolenThreshold"(change)="changeStolenFuelStatus($event)">
+                    {{'AlertConfiguration.FuelSection.DropedFuel' | translate}}</mat-checkbox>
+                    <mat-form-field appearance="outline" class="pr-sm-8">
+                        <mat-label>%</mat-label>
+                        <input matInput formControlName="carburantStolenThresholdvalue" type="number">
+                    </mat-form-field> 
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" class="space-between" *ngIf="defaultParams?.HardwareSupportFuelLevelPercent4FillingAlarm == true"><!--  -->
+                <mat-checkbox formControlName="activateFuelOverOfLimiteAlert" (change)="changeFillFuelStatus($event)">
+                    {{'AlertConfiguration.FuelSection.ExceedsFuel' | translate}}</mat-checkbox>
+                    <mat-form-field appearance="outline" class="pr-sm-8">
+                        <mat-label>%</mat-label>
+                        <input matInput formControlName="fuelOverOfLimiteValue" type="number">
+                    </mat-form-field> 
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" class="space-between" *ngIf="defaultParams?.HardSoftSupportHighFuelConsumptionAlarm == true"><!--  -->
+                <mat-checkbox formControlName="activateFuelConsumptionAlert" class="margintop" (change)="changeFuelConsumptionStatus($event)">
+                    {{'AlertConfiguration.FuelSection.ExceedsFuelTheoretical' | translate}}</mat-checkbox>
+                    <mat-form-field appearance="outline" class="pr-sm-8">
+                        <mat-label>l/100km</mat-label>
+                        <input matInput formControlName="fuelConsumptionValue" type="number">
+                    </mat-form-field> 
+            </div>
+        </div>
+    </form>
+    
+    <mat-action-row>
+        <button type="button" mat-button color="warn" (click)="FuelDefault()">{{'AlertConfiguration.FuelSection.DefaultParams' | translate}} </button>
+        <button type="button" mat-button color="#26bcfb" (click)="FuelSabmit()">{{'AlertConfiguration.FuelSection.SendParms' | translate}}</button>
+    </mat-action-row>
+</mat-expansion-panel>

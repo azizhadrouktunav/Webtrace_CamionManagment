@@ -1,0 +1,153 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+ <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar >
+
+        <form [formGroup]="driverForm" class="event-form w-100-p" fxLayout="column" fxFlex>
+
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'NAV.DriverName' | translate}}</mat-label>
+                <input matInput
+                       formControlName="FirstName">
+                <mat-error>{{'NAV.Alert_requared' | translate}}</mat-error>
+
+            </mat-form-field>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.DriverLastName' | translate}}</mat-label>
+                    <input matInput formControlName="LastName">
+                    <mat-error>{{'NAV.Alert_requared' | translate}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>Email</mat-label>
+                    <mat-error>{{'NAV.DriveremailCheck' | translate}}</mat-error>
+                    <input matInput formControlName="Email">
+                </mat-form-field>
+
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.Drivercode' | translate}}</mat-label>
+                    <input matInput formControlName="DriverCode">
+                <mat-error *ngIf="driverForm.controls['DriverCode'].invalid">{{ getErrorMessage('DriverCode') }}</mat-error>   
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.DriverNb' | translate}}</mat-label>
+                    <input matInput formControlName="Tel">
+                </mat-form-field>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>Numéro de carte fermeture SmartLock</mat-label>
+                    <input matInput formControlName="Seal">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>Numéro de carte ouverture SmartLock</mat-label>
+                    <input matInput formControlName="UnSeal">
+                </mat-form-field>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="100">
+                    <mat-label>{{'NAV.DriverDate' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="startDatePicker"  formControlName="BirthDateLocal">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker ></mat-datepicker>
+                </mat-form-field>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.Driverplace' | translate}}</mat-label>
+                    <input matInput formControlName="BirthPlace">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.Driveradress' | translate}}</mat-label>
+                    <input matInput formControlName="Address">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>{{'NAV.Departement*' | translate}}</mat-label>
+                    <mat-select formControlName="DepartmentId">
+                        <mat-option *ngFor="let dept of departments" [value]="dept.Id">{{dept.Name}}</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon>
+                    <mat-error>{{'NAV.Driverdepalert' | translate}}</mat-error>
+                </mat-form-field>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="100">
+                    <mat-label>{{'NAV.driverCIN' | translate}}</mat-label>
+                    <input matInput formControlName="CIN" type="number">
+                    <mat-error>{{'NAV.Alert_CIN' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.Driverpermit' | translate}}</mat-label>
+                    <input matInput formControlName="DriverLicenseType">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.DriverPermitNb' | translate}}</mat-label>
+                    <input matInput formControlName="DriverLicenseNumber">
+                </mat-form-field>
+            </div>
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+
+       <!--  <button *ngIf="action === 'edit'"
+                mat-button
+                class="mr-8"
+                (click)="matDialogRef.close(['delete',driverForm])"
+                aria-label="Delete"
+                matTooltip="Delete">
+                {{'NAV.Remove' | translate}}
+        </button> -->
+
+        <button *ngIf="action !== 'edit'"
+        mat-button
+        class="save-button"
+        (click)="matDialogRef.close(driverForm)"
+        [disabled]="driverForm.invalid"
+        aria-label="SAVE">
+        {{'NAV.Add' | translate}}
+
+      </button>
+      <button *ngIf="action === 'edit'"
+      mat-button
+      class="save-button"
+      (click)="matDialogRef.close(['save',driverForm])"
+      [disabled]="driverForm.invalid"
+      aria-label="SAVE">
+      {{'NAV.Save' | translate}}
+
+</button>
+
+    </div>
+</div>

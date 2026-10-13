@@ -1,0 +1,91 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+        <div mat-dialog-content class="p-16 pb-0 m-0">
+    
+            <form [formGroup]="alertForm" class="event-form w-100-p" fxLayout="column" fxFlex>
+                <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="activatedAlert" class="w-100-p">
+                    <mat-radio-button class="mb-12" *ngFor="let type of typeAlerts" [value]="type.value" [checked]="type.checked"> {{type.viewValue | translate }}</mat-radio-button>
+                    <mat-radio-button class="mb-12"  *ngIf="forcedAAD" [value]="true">{{'EnableForcedArming' | translate }}</mat-radio-button>
+                </mat-radio-group>
+            </form>
+            <div class="event-form w-100-p" fxLayout="column" fxFlex>
+                <mat-checkbox fxLayout="column" fxLayoutAlign="start start" class="w-100-p" style="margin-left: 4%;" (change)="valueChange($event)">
+                    Envoyer la commande à d'autres véhicules
+                </mat-checkbox>
+            </div>
+            <!-- <div *ngIf="isMultipleDevices" fusePerfectScrollbar style="margin-top: 2%; width: 100vw !important;" fxLayout="column" fxFlex>
+                <mat-form-field fxLayout="column" fxLayoutAlign="center center" class="mat-chip-list-wrapper container-chip" style="width: 100vw !important;">
+                    <mat-chip-list #chipList aria-label="Fruit selection" style="width: 100vw !important;">
+                      <mat-chip
+                        *ngFor="let car of cars"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        color="primary"
+                        (removed)="remove(car)"
+                        style="background-color: #039be5; color: white;">
+                        {{car}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip>
+                      <input
+                        #fruitInput
+                        [formControl]="fruitCtrl"
+                        [matAutocomplete]="auto"
+                        [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="add($event)">
+                    </mat-chip-list>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                      <mat-option *ngFor="let car of filteredFruits | async" [value]="car">
+                        {{car}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+            </div> -->
+            <div *ngIf="isMultipleDevices">
+                <form [formGroup]="form" class="event-form w-100-p" fxLayout="column" fxFlex style="margin-top: 20px;">
+                    <mat-form-field appearance="outline" class="pr-4" fxFlex="100" style="width: inherit;">
+                        <mat-label>{{'NAV.TrackingObject' | translate}}</mat-label>
+                        <input type="text" aria-label="Select Vehicles" matInput [matAutocomplete]="autoGroup" formControlName="Car" >
+                    
+                        <mat-autocomplete [panelWidth]="'auto'" #autoGroup="matAutocomplete" [displayWith]="displayVehicle">
+                            <mat-optgroup *ngFor="let group of CarGroupOptions | async" >
+                            <div>
+                                <mat-checkbox [checked]="group.selected" (change)="toggleParent($event, group)" 
+                                (click)="$event.stopPropagation()" >
+                                    {{group.department}}
+                                </mat-checkbox>
+                                <button mat-button (click)="expandDocumentTypes(group)">
+                                <mat-icon>keyboard_arrow_down</mat-icon>
+                                </button>
+                                </div>  
+                                <mat-option *ngFor="let name of group.car" [value]="name"
+                                [ngClass]="isExpandCategory[group.department] ? 'list-show' : 'list-hide'">
+                                <mat-checkbox [checked]="group.checked ? true : name.checked" (change)="toggleSelection2($event, name, group)" 
+                            (click)="$event.stopPropagation()">
+                            {{name.FullName}}
+                        </mat-checkbox>
+                                </mat-option>
+                        </mat-optgroup>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
+            
+            
+        </div>
+        
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+            <button mat-button type="submit"  (click)="matDialogRef.close([alertForm,isMultipleDevices,stateRecord])">{{'Common.Save' |  translate}}</button>
+            <button mat-button type="button"  (click)="matDialogRef.close()">{{'Common.Cancel' | translate }}</button>
+        </div>
+    </div>
+    

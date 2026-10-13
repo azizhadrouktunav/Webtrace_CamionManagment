@@ -1,0 +1,120 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+ 
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="logForm">
+            <div fxLayout="row">
+            
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+                    <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.ValFrom' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker1" formControlName="DateAvailableFromLocal">
+                        <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+              
+                      <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.ValTo' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="DateAvailableToLocal">
+                        <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+             </div>
+            </div>
+            <div fxLayout="row">
+            
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+                 
+                    <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.Cost' | translate}}</mat-label>
+                        <input matInput
+                        type="number"
+                        placeholder="pick a number" formControlName="Cost"> 
+                        <mat-error *ngIf="logForm.controls['Cost'].invalid">{{ getErrorMessage('Cost') }}</mat-error>
+                      </mat-form-field>
+              
+                      <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                         <mat-label>{{'NAV.Payed' | translate}}</mat-label>
+                        <input matInput
+                        type="number"
+                        placeholder="pick a number" formControlName="PaidCost" > 
+                        <mat-error *ngIf="logForm.controls['PaidCost'].invalid">{{ getErrorMessage('PaidCost') }}</mat-error>
+                      </mat-form-field>
+             </div>
+            </div>
+            <div fxLayout="row">
+            
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+                 
+                    <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.PayDate' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker3" formControlName="PaidDateLocal"  >
+                        <mat-datepicker-toggle matSuffix [for]="picker3" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker3></mat-datepicker>
+                      </mat-form-field>
+                      <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'NAV.Reference' | translate}}</mat-label>
+                        <input matInput formControlName="InvoiceReference" >  
+                      </mat-form-field>
+             </div>
+            </div>
+            <mat-form-field appearance="outline" class="w-100-p">
+              <mat-label>{{'NAV.Supplier' | translate}}</mat-label>
+            <input matInput
+                      formControlName="Supplier"
+                      mat-maxlength="250"
+                      max-rows="4"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100-p">
+           <mat-label>{{'NAV.Desc' | translate}}</mat-label>
+            <textarea matInput
+                      formControlName="Description"
+                      mat-maxlength="250"
+                      max-rows="4">
+            </textarea>
+        </mat-form-field>
+        </form>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+      <button *ngIf="action ==='edit'"
+              mat-button color="primary"
+              class="mr-8"
+              (click)="matDialogRef.close(['delete',logForm ])"
+              aria-label="Delete"
+              matTooltip="Delete">
+              {{'NAV.Remove' | translate}}
+      </button>
+  
+      <button *ngIf="action !== 'edit'"
+              mat-button color="primary"
+              class="save-button"
+              (click)="matDialogRef.close(logForm )"
+              [disabled]="logForm .invalid"
+              aria-label="ADD">
+              {{'NAV.Add' | translate}}
+      </button>
+  
+      <button *ngIf="action === 'edit'"
+              mat-button color="primary"
+              class="save-button"
+              (click)="matDialogRef.close(['save', logForm ])"
+              [disabled]="logForm .invalid"
+              aria-label="SAVE">
+              {{'NAV.Save' | translate}}
+
+      </button>
+  
+  </div>
+  </div>
+   
+  
+  

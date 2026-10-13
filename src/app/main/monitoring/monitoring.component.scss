@@ -1,0 +1,335 @@
+@import './map/Map.scss';
+
+
+::ng-deep .as-split-gutter:hover {
+    background-color: rgb(60, 66, 82) !important;
+}
+
+::ng-deep {
+
+    // #MonitoringTables {
+    //     overflow: hidden;
+    //     position: absolute;
+    //     bottom: 0;
+    //     right: 0;
+    //     left: 0;
+    //     transition: height .75s;
+    //     z-index: 1050;
+    //     min-height: 50px;
+
+    //     &.None {
+    //         height: 0%;
+    //     }
+
+    //     &.Small {
+    //         height: 40%;
+    //     }
+
+    //     // &.Big {
+    //     //     height: calc(100% - 70px);
+    //     // }
+
+    //     &.Full {
+    //         height: calc(100% - 70px);
+    //     }
+
+    //     // mat-ink-bar.mat-ink-bar::after {
+    //     //     content: "";
+    //     //     background-image: url(https://image.flaticon.com/icons/png/512/60/60995.png);
+    //     //     height: 30px;
+    //     //     width: 30px;
+    //     //     top: -10px;
+    //     //     left: calc(50% - 15px);
+    //     //     position: absolute;
+    //     //     filter: invert(1);
+    //     //     background-size: cover;
+    //     // }
+
+    //     mat-tab-group {
+    //         position: absolute;
+    //         bottom: 0;
+    //         width: 100%;
+    //         max-height: 100%;
+
+    //         // .mat-tab-label:not(.mat-tab-label-active) {
+    //         //     background: red;
+    //         // }
+    //         dx-data-grid {
+    //             height: 100%;
+
+    //             .dx-row {
+    //                 border-bottom: 2px solid #00000014 !important;
+    //             }
+    //         }
+    //     }
+
+    //     i {
+    //         font-family: DXIcons !important;
+    //     }
+    // }
+
+    // .ResizeBtn {
+    //     position: absolute;
+    //     cursor: pointer;
+    //     color: white;
+    //     background: #3c4252;
+    //     z-index: 1100;
+    //     text-align: center !important;
+    //     padding: 0 !important;
+    //     height: 40px;
+    //     width: 40px;
+    //     right: 12px;
+    //     bottom: 6px;
+    // }
+
+    
+.mat-tab-body-wrapper {
+    height: 100%;
+}
+
+    #mapControls{
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1100;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap-reverse;
+        
+        height: 70px !important;
+
+        
+        &.None {
+            height: 80%;
+        }
+
+        &.Small {
+            height: 60%;
+        }
+
+        // &.Big {
+        //     height: 70px;
+        // }
+
+        &.Full {
+            height: 70px;
+        }
+    }
+    .mapControlItem {
+        cursor: pointer;
+        transition: all .45s;
+        border-radius: 50px;
+        background: white;
+        box-shadow: black 0 0 10px -4px;
+        margin: 10px 10px 0 0;
+
+        &:hover{
+            color: white;
+            background: black;
+            span{
+                left: -55px;
+            }
+        }
+
+        .ng-fa-icon {
+            display: block;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        span {
+            position: absolute;
+            display: block;
+            width: 250px;
+            height: 50px;
+            line-height: 50px;
+            font-weight: 500;
+        }
+    }
+    .MapControlsTip {
+        font-size: 15px;
+        box-shadow: -6px 1px 15px -7px black;
+        border: solid 1px #bbb;
+        background: white !important;
+        color: black !important;
+    }
+
+    .LayersMenu .ng-fa-icon{
+        padding: 10px 20px 0 5px;
+    }
+
+    .leaflet-div-icon{
+        background: unset;
+        border: unset;
+    }
+
+    .RealTimeTrackingObject{
+        img{
+            width: 35px;
+            height: 35px;
+            background: white;
+            border-radius: 20px;
+            padding: 3px;
+            box-shadow: 0px 1px 7px -1px black;
+            border: solid 4px #002fc8;
+        }
+        .visionDirection {
+            background: url(assets/images/CarVision.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: -4;
+            padding: 70px 34px;
+            position: absolute;
+            top: -52px;
+            left: -17px;
+            background-position: 0px 10px;
+        }
+    }
+
+    .mat-tab-label {
+        .mat-icon , .ng-fa-icon{
+            margin: 0 10px;
+        }
+    }
+}
+
+
+pre {
+    margin: 15px;
+    padding: 10px 30px;
+    background: rgba(249, 214, 118, .3);
+}
+
+.split-example-page {
+    display: block;
+    width: 100%;
+    margin: 100px 0;
+}
+
+
+    .split-example {
+        height: calc(100vh - 65px);
+
+        .page-layout{
+            height: 100%;
+
+            > .content {
+                height: 100%;
+
+                    .mat-tab-group {
+                        height: 100%;
+
+                        
+                    }
+            }
+        }
+    }
+    ::ng-deep {
+        #MonitoringTable {
+            height: 93% !important;
+
+
+        }
+        
+}
+as-split {
+    overflow: initial !important; 
+    
+  }
+  
+  .as-split-area {
+      margin-top: 5px;
+    box-shadow: 0px 0px 20px #3f3e3e;
+    background: #ffffff;
+    border-radius: 10px;
+
+  }
+  
+  
+  .as-split-gutter {
+    background-color: #fff0 !important;
+  }
+code {
+    color: #bb7a00;
+}
+.example-tab-icon {
+    margin-right: 8px;
+  }
+  
+
+  .TrajectoryAnimationControls {
+    position: absolute;
+    top: 10px;
+    z-index: 600;
+   // left: 0;
+    right: 340px;
+    margin: auto;
+    display: flex;
+    width: max-content;
+
+    .ControlsButton {
+        text-align: center;
+        padding: 15px 0;
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        background: white;
+        color: black;
+        box-shadow: black 0 0 15px -5px;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: all .45s;
+
+        &:hover{
+            background: #002fc8;
+            color: white;
+        }
+
+        &.active {
+            background: green;
+            color: white;
+        }
+    }
+}
+
+
+::ng-deep{
+    .TrajectsListMenu {
+        width: max-content;
+        max-width: none !important;
+    }
+}
+
+.TrajectsList {
+    padding: 5px 25px;
+    width: max-content;
+
+    button {
+        background: #008ed4;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        height: 30px;
+        width: 30px;
+        margin: 5px;
+        cursor: pointer;
+    }
+}
+
+.pointer{
+    position:absolute;
+    top:86px;
+    left:60px;
+    z-index:99999;
+  }
+
+  @media screen and (max-width: 768px) {
+    #mapControls{
+        height: 270px !important;
+        bottom: 0;
+        top: unset;
+    }
+  }

@@ -1,0 +1,156 @@
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>local_gas_station</mat-icon>
+                <span class="h1">
+                  {{'Tanks' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn"><mat-icon class="grey-700-fg">search</mat-icon></label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+            
+
+            <button mat-fab color="warn" class="add-button" (click)="addTank()" aria-label="Add tank" >
+                <mat-icon>add</mat-icon>
+            </button>
+
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <mat-table class="tanks_table"  #table [dataSource]="dataSource"
+                  matSort
+                  [@animateStagger]="{value:'50'}"
+                  fusePerfectScrollbar>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'TankName' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let tank">
+                        <p class="text-truncate">
+                            {{tank.Name}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Capacity Column -->
+                <ng-container matColumnDef="capacity">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'NAV.Capacite' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let tank">
+                        <p class="text-truncate">
+                            {{tank.FuelContainerCapacityInL}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- Level Column -->
+                 <ng-container matColumnDef="fuelLevel">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'FuelLevelInL' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let tank">
+                        <p class="text-truncate">
+                            {{tank.FuelLevelInL}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- Status Column -->
+                  <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'NAV.Status'  | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let tank">
+                        <p class="text-truncate"
+                        [ngClass]="{'red-500':tank.Status == 'Critical', 'amber-500': tank.Status == 'Warning','green-600':tank.Status == 'Normal'}">
+                            {{tank.Status | translate }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+     <!-- created Date  Column -->
+    <!-- <ng-container matColumnDef="createdDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'created_date' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let tank">
+                <p class="text-truncate">
+                    {{tank.CreatedDate | customDate }}
+                </p>
+            </mat-cell>
+   </ng-container> -->
+
+     <!-- Threshold refuelling Column -->
+    <ng-container matColumnDef="refuelling">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Threshold_Refuelling' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let tank">
+            <p class="text-truncate">
+                {{tank.Threshold_Refuelling}}
+            </p>
+        </mat-cell>
+    </ng-container>
+
+     <!-- Threshold Draining Column -->
+     <ng-container matColumnDef="draining">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Threshold_Drainage' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let tank">
+            <p class="text-truncate">
+                {{tank.Threshold_Draining}}
+            </p>
+        </mat-cell>
+    </ng-container>
+
+     <!-- Type Column -->
+     <ng-container matColumnDef="FuelType">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'FuelType' | translate }}</mat-header-cell>
+        <mat-cell *matCellDef="let tank">
+            <span class="p-4" [ngClass]="{'orange-500': tank.FuelType === 1, 
+            'purple-500': tank.FuelType === 2,
+            'orange-200': tank.FuelType === 3}">
+            {{tank.FuelTypeString | translate}} 
+          </span>
+        </mat-cell>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+        <mat-cell *matCellDef="let tank">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <button mat-button-toggle mat-icon-button color="accent" (click) = "updateTank(tank)"><mat-icon>edit</mat-icon></button>
+                <button mat-button-toggle mat-icon-button color="warn"(click)="deleteTank(tank)" ><mat-icon>delete</mat-icon></button>
+            </div>
+        </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+    <mat-row *matRowDef="let tank; columns: displayedColumns;"
+              class="order"
+             matRipple>
+</mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator
+            [length]="dataSource.filteredData.length"
+            [pageIndex]="0"
+            [pageSize]="10"
+            [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+        </div>
+           
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

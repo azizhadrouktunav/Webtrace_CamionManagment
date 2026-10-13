@@ -1,0 +1,124 @@
+<div id="circulation" class="page-layout simple fullwidth inner-scroll">
+     <!-- TOP BACKGROUND -->
+      <mat-accordion  #accordion="matAccordion" [multi]="true" class="fuse-white">
+        
+            <mat-panel-title fxLayout="row" fxLayoutAlign="end center" (click)="$event.stopPropagation();" class="panelTitle">
+                 
+
+                        <label for="fuse-search-bar-input">
+                        
+                                <mat-icon class="s-24 secondary-text">search</mat-icon>
+                        </label>
+                
+                        <input id="fuse-search-bar-input" class="ml-24" type="text" (keyup)="applyFilter()" placeholder="{{'NAV.find' | translate }}"  [(ngModel)]="filterValue" #filter fxFlex>
+            </mat-panel-title>
+            <mat-panel-description  fxLayout="row" fxLayoutAlign="end center"> 
+
+              <button mat-icon-button color="primary" (click)="removeTable()" matTooltip="Clean table" aria-label="clean table">
+                <mat-icon>delete_sweep</mat-icon>
+              </button>
+          <button  style="margin: 5px" (click)="generateRunStops()" mat-raised-button color="primary"><span style="font-size: 11px ;">Choisir la véhicule</span></button>
+
+            </mat-panel-description>
+          </mat-accordion>
+             <div fxLayout="row wrap" fxLayoutAlign="start start">
+                    <mat-progress-bar mode="determinate" [value]="progressbarValue" ></mat-progress-bar>
+                </div>
+      
+      <!-- CENTER -->
+        <mat-table class= "alerts-table" #table [dataSource]="dataSource" multiTemplateDataRows
+                   matSort  [@animateStagger]="{value:'100'}"
+                   fusePerfectScrollbar>      
+           
+            <ng-container matColumnDef="PeriodString">
+              <mat-header-cell *matHeaderCellDef > {{'NAV.Period' | translate }} </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.PeriodString}} </mat-cell>
+             
+            </ng-container>
+            <ng-container matColumnDef="Matricule">
+              <mat-header-cell *matHeaderCellDef > {{'NAV.Matricule' | translate }} </mat-header-cell>
+              <mat-cell *matCellDef="let element" [style.background]="getColor(element.Matricule)"> {{element.Matricule}} </mat-cell>
+             
+            </ng-container>
+      
+            <ng-container matColumnDef="BeginDateLocalString">
+              <mat-header-cell *matHeaderCellDef >{{'NAV.StartDate' | translate }}</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.BeginDateLocalString}} </mat-cell>
+             
+            </ng-container>
+      
+              <ng-container matColumnDef="DistanceAtRunStatus">
+                <mat-header-cell *matHeaderCellDef > {{'RunStop.DistanceKm' | translate }} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.DistanceAtRunStatus}}</mat-cell>
+                <mat-footer-cell *matFooterCellDef><span>{{'sum' | translate}}</span> {{ getTotalDistance()}}</mat-footer-cell>
+              </ng-container>
+            <ng-container matColumnDef="AverageSpeed">
+                <mat-header-cell *matHeaderCellDef > {{'RunStop.AverageSpeed' | translate }} </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.SpeedAverageAtRunStatus}}</mat-cell>           
+            </ng-container>
+            <ng-container matColumnDef="Status">
+                <mat-header-cell *matHeaderCellDef > </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                     <p class="status text-truncate h6 p-4"
+                        [ngClass]="{'red-500':element.StopRunStatusEnum == 1, 'green-600':element.StopRunStatusEnum == 0, 'orange-800':element.StopRunStatusEnum == 2}">
+                        {{element.StopRunStatusEnumString | translate }}
+                     </p> 
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="NearestPlaceString">
+              <mat-header-cell *matHeaderCellDef > {{'RunStop.PlaceKm' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.NearestPlaceString}}</mat-cell>
+             
+             </ng-container>
+        
+            <ng-container matColumnDef="action">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let element; let index"><button mat-icon-button class="blue-fg" matTooltip="show on the map" (click)="zoomOn(element.Matricule, index)"><mat-icon>public</mat-icon></button></mat-cell>
+             
+          </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="center"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns; let index" (click)="zoomOn(row.Matricule, index)"></mat-row>
+        </mat-table>
+        <div *ngIf="isLoading"
+             style="
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             background: white;
+             position: absolute;
+             width: 100%;
+             top: 100px;
+             bottom: 75px;">
+                    <mat-progress-spinner 
+                        color="primary" 
+                        mode="indeterminate">
+                    </mat-progress-spinner>
+        </div>
+    <div  style="text-align: center;background-color:white;" *ngIf="dataSource?.filteredData.length == 0">
+            <span  class="mat-subheading-2" >{{'no_data_found' | translate }}</span>
+        </div> 
+        <mat-toolbar  style="min-height: 46px !important; height: 46px !important;" class="fuse-white-bg">
+          <mat-toolbar-row fxLayout="row" fxLayoutAlign="start center">
+
+            <mat-icon (click)="downloadPdf()" class="pdf red-fg" matTooltip="Export as PDF">picture_as_pdf
+            </mat-icon>
+            <button mat-icon-button (click)="downloadExcel()" class="excel" matTooltip="Export as CSV" [disabled]="dataSource?.filteredData.length == 0">
+              <img src="assets/icons/excel.png" class="h-24 w-24" />
+            </button>
+            <mat-paginator #paginator
+                          [length]="dataSource.filteredData.length"
+                          [pageIndex]="0"
+                          [pageSize]="25"
+                          [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+          </mat-toolbar-row>
+      </mat-toolbar>
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+      fullScreenBackdrop: 'true',
+     
+      primaryColour: '#e2f000', 
+      secondaryColour: '#e2f000', 
+      tertiaryColour: '#e2f000' }" ></ngx-loading>
+
+</div>
+  

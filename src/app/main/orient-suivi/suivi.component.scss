@@ -1,0 +1,474 @@
+@import '../orient-shared/orient-page';
+
+:host {
+  display: block;
+  height: calc(100vh - 65px);
+  width: 100%;
+  position: relative;
+}
+
+.orient-suivi {
+  background: #eef2f6;
+  height: 100%;
+}
+
+.orient-suivi as-split {
+  height: 100%;
+}
+
+.orient-suivi ::ng-deep .as-split-area {
+  overflow: hidden;
+}
+
+.orient-suivi__left,
+.orient-suivi__right {
+  height: 100%;
+  overflow: hidden;
+}
+
+.orient-suivi__panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Top toolbar ── */
+.orient-suivi__toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+  min-height: 40px;
+}
+
+.orient-suivi__toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 4px;
+}
+
+.orient-suivi__toolbar-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.orient-suivi__sort-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.orient-suivi__toolbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.orient-suivi__toolbar-actions .mat-icon-button {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+}
+
+.orient-suivi__toolbar-actions mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.orient-suivi__search-wrap {
+  padding: 8px 12px 0;
+  flex: 0 0 auto;
+}
+
+.orient-suivi__search {
+  width: 100%;
+}
+
+/* ── Tabs (headers below) ── */
+.orient-suivi__tabs {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.orient-suivi__tabs ::ng-deep .mat-tab-body-wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.orient-suivi__tabs ::ng-deep .mat-tab-body-content {
+  height: 100%;
+  overflow: hidden;
+}
+
+.orient-suivi__tabs ::ng-deep .mat-tab-header {
+  flex: 0 0 auto;
+  background: #2c3a4e !important;
+  border-top: none;
+  border-bottom: none;
+}
+
+.orient-suivi__tabs ::ng-deep .mat-tab-label {
+  color: #fff !important;
+  opacity: 0.85;
+  height: 40px;
+  min-width: 0;
+  padding: 0 16px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.orient-suivi__tabs ::ng-deep .mat-tab-label.mat-tab-label-active {
+  opacity: 1;
+  color: #fff !important;
+}
+
+.orient-suivi__tabs ::ng-deep .mat-ink-bar {
+  background-color: #e4892c !important;
+  height: 3px !important;
+}
+
+.orient-suivi__tabs ::ng-deep .mat-tab-header-pagination-chevron {
+  border-color: #fff;
+}
+
+.orient-suivi__tabs ::ng-deep .mat-tab-header-pagination-disabled .mat-tab-header-pagination-chevron {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.orient-suivi__tab-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* ── Data table ── */
+.orient-suivi__table-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.suivi-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.suivi-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.suivi-table th {
+  background: #196c9c;
+  color: #fff;
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 10px;
+  white-space: nowrap;
+  border: none;
+  font-size: 11px;
+  letter-spacing: 0.01em;
+}
+
+.suivi-table__col-time {
+  width: 110px;
+}
+
+.suivi-table__col-menu {
+  width: 40px;
+  text-align: center;
+  padding: 0 !important;
+}
+
+.suivi-table__sort {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+.suivi-table__group td {
+  background: #d9e8fb;
+  color: #1a3a5c;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(25, 108, 156, 0.12);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.suivi-table__group--selected td {
+  background: #c5daf5;
+}
+
+.suivi-table__expand {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 2px;
+  color: #196c9c;
+}
+
+.suivi-table__row td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fff;
+  color: rgba(0, 0, 0, 0.78);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suivi-table__row--alt td {
+  background: #e8f1ff;
+}
+
+.suivi-table__row--selected td {
+  background: rgba(25, 108, 156, 0.12) !important;
+}
+
+.suivi-table__row:hover td {
+  background: rgba(25, 108, 156, 0.08);
+}
+
+.suivi-table__age {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.suivi-table__age mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  padding: 2px;
+  box-sizing: content-box;
+}
+
+.suivi-table__age--ok mat-icon {
+  color: #fff;
+  background: #43a047;
+}
+
+.suivi-table__age--warn mat-icon {
+  color: #fff;
+  background: #fb8c00;
+}
+
+.suivi-table__age--alert mat-icon {
+  color: #fff;
+  background: #e53935;
+}
+
+.suivi-table__col-menu .mat-icon-button {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+}
+
+.suivi-table__col-menu mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* ── Fleet summary counters ── */
+.orient-suivi__fleet-summary {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 8px 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: #f8fafc;
+}
+
+.orient-suivi__fleet-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.orient-suivi__fleet-num {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.orient-suivi__fleet-count mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.orient-suivi__fleet-count--ok {
+  color: #43a047;
+}
+
+.orient-suivi__fleet-count--alert {
+  color: #e53935;
+}
+
+.orient-suivi__fleet-count--off {
+  color: #94a3b8;
+}
+
+/* ── Alerts & stubs ── */
+.orient-suivi__alerts {
+  height: 100%;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.orient-suivi__alert {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.orient-suivi__alert-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.orient-suivi__alert p {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+
+.orient-suivi__alert-actions {
+  margin-top: 8px;
+}
+
+.orient-suivi__alert-actions button {
+  margin-right: 8px;
+}
+
+.orient-suivi__stub {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(0, 0, 0, 0.45);
+  padding: 24px;
+  text-align: center;
+}
+
+.orient-suivi__stub mat-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #039be5;
+}
+
+/* ── Map ── */
+.orient-suivi__map-shell {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#orientMap {
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+}
+
+.orient-suivi__map-tools {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 500;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.orient-suivi__geo-panel-wrap {
+  position: absolute;
+  top: 64px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 520;
+  pointer-events: none;
+}
+
+.orient-suivi__ctrl {
+  background: #fff !important;
+  color: #1e3a5f !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18) !important;
+}
+
+.orient-suivi__legend {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 500;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.lg {
+  display: inline-block;
+  width: 14px;
+  height: 4px;
+  border-radius: 2px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.lg--aller { background: #039be5; }
+.lg--retour { background: #fb8c00; }
+.lg--port {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #1e3a5f;
+  background: rgba(30, 58, 95, 0.15);
+  border-radius: 2px;
+}
+.lg--stock {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #ea580c;
+  background: rgba(234, 88, 12, 0.15);
+  border-radius: 2px;
+}

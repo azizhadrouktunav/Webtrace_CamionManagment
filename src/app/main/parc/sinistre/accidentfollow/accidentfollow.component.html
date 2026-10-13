@@ -1,0 +1,265 @@
+<div id="product" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+      <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+          <!-- APP TITLE -->
+          <div fxLayout="row" fxLayoutAlign="start center">
+
+              <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/parc/sinistre'">
+                  <mat-icon>arrow_back</mat-icon>
+              </button>
+
+              <span class="logo-text h1" >
+                {{'NAV.Settlement' | translate}} {{accidentReportRef}}   {{'NAV.of' | translate}} {{CarMatricule}}
+                </span>
+
+          </div>
+          <!-- / APP TITLE -->
+         
+          <button mat-raised-button (click)='nextReglementStep()' *ngIf="!stepClosed" class="add-product-button fuse-white mt-24 mt-md-0">
+              <span> {{'NAV.NextStep' | translate}}</span>
+          </button>
+      
+      </div>
+      <!-- / HEADER -->
+     
+      <!-- CONTENT CARD -->
+      <div class="content-card">
+
+          <!-- CONTENT -->
+          <div class="content">
+              <!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+                  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+                </button> -->
+                
+                <mat-horizontal-stepper #stepper>
+                  <mat-step  state="assignment" >  <!-- [stepControl]="firstFormGroup" -->
+                    
+                      <ng-template matStepLabel> <p >Déclaration</p>
+                        </ng-template>
+                      
+                       
+                      <mat-list>
+                        <mat-list-item >
+                          <!-- <button mat-icon-button color="accent" (click)="createView()">
+                            
+                            <mat-icon style="float: right" aria-label="Edit">edit</mat-icon>
+                          </button>  -->
+                            <div style="clear: both">
+                                    <h3 style="float: left;color: #039be5">{{'NAV.AccidentDateGMT' | translate}} :    </h3>
+                                    <h3 style="float: right">{{details.AccidentDateGMT| localizedDate}} </h3>
+                                </div>
+                               
+                       
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item >
+                          <div style="clear: both">
+                            <h3 style="float: left;color: #039be5"> {{'NAV.AccidentType' | translate}}  :    </h3>
+                            <h3 style="float: right">{{details.AccidentTypeString}} </h3>
+                        </div>
+                          
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item >
+                          
+                          <div style="clear: both">
+                            <h3 style="float: left;color: #039be5"> {{'NAV.AccidentLocationFullName' | translate}} :    </h3>
+                            <h3 style="float: right">{{details.AccidentLocationFullName}} </h3>
+                        </div>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item >
+                          <div style="clear: both">
+                            <h3 style="float: left;color: #039be5"> {{'NAV.Dammage' | translate}} :    </h3>
+                            <h3 style="float: right">{{details.Dammage}} </h3>
+                        </div>
+                         
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item >
+                          <div style="clear: both">
+                            <h3 style="float: left;color: #039be5"> {{'NAV.Driver' | translate}} :    </h3>
+                            <h3 style="float: right">{{details.DriverString}} </h3>
+                        </div>
+                         
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item >
+                          <div style="clear: both">
+                            <h3 style="float: left;color: #039be5"> {{'NAV.InsuranceNme' | translate}} :    </h3>
+                            <h3 style="float: right">{{details.InsurerNameAstring}} </h3>
+                        </div>
+                         
+                        </mat-list-item>
+                      </mat-list>
+                      <div>
+                        <button mat-button color="primary" matStepperNext>Next</button>
+                      </div>
+                  </mat-step>
+                  <mat-step *ngIf="stepExpertise"  state="person" [stepControl]="secondFormGroup">
+                      <ng-template matStepLabel>Vue de l'expert</ng-template>
+                      
+                      <div>
+                        <mat-list>
+                          <mat-list-item >
+                          <!--   <button mat-icon-button color="accent" (click)="editExpertise()">
+                            
+                              <mat-icon aria-label="Edit">edit</mat-icon>
+                              
+                            </button> --> 
+                            <div style="clear: both">
+                              <h3 style="float: left;color: #039be5"> {{'NAV.Expertisedate' | translate}} :    </h3>
+                              <h3 style="float: right">{{details.Expertisesdate| localizedDate}} </h3>
+                          </div>
+                          
+                          </mat-list-item>
+                          <mat-divider></mat-divider>
+
+                          <mat-list-item >
+                            
+                            <div style="clear: both">
+                              <h3 style="float: left;color: #039be5"> {{'NAV.Expertisedecision' | translate}} :    </h3>
+                              <h3 style="float: right"> {{details.ExpertDecisionString}} </h3>
+                          </div>
+                          </mat-list-item>
+                          <mat-divider></mat-divider>
+
+                          <mat-list-item >
+                            
+                            <div style="clear: both">
+                              <h3 style="float: left;color: #039be5">  {{'NAV.Estimatedindemnisation' | translate}} :    </h3>
+                              <h3 style="float: right"> {{details.EstimatedDamageCost}}  </h3>
+                          </div>
+                          </mat-list-item>
+                          <mat-divider></mat-divider>
+
+                          <mat-list-item >
+                           
+                            <div style="clear: both">
+                              <h3 style="float: left;color: #039be5"> {{'NAV.Dammage' | translate}} :    </h3>
+                              <h3 style="float: right">{{details.Damages}}  </h3>
+                          </div>
+                          </mat-list-item>
+                        </mat-list>
+                      </div>
+                      <div>
+                        <button mat-button color="primary" (click)="editExpertise()">Edit</button>
+                        <button mat-button color="primary" matStepperNext>Next</button>
+                      </div>
+                  </mat-step>
+                  <mat-step state="person_add" *ngIf="stepContreExpertise" [stepControl]="secondFormGroup">
+                        <ng-template matStepLabel>Vue par un contre expert</ng-template>
+                        <div>
+
+                          
+                          <mat-list>
+                            <mat-list-item >
+                            <!--   <button mat-icon-button color="accent" (click)="editExpertise()">
+                              
+                                <mat-icon aria-label="Edit">edit</mat-icon>
+                                
+                              </button> --> 
+                              <div style="clear: both">
+                                <h3 style="float: left;color: #039be5"> {{'NAV.ContreExpertisedate' | translate}} :    </h3>
+                                <h3 style="float: right">{{details.ContreExpertisedate| localizedDate}} </h3>
+                            </div>
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+
+                            <mat-list-item >
+                              
+                              <div style="clear: both">
+                                <h3 style="float: left;color: #039be5"> {{'NAV.ContreExpertisedecision' | translate}} :    </h3>
+                                <h3 style="float: right"> {{details.ContreExpertDecisionString}} </h3>
+                            </div>
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+
+                            <mat-list-item >
+                              
+                              <div style="clear: both">
+                                <h3 style="float: left;color: #039be5">  {{'NAV.Estimatedindemnisation' | translate}} :    </h3>
+                                <h3 style="float: right"> {{details.ContreEstimatedDamageCost}}  </h3>
+                            </div>
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+
+                            <mat-list-item >
+                             
+                              <div style="clear: both">
+                                <h3 style="float: left;color: #039be5"> {{'NAV.Dammage' | translate}} :    </h3>
+                                <h3 style="float: right">{{details.DamagesContreExpert}}  </h3>
+                            </div>
+                            </mat-list-item>
+                          </mat-list>
+                          <div>
+                            <button mat-button color="primary" (click)="editContreExpertise()" >Edit</button>
+                            <button mat-button color="primary" matStepperNext>Next</button>
+                          </div>
+                        </div>
+                    </mat-step>
+                    <mat-step state="build" *ngIf="stepReglement" [stepControl]="secondFormGroup">
+                        <ng-template matStepLabel>Règlement</ng-template>
+                        
+                        <div>
+                         
+                        <mat-list>
+                          <mat-list-item >
+                            
+                            
+                            <div style="clear: both">
+                              <h3 style="float: left;color: #039be5">  {{'NAV.Reglementdate' | translate}}  :    </h3>
+                              <h3 style="float: right"> {{details.Reglementdate| localizedDate}}  </h3>
+                          </div>
+                          </mat-list-item>
+                          <mat-divider></mat-divider>
+
+                          <mat-list-item >
+                            
+                            <div style="clear: both">
+                              <h3 style="float: left;color: #039be5">  {{'NAV.ReglementDesc' | translate}}  :    </h3>
+                              <h3 style="float: right"> {{details.Reglementdescription}}  </h3>
+                          </div>
+                          </mat-list-item>
+                          
+
+                         
+                        </mat-list>
+                        <div>
+                          <button mat-button color="primary"(click)="editReglement()">Edit</button>
+                          <button mat-button color="primary" matStepperNext>Next</button>
+                        </div>
+                        </div>
+                    </mat-step>
+                  <mat-step state="assignment_turned_in" *ngIf="stepClosed">
+                    <ng-template matStepLabel>Achevé</ng-template>
+                    <h3 class="light-blue-900-fg" matLine > Ce dossier est réglé. </h3>
+                    <div>
+                      
+                    </div>
+                  </mat-step>
+                </mat-horizontal-stepper>
+                
+          </div>
+          <!-- / CONTENT -->
+
+      </div>
+      <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+
+</div>

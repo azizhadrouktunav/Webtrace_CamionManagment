@@ -1,0 +1,112 @@
+@import "src/@fuse/scss/fuse";
+@import "src/@fuse/components/search-bar/search-bar.component";
+
+    #alert-manager {
+        mat-table {
+            width: 100%;
+            overflow-y: scroll;
+            min-height: 70px;
+          }
+          .mat-expansion-panel-header-title {
+            flex-basis: 0;
+            .search-wrapper {
+                width: 100%;
+                max-width: 480px;
+                border-radius: 28px;
+                overflow: hidden;
+                @include mat-elevation(1);
+
+                @include media-breakpoint('xs') {
+                    width: 100%;
+                }
+                .search {
+                    width : calc(100% - 200px)
+                }
+            }
+          }
+          .mat-expansion-panel-header-description {
+            flex-basis: 0;
+            flex: 'end'
+          }
+          .mat-expansion-panel-content {
+             max-height: 80px;
+          }
+         .alerts-table {
+      
+            flex: 1 1 auto;
+            border-bottom: 1px solid rgba(0, 0, 0, .12);
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+
+            .mat-header-row{
+                background: #1974a1;
+
+
+              //  #6d7fe0;
+                
+                *{
+                    color : white !important;
+                }
+            }
+
+            mat-cell {
+                min-width: 0;
+                display: flex;
+                align-items: center;
+            }
+            mat-row:hover {
+                background-color:  #B7C1C1;
+              }
+            .mat-column-action{
+                max-width: 40px;
+            }
+            mat-footer-row, mat-row {
+                min-height: 30px;
+            }
+    
+             mat-form-field {
+
+                &.mat-form-field-appearance-outline {
+
+                    .mat-form-field-outline {
+                        top: 0;
+                    }
+                }
+
+                .mat-form-field-wrapper {
+                    padding: 0;
+                    width: 150px;
+                    .mat-form-field-infix {
+                        border-top: 0;
+                    }
+                }
+            }
+
+            
+          
+     } 
+     .example-spacer {
+        flex: 1 1 auto;
+      }
+      mat-paginator {
+        margin-left: auto;
+      }
+      mat-form-field {
+        font-size: 14px;
+      }
+    }
+    .split-example {
+        .page-layout{
+            height: 100%;
+        
+            .content{
+                height: fit-content;
+                overflow: hidden;
+        
+                .mat-table {
+                    height: calc(100% - 70px);
+                }
+            }
+        }}
+
+       

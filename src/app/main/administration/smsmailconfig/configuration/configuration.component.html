@@ -1,0 +1,211 @@
+<meta http-equiv="Cache-control" content="public">
+
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="space-around center" fxLayout.gt-sm="row"
+        fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+          
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-8"  [routerLink]="'/administration/smsmailconfig'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <span class="logo-text h1">
+                    {{title}}
+                </span>
+
+
+            </div>
+            <!-- / APP TITLE -->
+
+
+            <!-- SEARCH -->
+            <mat-form-field>
+              <!--  <mat-select (selectionChange)="selected($event)" [(value)]='selectedValue'>
+                    <mat-option *ngFor="let trackingObject of trackingobjects"
+                    [value]='trackingObject.CurrentEquipmentSerialNumber'>{{trackingObject.FullName}}</mat-option>
+                   </mat-select>-->
+                   <input type="text" aria-label="Select Vehicles" matInput [matAutocomplete]="autoGroup"  [formControl]='selectedValue'  >
+                   <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayVehicle">
+                  <!-- <app-select-check-all [model]="selectedValue" [values]="listcargroup" (change)="checkall(($event)">
+                    </app-select-check-all>-->
+                    <mat-option>
+                        <mat-checkbox [checked]="isAllSelectedCar" (change)="toggleSelectAll()" (click)="$event.stopPropagation()">
+                                    Tous
+                                </mat-checkbox>
+                      </mat-option>
+
+                    <!-- <mat-option  [value]="">
+                        <mat-checkbox (change)="toggleAllSelection22($event)" >
+                            All
+                        </mat-checkbox>
+                        </mat-option>-->
+                    <mat-optgroup *ngFor="let group of CarGroupOptions | async" >
+                      <div>
+                        <mat-checkbox [checked]="group.checked " (change)="toggleParent($event, group)" 
+                          (click)="$event.stopPropagation()" >
+                            {{group.department}}
+                        </mat-checkbox>
+                        <button mat-button (click)="expandDocumentTypes(group)">
+                          <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
+                        </div>  
+                        <mat-option *ngFor="let name of group.car" [value]="name"
+                           [ngClass]="isExpandCategory[group.department] ? 'list-show' : 'list-hide'">
+                           <mat-checkbox [checked]="group.checked" (change)="toggleSelection2($event, name, group)" 
+                    (click)="$event.stopPropagation()">
+                            {{name.FullName}}
+                        </mat-checkbox>
+                        </mat-option>
+                  </mat-optgroup>
+                </mat-autocomplete>
+                <mat-icon color="white">commute</mat-icon>
+            </mat-form-field>
+            <!-- / SEARCH -->
+
+            
+      
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+           
+              
+               
+                <mat-table matTableExporter  #table [dataSource]="dataSource" matSort
+                #exporter="matTableExporter" fusePerfectScrollbar>
+                <!-- Checkbox Column -->
+               
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                     
+                        <mat-checkbox (click)="$event.stopPropagation()" 
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="row.Send"
+                        [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>id
+
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                     
+                        <p class="text-truncate">{{item.Id}}</p>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="alert">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Alerte
+
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                     
+                        <p class="text-truncate">{{item.AlertDescription  }}</p>
+                    </mat-cell>
+                </ng-container>
+                
+                
+                    <ng-container matColumnDef="DateDebut">
+                        <mat-header-cell *matHeaderCellDef>Date de début</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          
+                            <ngx-mat-timepicker [(ngModel)]="row.DateDebut  " name="DateDebut" #picker></ngx-mat-timepicker>
+                           
+                           
+                        </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="DateFin">
+                        <mat-header-cell *matHeaderCellDef>Date de fin</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          
+                            <ngx-mat-timepicker [(ngModel)]="row.DateFin" name="DateFin"></ngx-mat-timepicker>
+                            
+                        
+                        </mat-cell>
+                      </ng-container>
+                      <!-- <ng-container matColumnDef="DateDebut">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Date Début</mat-header-cell>
+                        <mat-cell *matCellDef="let item">{{ getFormattedDate(item.DateDebut) }}</mat-cell>
+                      </ng-container>
+                      
+                      <ng-container matColumnDef="DateFin">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Date Fin</mat-header-cell>
+                        <mat-cell *matCellDef="let item">{{ getFormattedDate(item.DateFin) }}</mat-cell>
+                      </ng-container> -->
+
+
+
+               <!--  <ng-container matColumnDef="period">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Période
+
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let item">
+                     
+                        <p class="text-truncate">{{item.SendingPeriod  }}</p>
+                    </mat-cell>
+                </ng-container> -->
+                 <!-- actions -->
+                 <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let item; let i=index;">
+                        <button mat-icon-button (click)="editmail(item)">
+                            <div class="tooltip">
+                                <mat-icon>create</mat-icon><span class="tooltiptxt">{{'NAV.Edit' | translate}}</span>
+                            </div>
+                        </button>
+
+                       
+
+                      
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row 
+                    *matRowDef="let product; columns: displayedColumns;" class="product" matRipple>
+                </mat-row>
+
+              
+               
+                </mat-table>
+              <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                    <a><button color="warn" mat-raised-button [hidden]="disabled"
+                        (click)="configure()">
+                        <mat-icon>check
+                        </mat-icon>{{'NAV.configure' | translate}}
+                    </button></a>
+                </div>
+                <span class="spacer"></span>
+              <!---<mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="15"
+                    [pageSizeOptions]="[15]">
+                </mat-paginator>--> 
+
+            </mat-toolbar>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

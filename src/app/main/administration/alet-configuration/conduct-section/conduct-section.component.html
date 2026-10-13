@@ -1,0 +1,60 @@
+<mat-expansion-panel><!--*ngIf="Conductvisibility == true"-->
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{'AlertConfiguration.ConductSection.ConductSectionTitle' | translate}}
+      </mat-panel-title>
+      <mat-panel-description>
+       
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <form [formGroup]="ConductorSection">
+        <div fxLayout="column" fxFlex>
+            <div  class="space-around" *ngIf="defaultParams?.HardwareSupportHarshBrakingAccelerationAlarm == true"><!---->
+                <mat-checkbox formControlName="agressiveDriving" class="margintop" (change)="changeAgressivedrivingStatus($event)">
+                    {{'AlertConfiguration.ConductSection.AggressiveDriving' | translate}}
+                </mat-checkbox>
+                <mat-checkbox formControlName="activateSirenalarmAgressiveDriving" fxFlex="40" class="margintop">
+                    {{'AlertConfiguration.ConductSection.AggressiveDrivingAlarm' | translate}}
+                </mat-checkbox>
+            </div>
+            <div  class="space-around" *ngIf="defaultParams?.HardwareSupportHarshBrakingAccelerationAlarm == true"><!---->
+                <mat-form-field appearance="outline" class="margintop" style="margin-right: 20px; width: 40%;">
+                    <mat-label>{{'AlertConfiguration.ConductSection.Acceleration' | translate}}</mat-label>
+                    <mat-select formControlName="accelerationSensibility">
+                        <mat-option *ngFor="let ac of brakingList" [value]="ac.id">{{ac.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Error</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="margintop" style="width: 40%;">
+                    <mat-label>{{'AlertConfiguration.ConductSection.Braking' | translate}}</mat-label>
+                    <mat-select formControlName="brakingSensibility">
+                        <mat-option *ngFor="let bra of brakingList" [value]="bra.id">{{bra.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Error</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="space-between" *ngIf="defaultParams?.HardwareSupportExccedDrivingDetectionAlarm == true"><!---->
+                <mat-checkbox formControlName="activateExcessDrivingTime" class="margintop" (change)="changeExceessDrivingStatus($event)">
+                    {{'AlertConfiguration.ConductSection.ExcessDrivingTimeBy' | translate}}
+                </mat-checkbox>
+                <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33">
+                    <input matInput [ngxMatDatetimePicker]="pickercondact" placeholder="Choose a date"
+                        formControlName="condactPeriod">
+                    <mat-datepicker-toggle matSuffix [for]="pickercondact"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #pickercondact [color]="color"></ngx-mat-datetime-picker>
+                </mat-form-field>
+                <mat-checkbox formControlName="activateSirenAlarmExcessDrivingTime" class="margintop">
+                    {{'AlertConfiguration.ConductSection.ExcessDrivingAlarm' | translate}}
+                </mat-checkbox>
+            </div>
+        </div>
+    </form>
+    
+    <mat-action-row>
+        <button type="button" mat-button color="warn" (click)="ConductorDefault()">{{'AlertConfiguration.ConductSection.DefaultParams' | translate}}</button>
+        <button type="button" mat-button color="#26bcfb" (click)="ConductorSabmit(ConductorSection)">{{'AlertConfiguration.ConductSection.SendParms' | translate}}</button>
+    </mat-action-row>
+</mat-expansion-panel>

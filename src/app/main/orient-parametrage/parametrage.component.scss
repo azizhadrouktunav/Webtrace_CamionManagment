@@ -1,0 +1,49 @@
+.orient-postes {
+  width: 100%;
+  padding: 0 0 24px;
+}
+
+.orient-postes__card {
+  width: 100%;
+  padding-bottom: 8px;
+}
+
+.orient-postes__card mat-card-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.orient-postes .orient-shift-row {
+  display: grid !important;
+  grid-template-columns: minmax(180px, 1fr) minmax(220px, 1.4fr) minmax(160px, 200px);
+  gap: 12px 20px;
+  align-items: center;
+  margin-bottom: 0;
+  padding: 14px 0;
+  border: none;
+  border-bottom: 1px solid #e8e8e8;
+  border-radius: 0;
+  flex-wrap: unset;
+}
+
+.orient-postes .orient-shift-row:last-of-type {
+  border-bottom: none;
+  padding-bottom: 4px;
+}
+
+.orient-postes .orient-shift-row__field {
+  width: 100%;
+  margin: 0;
+}
+
+.orient-postes__card mat-card-actions {
+  margin: 8px 0 0;
+  padding: 8px 0 0;
+}
+
+@media (max-width: 720px) {
+  .orient-postes .orient-shift-row {
+    grid-template-columns: 1fr;
+  }
+}

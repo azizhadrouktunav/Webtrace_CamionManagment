@@ -1,0 +1,282 @@
+
+
+::ng-deep{
+
+   
+
+    .CarCardContainer {
+        width: 450px;
+        height: 280px;
+        border-radius: 25px;
+        overflow: hidden;
+    //    position: relative;
+        box-shadow: 0px 4px 10px -2px black;
+
+        a.leaflet-popup-close-button {
+            top: 5px;
+            right: 5px;
+        }
+
+        .leaflet-popup-content-wrapper, .leaflet-popup-content{
+            height: 100%;
+            background: transparent;
+        }
+
+        .background {
+            background-image: url(https://image.freepik.com/free-photo/headlights-new-red-car-car-dealership_146671-14964.jpg);
+            background-size: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 26%;
+            height: 100%;
+            z-index: -999;
+            &::after {
+                content: "";
+                height: 100%;
+                width: 100%;
+                position: absolute;
+            }
+        }
+        .CarCard {
+            position: absolute;
+            top: 0;
+            left: 25%;
+            background: white;
+            height: 100%;
+            width: 75%;
+            padding: 30px 0 0 40px;
+            .infoContainer{
+                
+                width: calc(100% - 50px);
+                height: calc(100% - 150px);
+                position: absolute;
+                overflow-y: scroll;
+                
+                .info {
+                    flex-direction: column;
+                    box-sizing: border-box;
+                    display: flex;
+                    place-content: flex-start space-evenly;
+                    align-items: flex-start;
+                    height: auto;
+
+                    >div {
+                        width: 100%;
+                        height: 100%;
+                        flex-direction: row;
+                        box-sizing: border-box;
+                        display: flex;
+                        place-content: center space-between;
+                        align-items: center;
+                        div {
+                            &:first-child {
+                                font-weight: 700;
+                                width: auto;
+                                min-width: max-content;
+                            }
+                            &:last-child {
+                                padding: 0 20px;
+                                text-align: right;
+
+                                width: 260px;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow:ellipsis;
+                            }
+                        }
+                    }
+                }
+            }
+            .EquiNbr {
+                font-size: 11px;
+                font-weight: 600;
+            }
+            img.CarAvatar {
+                max-width: unset;
+                position: absolute;
+                width: 75%;
+                left: 12%;
+                top: 12%;
+            }
+            .CarName {
+                font-size: 25px;
+                font-weight: 700;
+            }
+            .VisualInfo {
+                height: 20%;
+                width: 100%;
+                position: absolute;
+                flex-direction: row;
+                box-sizing: border-box;
+                display: flex;
+                place-content: space-evenly center;
+                align-items: center;
+                bottom: 10px;
+                left: 0;
+                .infoIcon {
+                    margin: 0 10px;
+                    background: #a2a2a2;
+                    color: white;
+                    border-radius: 20px;
+                    width: 40px;
+                    height: 40px;
+                    text-align: center;
+                    padding: 8px 0;
+                }
+                div {
+                    font-size: 16px;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+    .avatarIcon {
+        position: absolute;
+        border: 5px white solid;
+        border-radius: 40px;
+        width: 80px;
+        height: 80px;
+        top: 45px;
+        left: -45px;
+    }
+    .DangerSpeed {
+        .infoIcon {
+            &:nth-child(1) {
+                background: rgb(204, 0, 0) !important;
+            }
+        }
+    }
+    .HighSpeed {
+        .infoIcon {
+            &:nth-child(1) {
+                background: rgb(219, 106, 0) !important;
+            }
+        }
+    }
+    .NormalSpeed {
+        .infoIcon {
+            &:nth-child(1) {
+                background: rgb(0, 138, 11) !important;
+            }
+        }
+    }
+    .LowSpeed {
+        .infoIcon {
+            &:nth-child(1) {
+                background: rgb(1, 187, 72) !important;
+            }
+        }
+    }
+    .ContactOn {
+        .infoIcon {
+            &:nth-child(2) {
+                background: rgb(0, 255, 0) !important;
+            }
+        }
+    }
+    .ContactOff {
+        .infoIcon {
+            &:nth-child(2) {
+                background: rgb(255, 0, 0) !important;
+            }
+        }
+    }
+    .LowFuel {
+        .infoIcon {
+            &:nth-child(3) {
+                background: rgb(255, 0, 0) !important;
+            }
+        }
+    }
+    .EnoughFuel {
+        .infoIcon {
+            &:nth-child(3) {
+                background: rgb(0, 255, 0) !important;
+            }
+        }
+    }
+    .DangerHit {
+        .infoIcon {
+            &:nth-child(5) {
+                background: rgb(255, 0, 0) !important;
+            }
+        }
+    }
+    .NormalHit {
+        .infoIcon {
+            &:nth-child(5) {
+                background: rgb(240, 172, 0) !important;
+            }
+        }
+    }
+    .LowHit {
+        .infoIcon {
+            &:nth-child(5) {
+                background: rgb(0, 255, 0) !important;
+            }
+        }
+    }
+    .VeryLowHit {
+        .infoIcon {
+            &:nth-child(5) {
+                background: rgb(0, 185, 209) !important;
+            }
+        }
+    }
+    .BlueTheme {
+        .CarCard {
+            .EquiNbr {
+                border-top: 3px solid #008ed3;
+                color: #008ed3;
+            }
+        }
+        .background {
+            &::after {
+                background: #039be5aa;
+            }
+        }
+        .avatarIcon {
+            background: #3d9dd0;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .CarCardContainer{
+            width: 250px;
+            height: 240px;
+            border-radius: 10px;
+    
+            .background{
+                display: none;
+            }
+            .avatarIcon {
+                display: none;
+            }
+            .CarCard{
+                width: 100%;
+                left:0;
+                padding: 12px;
+                height: 260px;
+    
+                .infoContainer{
+                    width: calc(100% - -5px);
+                    height: calc(100% - 107px);
+                }
+    
+                .VisualInfo{ 
+                    height: 35px;
+                    bottom: 25px;
+    
+                    .infoIcon{
+                        padding: 7px 0;
+                        font-size: 16px;
+                        width: 30px;
+                        height: 30px;
+                        margin: 0 5px;
+                    }
+                }
+            }
+        }
+    }
+}

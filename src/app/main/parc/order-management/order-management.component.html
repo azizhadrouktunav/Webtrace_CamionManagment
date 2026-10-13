@@ -1,0 +1,250 @@
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+                
+                 <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>list_alt</mat-icon>
+                <span class="h1">
+                    {{'PlannedMission.MissionList' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-md-0 primary-50-bg">
+                    <div class="search">
+                        <input id="searchBtn" #filter  (keyup)="applyFilter($event)"
+                            [(ngModel)]="searchkey" required>
+                        <label for="searchBtn">
+                            <mat-icon class="grey-700-fg">search</mat-icon>
+                        </label>
+                    </div>
+                </div>
+                <!-- / SEARCH -->
+                
+
+                <mat-error *ngIf="error.isError">{{error.errorMessage}}</mat-error>
+
+           
+            <button mat-fab color="warn" class="add-button" (click)="add()">
+                <mat-icon>add</mat-icon>
+            </button>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+        <form [formGroup]="dateRangeForm"  fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="center">
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{'StartDate' | translate }}</mat-label>
+                       <!--  <input matInput [matDatepicker]="picker1" 
+                        placeholder="Choose a start date" formControlName="fromDate" required>
+                        <mat-error *ngIf="dateRangeForm.get('fromDate').hasError('required')">Start date is required!</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker1 ></ngx-mat-datetime-picker> -->
+
+                        <input matInput [matDatepicker]="picker1" formControlName="fromDate" required>
+                       
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>{{'EndDate' | translate}}</mat-label>
+                        <!-- <input matInput [matDatepicker]="picker2" 
+                        placeholder="Choose a end date"  formControlName="toDate" required>
+                        <mat-error *ngIf="dateRangeForm.get('toDate').hasError('required')">End date is required!</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker2  ></ngx-mat-datetime-picker> -->
+                        <input matInput [matDatepicker]="picker2" formControlName="toDate" required>
+                       
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                      </mat-form-field>
+                      <div class="px-24 pb-12" fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-raised-button
+                                class="mat-accent compose-dialog-button w-100-p"
+                               
+                                aria-label="Submit" [disabled]="!dateRangeForm.valid" (click)="getMissions()">
+                                <mat-icon>filter_list</mat-icon>
+                                <span>Filter</span>
+                        </button>
+                      </div>
+                </form>
+            
+            <mat-table class="missions-table" #table [dataSource]="dataSource" 
+                                              matSort [@animateStagger]="{value:'50'}"
+                                              fusePerfectScrollbar>
+                <!-- ID Mission -->
+                <ng-container matColumnDef="number">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.Number' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">
+                            {{mission.Number}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Starting -->
+                <ng-container matColumnDef="starting">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.StartPlace' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">
+                            {{mission.StartPlaceOfMissionDesc}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="sDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.StartingDate' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">
+                            {{mission.RealDateLocalOfStarting | localizedDate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="eDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.MaxDateLocalOfMission' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">
+                            {{mission.MaxDateLocalOfMission | localizedDate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Destination -->
+                <ng-container matColumnDef="destination">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.DestinationPlace' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">
+                            {{mission.DestinationPlaceOfMissionDesc}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- IsReminderByEnum Column -->
+                <ng-container matColumnDef="nMission">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.EstimatedDateLocalOfMission' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">{{mission.EstimatedDateLocalOfMission | localizedDate}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- IsReminderByEnum Column -->
+                <ng-container matColumnDef="donneurOrdre">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.RealDateLocalOfMission' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">{{mission.RealDateLocalOfMission | date :'short'}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Purpose Column -->
+                <ng-container matColumnDef="purpose">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.Purpose' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">{{mission.Purpose}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Responsable Column -->
+                <ng-container matColumnDef="responsable">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.Driver' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">{{mission.DriverName}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- IsReminderByEnum Column -->
+                <ng-container matColumnDef="compagnie">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.RealMissionPeriod' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">{{mission.RealMissionPeriodString}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Matricule Column -->
+                <ng-container matColumnDef="immatriculation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.Vehicle' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">
+                            {{mission.Matricule}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Status Column -->
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PlannedMission.StatusMission' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="status text-truncate h6 p-4" [ngClass]="{'green-800': mission.StatusMission === 0 , 
+                              'orange-500': mission.StatusMission === 1 , 
+                                 'red-500': mission.StatusMission === 2 , 'purple-500': mission.StatusMission === 3 }">
+                            {{mission.StatusMissionStr | translate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Cost Column -->
+                <ng-container matColumnDef="cost">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PARC.Cost' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let mission">
+                        <p class="text-truncate">
+                            {{mission.Cost | currency: 'TND'}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                <!-- other columns -->
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm></mat-header-cell>
+                    <mat-cell *matCellDef="let mission" fxHide fxShow.gt-sm>
+                        <div fxLayout="row" fxLayoutAlign="space-around">
+                            <button mat-icon-button (click)="edit(mission)" color="accent">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)='verifyStatus(mission)'>
+                                <mat-icon>check</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteMission(mission)" [disabled]="isDisabledDelete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More">
+                                <mat-icon>print</mat-icon>
+                            </button>
+
+                            <mat-menu #moreMenu="matMenu">
+                                <button  (click)="exportMissionPdf(mission)" mat-menu-item aria-label="pdf">
+                                    <mat-icon>picture_as_pdf</mat-icon>
+                                    <span>PDF</span>
+                                </button>
+                                <button mat-menu-item aria-label="Forward" [style.display]='inline-block' (click)="exportMissionExcel(mission)">
+                                    <img src="assets/icons/flags/excel.png">
+                                    <span>EXCEL</span>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let mission; columns: displayedColumns;"
+                            class="product"
+                            matRipple>
+                </mat-row>
+    
+            </mat-table>
+            <mat-toolbar  style="background-color: white;width:calc(100% - 11px);">
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                    <mat-icon (click)="exportPDF()" class="pdf" title="Export as pdf file">picture_as_pdf
+                    </mat-icon>
+                    <img (click)="exportExcel()" src="assets/icons/excel.png" class="excel" title="Export as excel file">
+                </div>
+                <span class="example-spacer"></span>
+    
+                <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[1, 5, 10]">
+                </mat-paginator>
+        </mat-toolbar>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

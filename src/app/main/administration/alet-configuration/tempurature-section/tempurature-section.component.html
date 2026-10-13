@@ -1,0 +1,46 @@
+<mat-expansion-panel  *ngIf="(defaultParams?.HardwareSupportTemperatureAlarm == true || defaultParams?.HardSoftSupportEngineTemperatureOutOfRangeAlarm == true)" ><!-- -->
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+         {{'AlertConfiguration.TemperatureSection.TemperatureTitle' | translate}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form [formGroup]="TempuratureSection">
+        <div fxLayout="column" fxFlex>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" class="space-between" *ngIf="defaultParams?.HardSoftSupportEngineTemperatureOutOfRangeAlarm == true"><!--  -->
+                <mat-checkbox formControlName="activationEngineTemperatureAlert" class="margintop" (change)="changeOverrunTempStatus($event)">
+                    {{'AlertConfiguration.TemperatureSection.ActivateTempuratureOverrunAlarm' | translate}}</mat-checkbox>
+                    <mat-form-field appearance="outline" class="pr-sm-8" style="width: 38.5%;">
+                        <mat-label>C</mat-label>
+                        <input matInput formControlName="engineTempurature" type="number">
+                    </mat-form-field> 
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="defaultParams?.HardwareSupportTemperatureAlarm == true"><!--  -->
+                <mat-checkbox formControlName="activationOftempuratureVoltage" (change)="changeTempLimitStatus($event)"></mat-checkbox>
+                <div formGroupName="temperature" class="space-between">
+                    <mat-form-field appearance="outline" class="pr-sm-8">
+                        <mat-label>{{'AlertConfiguration.TemperatureSection.TemperatureTitle' | translate}}</mat-label>
+                        <input matInput formControlName="tempuratureValue" type="number">
+                    </mat-form-field>
+                    <div>
+                        <b fxFlex="10" class="margintop">Between :</b> 
+                        <mat-form-field appearance="outline" class="pr-sm-8">
+                            <mat-label>{{'AlertConfiguration.TemperatureSection.TempuratureMin' | translate}}</mat-label>
+                            <input matInput formControlName="minTemp" type="number">
+                        </mat-form-field> 
+                        <mat-form-field appearance="outline" class="pr-sm-8">
+                            <mat-label>{{'AlertConfiguration.TemperatureSection.TempuratureMax' | translate}}</mat-label>
+                            <input matInput formControlName="maxTemp" type="number">
+                        </mat-form-field> 
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+    </form>
+    
+    <mat-action-row>
+        <button type="button" mat-button color="warn" (click)="TempuratureDefault()">{{'AlertConfiguration.TemperatureSection.DefaultParams' | translate}}</button>
+        <button type="button" mat-button color="#26bcfb" (click)="TempuratureSabmit()">{{'AlertConfiguration.TemperatureSection.SendParms' | translate}}</button>
+    </mat-action-row>
+</mat-expansion-panel>

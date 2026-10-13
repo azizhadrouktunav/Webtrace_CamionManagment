@@ -1,0 +1,171 @@
+<div class="dialog-content-wrapper mat-caption" *ngIf="show == 'geofence' else ShowLeft">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center"  cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+            <button mat-icon-button (click)="changeLeftSidenavView('show')" aria-label="back">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <span class="title dialog-title">{{dialogTitle | translate }}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+<!-- SIDENAV CONTENT -->
+<div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+
+    <!-- USER MOOD -->
+    <form [formGroup]="geofenceForm" fxLayout="column" >
+        
+        <!-- vehicle -->
+        <mat-form-field appearance="outline" class="w-100-p">
+            <mat-label>{{'Common.Vehicle' | translate }}</mat-label>
+                <mat-select formControlName="TrakingObject" required (selectionChange)="selected($event)">
+                    <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.id">{{vehicle.name}}</mat-option>
+                </mat-select>
+        </mat-form-field> 
+         <!--name -->
+        <mat-form-field appearance="outline"  class="w-100-p">
+            <mat-label>{{'Common.Name' | translate }}</mat-label>
+            <input matInput
+                   name="location"
+                   formControlName="GeofenceName"
+                   required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline"  class="w-100-p">
+            <mat-label>{{'Geofence.GeofenceType' | translate }}</mat-label>
+            <mat-select  formControlName="GeofenceTypeInt" (selectionChange)="selectedType($event)">
+                <mat-option *ngFor="let type of types" [value]="type.value" [disabled]= '!type.id'>{{type.name | translate }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline"  class="w-100-p">
+            <mat-label>{{'Geofence.AlertType' | translate }}</mat-label>
+            <mat-select  formControlName="GeofenceAlarmType">
+                <mat-option *ngFor="let type of types_alert" [value]="type.value" [disabled]='!type.id'>{{type.name | translate }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" formGroupName= "rectangle" *ngIf="rectangle">
+            <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+               <mat-label>Latitude top left point</mat-label>
+               <input matInput
+                      formControlName="Lat1"
+                      min="-90" max="90"
+                      type="number"
+                     />
+                     <mat-error *ngIf="geofenceForm.controls['Lat1']?.errors.min">
+                        Longitude must be more than -90 !
+                    </mat-error>
+                    <mat-error *ngIf="geofenceForm.controls['Lat1']?.errors.max">
+                        Longitude must be less than 90 !
+                    </mat-error>
+           </mat-form-field>
+
+            <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+               <mat-label>Longitude top left point</mat-label>
+               <input matInput
+                       formControlName="Lng1"
+                       min="-180" max="180"
+                       type="number"
+                      />
+                <mat-error *ngIf="geofenceForm.controls['Lng1']?.errors.min">
+                    Longitude must be more than -180 !
+                </mat-error>
+                <mat-error *ngIf="geofenceForm.controls['Lng1']?.errors.max">
+                    Longitude must be less than 180 !
+                </mat-error>
+           </mat-form-field>
+
+       </div>
+       <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" formGroupName= "rectangle" *ngIf="rectangle">
+        <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+           <mat-label>Latitude low-right point</mat-label>
+           <input matInput
+                  formControlName="Lat2"
+                  min="-90" max="90"
+                  type="number"
+                 />
+            <mat-error *ngIf="geofenceForm.controls['Lat2']?.errors.min">
+                Longitude must be more than -90 !
+            </mat-error>
+            <mat-error *ngIf="geofenceForm.controls['Lat2']?.errors.max">
+                Longitude must be less than 90 !
+            </mat-error>
+       </mat-form-field>
+
+        <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+           <mat-label>Longitude low-right point</mat-label>
+           <input matInput
+                   formControlName="Lng2"
+                   min="-180" max="180"
+                   type="number"
+                  />
+                <mat-error *ngIf="geofenceForm.controls['Lng2']?.errors.min">
+                    Longitude must be more than -180 !
+                </mat-error>
+                <mat-error *ngIf="geofenceForm.controls['Lng2']?.errors.max">
+                    Longitude must be less than 180 !
+                </mat-error>
+       </mat-form-field>
+
+        </div>
+        <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" formGroupName= "circle" *ngIf="circle">
+            <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+               <mat-label>Latitude center</mat-label>
+               <input matInput
+                      formControlName="CenterLat"
+                      min="-90" max="90"
+                      type="number"
+                     />
+                     <mat-error *ngIf="geofenceForm.get('CenterLat')?.hasError('min')">
+                        Longitude must be more than -90 !
+                    </mat-error>
+                    <mat-error *ngIf="geofenceForm.get('CenterLat')?.hasError('max')">
+                        Longitude must be less than 90 !
+                    </mat-error>
+           </mat-form-field>
+
+            <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+               <mat-label>Longitude center</mat-label>
+               <input matInput
+                       formControlName="CentreLng"
+                       min="-180" max="180"
+                       type="number"
+                      />
+                <mat-error *ngIf="geofenceForm.controls['CentreLng']?.errors.min">
+                        Longitude must be more than -180 !
+                </mat-error>
+                    <mat-error *ngIf="geofenceForm.controls['CentreLng']?.errors.max">
+                        Longitude must be less than 180 !
+                    </mat-error>
+           </mat-form-field>
+
+       </div>
+
+       <mat-form-field appearance="outline" class="w-100-p" formGroupName= "circle" *ngIf="circle">
+            <mat-label>Radius</mat-label>
+            <input matInput
+                name="location"
+                formControlName="Rayon">
+        <span matSuffix>Km</span>
+    </mat-form-field>
+
+    </form>
+</div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <!-- add button -->
+        <button
+                mat-button color="primary"
+                class="save-button"
+                (click)="addGeofence(geofenceForm);"
+                [disabled]="geofenceForm.invalid"
+                aria-label="ADD">
+            {{'Common.Add' | translate }}
+        </button>
+    </div>
+</div>
+<ng-template #ShowLeft>
+    <app-show></app-show>
+</ng-template>

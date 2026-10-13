@@ -1,0 +1,137 @@
+@import "src/@fuse/scss/fuse";
+.carList{
+
+}
+.card{
+    background-color: white;
+    width: calc(100vw - 350px);
+    max-height: calc(100vh - 50px);
+    border-radius: 8px;
+    height: calc(100vh - 256px);
+    overflow: scroll;
+    padding-bottom: 2%;
+    margin-left: 1%;
+}
+.cardCars {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+    padding: 0;
+    border-radius: 8px;
+    height: 350px;
+    min-width: 15%;
+    background-color: white;
+    @include media-breakpoint(gt-sm) {
+      @include mat-elevation(1);
+    }
+
+    > .header {
+      
+        flex: 0 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        display: flex;
+        justify-content: center
+    }
+
+    > .content {
+        flex: 0 1 auto;
+    }
+}
+/*Notifications*/
+  .notifications .icon_wrap{
+    margin-right: 12px;
+    font-size: 36px;
+  }
+  .notification_dd{
+    position: fixed;
+    background: #ffffff;
+    width: 420px;
+    height: calc(100% - 15em);
+    border: 1px solid #c7d8e2;
+    border-radius: 3px;
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.125),
+    -10px -10px 30px rgba(0,0,0,0.125);
+    z-index: 999999999999;
+    overflow: scroll;
+    right: 50px;
+  }
+  .notification_dd:before{
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 0;
+    border: 10px solid;
+    border-color: transparent  transparent #ffffff transparent;
+  }
+  .notification_dd li .notify_icon{
+    display: flex;
+  }
+  .notification_dd li{
+    border-bottom: 1px solid #f1f1f4;
+    padding: 8px 1px;
+    display: flex;
+    color: #8c8484;
+  }
+  .notification_dd li .notify_icon .icon{
+    size: 20px;
+  }
+  .notification_dd li .notifu_data{
+    margin: 0 15px;
+    width: 185px;
+  
+  }
+  .notification_dd li .notifu_data .notify_title{
+    color: #000;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .notification_dd li .notifu_data .notify_subtitle{
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: -24px;
+    width: 350px;
+  }
+  .notification_dd li .notify_status p{
+    font-size: 12px;
+  }
+  .notification_dd li .notify_title .date{
+    font-size: 12px;
+    /* margin-left: 5px; */
+    margin-top: 0;
+    margin-bottom: 14%;
+  }
+  .space-between{
+    display: flex;
+    justify-content: space-between;
+  }
+  .space-around{
+      display: flex;
+      justify-content: space-around;
+  }
+  .active{
+    background-color: #039be5;
+    color: white !important;
+  }
+  .centring_contant{
+    display: flex;
+    justify-content: center;
+  }
+
+  .my-disable{
+    pointer-events:none;
+}
+
+
+.nav-link{
+    padding: 7px 15px;
+    border-radius: 5px;
+    text-decoration: none !important;
+    cursor: pointer;
+    color:black !important;
+    &.active {
+        background: #039be5;
+        color:white !important;
+    }
+}

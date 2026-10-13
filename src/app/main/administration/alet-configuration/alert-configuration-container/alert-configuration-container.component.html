@@ -1,0 +1,156 @@
+<meta http-equiv="Cache-control" content="public">
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <div class="header space-between accent p-24" >
+        
+                   
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon>settings</mat-icon>
+
+                <span class="h1">
+                    {{'AlertConfiguration.title' | translate}}
+                </span>
+            </div>
+           
+            
+                
+
+            <span class="title dialog-title" (click)="HideShowNotificationList()">
+                <div fxLayout="row" fxLayoutAlign=" none">
+                    <div class="notifications" style="cursor: pointer;">
+                        <div class="icon_wrap">
+                            <mat-icon matBadge="{{alertCounter}}" matBadgeColor="warn" inline="true">notifications
+                            </mat-icon>
+                        </div>
+                        <div class="notification_dd" *ngIf="notificationVisivility== true">
+                            <ul class="notification_ul">
+                                <li class="success" *ngFor="let commandStatus of commandDisplayList">
+                                    <div class="notifu_data">
+                                        <div class="notify_title" fxLayout="row" fxLayoutAlign=" none">
+                                            <p>{{commandStatus.CarName}}</p>
+                                            <p class="date">({{commandStatus.DateCommand}})</p>
+                                        </div>
+                                        <div class="notify_subtitle">
+                                            {{commandStatus.CommandDescription}}
+                                        </div>
+                                    </div>
+                                    <div class="notify_status">
+                                        <p *ngIf="commandStatus.StatusCommand == 'Succès'" class="green-300-fg">
+                                            {{commandStatus.StatusCommand}}</p>
+                                        <p *ngIf="commandStatus.StatusCommand == 'Temps Dépassé'" class="red-A700-fg">
+                                            {{commandStatus.StatusCommand}}</p>
+                                        <p *ngIf="commandStatus.StatusCommand ==  'En Attente'">
+                                            {{commandStatus.StatusCommand}}</p>
+                                    </div>
+                                </li>
+                                <li *ngIf="commandDisplayList.length == 0" class="NoAlertli">
+                                    <div class="NoAlertDefinition">
+                                        No Alert!
+                                    </div>
+                                </li>
+                                <li *ngIf="commandDisplayList.length > 0" class="centring_contant"
+                                    style="cursor: pointer;">
+                                    <div (click)="clearNotifications()">{{'AlertConfiguration.clearNotifications' |
+                                        translate}}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </span>
+
+           
+
+        </div>
+      
+
+
+        <!-- / SELECTED BAR -->
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <div style="display: flex; justify-content: space-between;">
+                <div class="cardCars Default">
+
+                    <!-- SIDEBAR HEADER -->
+                    <div class="header p-24" fxLayout="row" fxLayoutAlign="start center">
+
+                        <!-- Vehicule -->
+                        <mat-icon class="mattitle">directions_car</mat-icon><span
+                            class="h5">{{'AlertConfiguration.VehiculeList' | translate}}</span>
+                        <!-- / Vehicule -->
+
+                    </div>
+                    <!-- / SIDEBAR HEADER -->
+
+                    <!-- SIDEBAR CONTENT -->
+                    <div class="content py-16" fusePerfectScrollbar style="overflow: scroll;">
+
+
+                        <mat-tree [dataSource]="treeDataSource" [treeControl]="treeControl">
+                            <!-- <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                                <button mat-icon-button disabled></button>
+                                {{node.name}}
+                            </mat-tree-node> -->
+                            <!-- This is the tree node template for expandable nodes -->
+                            <mat-tree-node *matTreeNodeDef="let node;" matTreeNodePadding>
+                              <button mat-icon-button matTreeNodeToggle
+                                      [attr.aria-label]="'Toggle ' + node.name" *ngIf="node.expandable">
+                                <mat-icon class="mat-icon-rtl-mirror">
+                                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                </mat-icon>
+                              </button>
+                              <a class="nav-link" matRipple (click)="changeSelectedCar(node.name.id)"
+                                    [ngClass]="{'active': activeKey == node.name.id}">
+                                    <span class="title">{{node.name.name?node.name.name:node.name}}</span>
+                                </a>
+                            </mat-tree-node>
+                        </mat-tree>
+                        <!-- <div class="nav material2">
+                           <div class="nav-item" aria-label="inbox" *ngFor="let car of vehiculeCluster">
+                                <a class="nav-link" matRipple (click)="changeSelectedCar(car.Key)"
+                                    [ngClass]="{'active':car.isActive ===true}">
+                                    <span class="title">{{car.name}}</span>
+                                </a>
+                            </div>
+
+                        </div> -->
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div mat-dialog-content class="p-16 pb-0 m-0 dialog-contanint" fusePerfectScrollbar >
+                        <app-general-section [car]="selctedCar"></app-general-section>
+                        <app-tempurature-section [car]="selctedCar"></app-tempurature-section>
+                        <app-fuel-section [car]="selctedCar"></app-fuel-section>
+                        <app-speed-section [car]="selctedCar"></app-speed-section>
+                        <app-stop-section [car]="selctedCar"></app-stop-section>
+                        <app-conduct-section [car]="selctedCar"></app-conduct-section>
+                        <app-goefencing-section [car]="selctedCar"></app-goefencing-section>
+                    </div>
+
+
+                </div>
+             
+
+            </div>
+        <!-- <div *ngIf="isCommandListVisible === true" style="height: 500px;overflow: auto;margin-top: 0.5%;">
+                <button mat-fab color="warn" class="add-button hide-button" (click)="hideCommdListTable()"
+                    aria-label="Add document" >
+                    <mat-icon>visibility_off</mat-icon>
+                </button>
+                <app-commands-driver-component></app-commands-driver-component>    
+            </div>--> 
+
+        </div>
+        <!-- / CONTENT-->
+    </div>
+
+</div>

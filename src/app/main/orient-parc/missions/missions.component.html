@@ -1,0 +1,177 @@
+<div class="orient-page orient-page--wide">
+  <div class="orient-page-header">
+    <div class="orient-page-header__text">
+      <h1 class="orient-page-header__title">Gestion des missions</h1>
+      <p class="orient-page-header__subtitle">
+        Missions de chargement navire · lancement manuel, suivi de progression et temps standards par mission.
+      </p>
+    </div>
+    <div class="orient-page-header__actions">
+      <button mat-stroked-button type="button" (click)="exportPdf()" [disabled]="!filteredMissions.length">PDF</button>
+      <button mat-stroked-button type="button" (click)="exportExcel()" [disabled]="!filteredMissions.length">Excel</button>
+      <button mat-raised-button type="button" class="orient-btn-icon-end" (click)="startAdd()">
+        Créer une mission <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="orient-table-card">
+    <div class="orient-toolbar">
+      <div class="orient-search">
+        <mat-icon class="orient-search__icon">search</mat-icon>
+        <input
+          class="orient-search__input"
+          type="search"
+          [ngModel]="query"
+          (ngModelChange)="onQueryChange($event)"
+          placeholder="Mission ou navire…"
+          aria-label="Rechercher une mission"
+        />
+      </div>
+      <div class="orient-tabs" role="tablist">
+        <button
+          *ngFor="let tab of statusTabs"
+          type="button"
+          role="tab"
+          class="orient-tabs__btn"
+          [class.orient-tabs__btn--active]="statusFilter === tab.id"
+          [attr.aria-selected]="statusFilter === tab.id"
+          (click)="setStatusFilter(tab.id)"
+        >
+          {{ tab.label }}
+          <span class="orient-tabs__count">{{ tab.count }}</span>
+        </button>
+      </div>
+    </div>
+    <div class="orient-toolbar">
+      <mat-form-field appearance="outline" class="orient-filter">
+        <mat-label>Poste</mat-label>
+        <mat-select [ngModel]="shiftFilter" (ngModelChange)="onShiftChange($event)">
+          <mat-option value="">Tous</mat-option>
+          <mat-option *ngFor="let s of activeShifts" [value]="s.id">{{ s.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="orient-filter">
+        <mat-label>Navire</mat-label>
+        <mat-select [ngModel]="shipFilter" (ngModelChange)="onShipChange($event)">
+          <mat-option value="">Tous</mat-option>
+          <mat-option *ngFor="let s of ships" [value]="s.id">{{ s.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="orient-filter">
+        <mat-label>Port</mat-label>
+        <mat-select [ngModel]="portFilter" (ngModelChange)="onPortChange($event)">
+          <mat-option value="">Tous</mat-option>
+          <mat-option *ngFor="let p of ports" [value]="p.id">{{ p.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="orient-filter">
+        <mat-label>Stock</mat-label>
+        <mat-select [ngModel]="stockFilter" (ngModelChange)="onStockChange($event)">
+          <mat-option value="">Tous</mat-option>
+          <mat-option *ngFor="let z of stockZones" [value]="z.id">{{ zoneName(z.id) }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" class="orient-table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nom</th>
+          <td mat-cell *matCellDef="let row">{{ row.name || '—' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="mission">
+          <th mat-header-cell *matHeaderCellDef>Mission</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="orient-cell-title">{{ row.id }}</span>
+            <span class="orient-cell-subtitle">{{ shipLabel(row.shipId) }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="orient-cell-title">{{ fmtDate(row.date) }}</span>
+            <span class="orient-cell-subtitle orient-cell-num" *ngIf="row.start">{{ row.start }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="poste">
+          <th mat-header-cell *matHeaderCellDef>Poste</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="orient-cell-title">{{ posteLabel(row) }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="stock">
+          <th mat-header-cell *matHeaderCellDef>Stock</th>
+          <td mat-cell *matCellDef="let row">{{ zoneName(row.stockZoneId) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="port">
+          <th mat-header-cell *matHeaderCellDef>Port</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="orient-cell-muted">{{ portName(row.portId) }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="camions">
+          <th mat-header-cell *matHeaderCellDef>Camions</th>
+          <td mat-cell *matCellDef="let row" class="orient-cell-num">{{ row.truckIds.length }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="trips">
+          <th mat-header-cell *matHeaderCellDef>Voyages effectués</th>
+          <td mat-cell *matCellDef="let row" class="orient-cell-num" title="Calculé automatiquement à partir des cycles GPS">
+            {{ fmtInt(tripsDone(row)) }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let row">
+            <span [class]="chipClass(missionStatusMeta[row.status].tone, true)">
+              {{ missionStatusMeta[row.status].label }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <div class="orient-row-actions">
+              <button mat-icon-button type="button" [matMenuTriggerFor]="missionMenu" aria-label="Actions">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #missionMenu="matMenu">
+                <button mat-menu-item type="button" (click)="startEdit(row)">Voir / modifier</button>
+                <button mat-menu-item type="button" *ngIf="row.status === 'running'" (click)="complete(row)">
+                  Marquer comme terminée
+                </button>
+                <button
+                  mat-menu-item
+                  type="button"
+                  *ngIf="row.status !== 'done' && row.status !== 'cancelled'"
+                  (click)="cancel(row)"
+                >
+                  Annuler la mission
+                </button>
+                <button mat-menu-item type="button" (click)="remove(row)">Supprimer</button>
+              </mat-menu>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+      <mat-paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        showFirstLastButtons>
+      </mat-paginator>
+      <p class="orient-empty" *ngIf="!filteredMissions.length">Aucune mission enregistrée.</p>
+    </mat-card-content>
+  </mat-card>
+</div>

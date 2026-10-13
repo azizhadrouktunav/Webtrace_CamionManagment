@@ -1,0 +1,83 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+  
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" fusePerfectScrollbar>
+        <form [formGroup]="addeditForm">
+            <mat-form-field appearance="outline" class="w-100-p">
+              <mat-label>{{'NAV.departmentName' | translate}}</mat-label>
+              <input matInput placeholder="Name" formControlName="Name">
+                <mat-error *ngIf="addeditForm.get('Name').hasError('required')">
+                  Please type name
+              </mat-error>
+          </mat-form-field>
+          <div  style="margin-top: 20px;">
+            <label id="example-radio-group-label">{{'NAV.lbchoosedepartementtype' | translate}}  </label>
+
+                <mat-radio-group formControlName="type" aria-label="Select an option"
+                >
+
+                <mat-radio-button  class="example-radio-group" value="0">{{'NAV.simple' | translate}} </mat-radio-button>
+                <mat-radio-button   class="example-radio-group" value="1">{{'NAV.group' | translate}}
+                </mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div style="margin-top: 20px;margin-bottom: 20px;">
+                <label id="example-radio-group-label">{{'NAV.lbchoosedepartementlevel' | translate}}</label>
+                <mat-radio-group formControlName="type2" aria-label="Select an option"
+                (change)="radioChange($event)">
+                <mat-radio-button  class="example-radio-group" value="0">{{'NAV.Racine' | translate}} </mat-radio-button>
+                <mat-radio-button  class="example-radio-group" value="1">{{'NAV.Branche' | translate}}
+                </mat-radio-button>
+                </mat-radio-group>
+            </div>
+          <div *ngIf="showDep">
+            <mat-form-field floatLabel="always" class="mr-sm-12" fxFlex appearance="outline">
+
+                <mat-label>{{'NAV.department' | translate}}</mat-label>
+                <mat-select  formControlName="Parentdep">
+                    <mat-option *ngFor="let Dep of departmentgroup"  [value]="Dep.Id">{{Dep.Name}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error>Selecter Department</mat-error>
+            </mat-form-field>
+        </div>
+                 
+        </form>
+       
+    </div>
+   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+  
+
+    <button *ngIf="action !== 'edit'"
+            mat-button color="primary"
+            class="save-button"
+            (click)="matDialogRef.close(addeditForm)"
+            [disabled]="addeditForm.invalid"
+            aria-label="ADD">
+            {{'NAV.Add' | translate}}
+    </button>
+
+    <button *ngIf="action === 'edit'"
+            mat-button color="primary"
+            class="save-button"
+            (click)="matDialogRef.close(['save', addeditForm])"
+            [disabled]="addeditForm.invalid"
+            aria-label="SAVE">
+            {{'NAV.Save' | translate}}
+    </button>
+
+</div>
+  </div>
+   
+  
+  

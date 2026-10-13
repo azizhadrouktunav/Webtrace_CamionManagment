@@ -1,0 +1,439 @@
+@import "src/@fuse/scss/fuse";
+
+#trajectory {
+    .green-icon {
+        color: rgb(14 128 64);
+    }
+    .mat-header-row{
+        background: #1974a1;
+
+
+        //#6d7fe0;
+        min-height: 35px;
+        
+        *{
+            color : white !important;
+        }
+    }
+    .mat-icon {
+        vertical-align: middle;
+    }
+    mat-table {
+        width: 100%;
+        overflow: auto;
+
+        mat-footer-row,
+        mat-row {
+            min-height: 30px;
+        }
+
+        mat-header-row {
+            min-height: 16px;
+        }
+
+        
+
+        .mat-column-StopRunStatus {
+            flex: none;
+            width: 120px;
+            justify-content: center;
+        }
+
+        .mat-column-isAlert {
+            flex: none;
+            width: 30px;
+            justify-content: center;
+        }
+        .mat-column-isDefaut {
+            flex: none;
+            width: 40px;
+            justify-content: center;
+        }
+        .mat-column-Period{
+            flex: none;
+            width: 120px;
+            justify-content: center;
+        }
+
+        .mat-column-Distance{
+            flex: none;
+            width: 90px;
+            justify-content: center;
+        }
+
+        .mat-column-StartDate{
+            flex: none;
+            width: 180px;
+            justify-content: center;
+        }
+
+        .mat-column-Speed{
+            flex: none;
+            width: 80px;
+            justify-content: center;
+        }
+
+        .mat-column-action{
+            flex: none;
+            width: 35px;
+            justify-content: center;
+        }
+
+        .mat-column-Place{
+            flex: none;
+            width: 250px;
+            justify-content: center;
+        }
+        .mat-column-Report_Reason{
+            flex: none;
+            width: 250px;
+            justify-content: center;
+        }
+        .mat-column-Engine{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }  
+           .mat-column-ElockBattery{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }   
+          .mat-column-LockStatus{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }   
+          .mat-column-SealStatus{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-waterdetected1{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }  
+        .mat-column-SN{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }  
+        .mat-column-Volume{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }  
+        .mat-column-TemperatureSonde{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }  
+        .mat-column-BatterySonde{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }  
+        .mat-column-StatusConnectedSonde{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }  
+        .mat-column-Engine{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+
+        .mat-column-FuelLevel{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+
+        .mat-column-FuelConsumptionAvgInL100Km{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+
+        .mat-column-Direction{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+
+        .mat-column-CentralLock{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+
+        .mat-column-Temperature{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+
+        .mat-column-EngineHours{
+            flex: none;
+            width: 120px;
+            justify-content: center;
+        }
+        .mat-column-EngineTemperature{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-RPM{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-Latitude{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-Longitude{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-Mileage{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-AxleWeight1st{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-AxleWeight{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-AxleWeight3rd{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-AxleWeight4th{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-RapidBrackings{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-RapidAccelerations{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+        .mat-column-AdBlueLevel{
+            flex: none;
+            width: 100px;
+            justify-content: center;
+        }
+    }
+
+    mat-toolbar {
+        width: 100%;
+    }
+
+    .mat-expansion-panel-content {
+        max-height: 70px;
+    }
+
+    tr.example-detail-row {
+        height: 0;
+    }
+
+    tr.example-element-row:not(.example-expanded-row):hover {
+        background: #f5f5f5;
+    }
+
+    tr.example-element-row:not(.example-expanded-row):active {
+        background: #efefef;
+    }
+
+    .example-element-row td {
+        border-bottom-width: 0;
+    }
+
+    .example-element-detail {
+        overflow: hidden;
+        display: flex;
+    }
+
+    .example-element-diagram {
+        min-width: 80px;
+        border: 2px solid black;
+        padding: 8px;
+        font-weight: lighter;
+        margin: 8px 0;
+        height: 104px;
+    }
+
+    .example-element-symbol {
+        font-weight: bold;
+        font-size: 40px;
+        line-height: normal;
+    }
+
+    .example-element-description {
+        padding: 16px;
+    }
+
+    .example-element-description-attribution {
+        opacity: 0.5;
+    }
+
+    .active-icon {
+        border-radius: 50%;
+    }
+
+    #ex_table {
+        display: inline
+    }
+
+    #ex_table th td {
+        padding: 5px
+    }
+
+    .split-example {
+        .page-layout {
+            height: 100%;
+
+            .content {
+                height: fit-content;
+                overflow: auto;
+
+                .mat-table {
+                    height: calc(100% - 70px);
+                }
+            }
+        }
+    }
+
+    .TrajectoryStop {
+        background: white;
+        border: solid 4px red;
+        padding: 2px;
+        border-radius: 100%;
+    }
+
+    mat-selection-list {
+        max-height: 300px;
+        overflow: auto;
+    }
+
+    .visibleIcon {
+        opacity: 0.15;
+        filter: contrast(0.4);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    mat-paginator {
+        margin-left: auto;
+    }
+
+    mat-form-field {
+        font-size: 14px;
+    }
+}
+
+.TrajectFlag{
+    transition: all .6s linear;
+    left: -12px;
+    top: -25px;
+}
+
+
+.TrajectFlag .FlagRotator {
+    transition: all .6s linear;
+    background: url(assets/images/TopDownCar.png);
+    background-size: cover;
+    width: 24px;
+    height: 50px;
+
+    &::after{
+      content: '';
+      animation: pulsePoint 2s infinite;
+      border-radius: 500px;
+      position: absolute;
+      left: 12px;
+      top: 25px;
+      padding: 1px;
+      border-radius: 100px;
+      z-index: -5;
+      box-shadow: 0 0 0px 0px #007097;
+    }
+}
+
+@keyframes pulsePoint {
+  0% {
+    box-shadow: 0 0 0px 0px #007097;
+  }
+  100% {
+    box-shadow: 0 0 0px 60px #00719748;
+  }
+}
+#chartdiv {
+    width: 100%;
+    height: 100%;
+  }
+  #tabTrajectory .mat-tab-header
+  {
+      background-color: transparent !important;
+      
+    width: 200px;
+    top: -3px;
+    right: 234px;
+    position: absolute;
+  }
+  #tabTrajectory  .mat-tab-label
+  {
+      color: black;
+      min-width: 0!important;
+    padding: 3px!important;
+     margin: 3px!important;
+  }
+  #tabTrajectory  .mat-tab-labels
+  {
+      float: right;
+
+
+  }
+  #tabTrajectory
+  {
+      height: 95%;
+  }
+
+  mat-cell.cellclass{
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    height: 150px;
+    width: 10000px;
+    overflow-x: scroll;
+    scrollbar-width: auto;
+    > img {
+        margin: 0px 20px;
+    }
+    mat-cell.test
+    {
+        height: max-content !important;
+    }
+
+  
+}

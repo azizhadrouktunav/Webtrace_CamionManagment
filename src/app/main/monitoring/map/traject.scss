@@ -1,0 +1,77 @@
+::ng-deep {  
+    // .traject {
+    //     stroke: blue;
+    // }
+    .trajectStart{
+        background:white;
+        padding: 6px;
+        border: solid 6px green;
+        border-radius: 100%;
+    }
+    .trajectEnd{
+        background:white;
+        padding: 6px;
+        border: solid 6px red;
+        border-radius: 100%;
+    }
+    .StopPoint{
+      //  background:white;
+       // background-image:  url('assets/images/stop-icon.png');
+        background-size: cover;
+        padding: 16px;
+        border-radius: 100%;
+        border: none !important;
+    }
+
+    .VeillePoint{
+        //  background:white;
+         // background-image:  url('assets/images/stop-icon.png');
+          background-size: cover;
+          padding: 16px;
+          border-radius: 100%;
+          border: none !important;
+      }
+
+
+    .veille{
+        width: 15px;
+        height: 15px;
+        border: 50px solid #ef6c00 ;
+        z-index: 3;
+        border-radius: 50%;
+        box-sizing: border-box;
+       // top: 30px;
+       // left: 30px;
+        -webkit-animation: switchOff 1s linear infinite alternate;
+        animation: switchOff 1s linear infinite alternate;
+    }
+
+    .TrajectoryFlow{
+        stroke-dasharray: 50px 50%;
+        stroke: rgba(255, 255, 255, 0.61);
+        animation: pulsePath 6s linear infinite;
+    }
+}
+
+@keyframes pulsePath {
+    0% {
+        stroke-dashoffset: 200%;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+  }
+
+
+  @keyframes switchOff {
+    from {
+      
+       border: 10px solid #ef6c00 ;
+      opacity: 1;
+    }
+    to {
+    border: 0px solid #ef6c00 ;
+      opacity: 0;
+    }
+  }
+

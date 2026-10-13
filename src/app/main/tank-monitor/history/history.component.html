@@ -1,0 +1,82 @@
+<div id="history" class="page-layout simple fullwidth">
+
+    <div class="center" fusePerfectScrollbar>
+        
+        <!-- HEADER -->
+        <div class="nav-bar accent" fxLayout="row" fxLayoutAlign="space-between center">
+                       
+            <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/tank-monitoring/monitor'">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            
+        </div>
+         <!-- / HEADER -->
+        <div class="content p-24">
+            <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+            fullScreenBackdrop: 'true',
+           
+            primaryColour: '#0068f0', 
+            secondaryColour: '#0068f0', 
+            tertiaryColour: '#0068f0' }">
+                    </ngx-loading>
+    
+            <div class="fuse-card auto-width">
+
+                <div class="position-relative p-24"
+                     fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <mat-icon class="secondary-text mr-8">local_gas_station</mat-icon>
+                        <span class="h2"> {{'NAV.FuelLevel' | translate }} {{'in' | translate }} {{tank.Name}}  - {{FromDate}}- {{ToDate}} </span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <div class="py-8 px-4 border-radius-2 line-height-1 mr-8 cursor-pointer"
+                        (click)="changePeriod(1)"
+                        [ngClass]="{'accent': selectedRange== 1}">
+                        {{'Common.Today' | translate }}
+                        </div>
+
+                        <div class="py-8 px-4 border-radius-2 line-height-1 mr-8 cursor-pointer"
+                        (click)="changePeriod(2)"
+                        [ngClass]="{'accent': selectedRange== 2}">
+                        {{'Common.Yesterday' | translate }}
+                        </div>
+
+                        <div class="py-8 px-4 border-radius-2 line-height-1 mr-8 cursor-pointer"
+                             (click)="changePeriod(3)"
+                             [ngClass]="{'accent': selectedRange== 3}">
+                        {{'Common.LastWeek' | translate }}
+                        </div>
+
+                        <div class="py-8 px-4 border-radius-2 line-height-1 mr-8 cursor-pointer"
+                            (click)="changePeriod(-1)"
+                            [ngClass]="{'accent': selectedRange== -1}">
+                            {{'Common.LastMonth' | translate }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="position-relative h-100-p pb-16">
+                    <apx-chart
+                        #chart
+                        [series]="chartOptions.series"
+                        [noData]="chartOptions.noData"
+                        [chart]="chartOptions.chart"
+                        [dataLabels]="chartOptions.dataLabels"
+                        [grid]="chartOptions.grid"
+                        [stroke]="chartOptions.stroke"
+                        [labels]="chartOptions.labels"
+                        [annotations]="chartOptions.annotations"
+                        [xaxis]="chartOptions.xaxis"
+                        [yaxis]= "chartOptions.yaxis"
+                        [tooltip] = "chartOptions.tooltip">
+                </apx-chart>
+               
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

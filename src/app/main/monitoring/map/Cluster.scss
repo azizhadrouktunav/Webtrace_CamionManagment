@@ -1,0 +1,62 @@
+
+    ::ng-deep {
+    .leaflet-marker-icon.marker-cluster {
+        &:hover {
+            z-index: 999999 !important;
+        }
+    }
+    .PlacesIconsCluster.leaflet-marker-icon.marker-cluster {
+        box-shadow: 0 10px 20px -5px black;
+        text-align: center;
+        color: white;
+        font-weight: 700;
+        padding: 9px 0;
+        border-radius: 50px;
+        transition: all .85s;
+    }
+    .CarsIconCluster.leaflet-marker-icon.marker-cluster {
+        box-shadow: 0 10px 20px -5px black;
+        text-align: center;
+        color: white;
+        font-weight: 700;
+        padding: 9px 0;
+        border-radius: 50px;
+        transition: all .85s;
+    }
+    .PlacesIconsCluster.marker-cluster-small {
+        background: #ff7700;
+        font-size: 16px;
+    }
+    .PlacesIconsCluster.marker-cluster-medium {
+        background: #ff2500;
+        font-size: 24px;
+        padding: 12px 0 !important;
+        width: 52px !important;
+        height: 52px !important;
+    }
+    .PlacesIconsCluster.marker-cluster-large {
+        background: rgb(185, 0, 0);
+        font-size: 29px;
+        padding: 9px 0 !important;
+        width: 70px !important;
+        height: 70px !important;
+    }
+    .CarsIconCluster.marker-cluster-small {
+        background: #0077ff;
+        font-size: 16px;
+    }
+    .CarsIconCluster.marker-cluster-medium {
+        background: #0025ff;
+        font-size: 24px;
+        padding: 9px 0 !important;
+        width: 52px !important;
+        height: 52px !important;
+    }
+    .CarsIconCluster.marker-cluster-large {
+        background: rgb(0, 0, 185);
+        font-size: 29px;
+        padding: 14px 0 !important;
+        width: 70px !important;
+        height: 70px !important;
+    }
+}

@@ -1,0 +1,12 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.add-button {
+    position: absolute;
+    top: 100px;
+    left: 10px;
+    z-index: 200;
+}

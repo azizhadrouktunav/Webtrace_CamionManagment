@@ -1,0 +1,109 @@
+<div class="orient-page orient-page--wide">
+  <div class="orient-page-header">
+    <div class="orient-page-header__text">
+      <h1 class="orient-page-header__title">Gestion de la cartographie</h1>
+      <p class="orient-page-header__subtitle">
+        Trajets, emplacements, polygones et zones affectées.
+      </p>
+    </div>
+    <div class="orient-page-header__actions">
+      <button mat-stroked-button type="button" (click)="exportPdf()" [disabled]="!filteredRows.length">PDF</button>
+      <button mat-stroked-button type="button" (click)="exportExcel()" [disabled]="!filteredRows.length">Excel</button>
+    </div>
+  </div>
+
+  <mat-card class="orient-table-card">
+    <div class="orient-toolbar">
+      <div class="orient-search">
+        <mat-icon class="orient-search__icon">search</mat-icon>
+        <input
+          class="orient-search__input"
+          type="search"
+          [ngModel]="query"
+          (ngModelChange)="onQueryChange($event)"
+          placeholder="Nom…"
+          aria-label="Rechercher par nom"
+        />
+      </div>
+      <mat-form-field appearance="outline" class="orient-filter">
+        <mat-label>Type</mat-label>
+        <mat-select [ngModel]="kindFilter" (ngModelChange)="onKindChange($event)">
+          <mat-option value="">Tous</mat-option>
+          <mat-option *ngFor="let k of kindOptions" [value]="k.id">{{ k.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="orient-filter">
+        <mat-label>Dessin</mat-label>
+        <mat-select [ngModel]="drawFilter" (ngModelChange)="onDrawChange($event)">
+          <mat-option value="">Tous</mat-option>
+          <mat-option *ngFor="let d of drawOptions" [value]="d">{{ d }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="orient-filter">
+        <mat-label>Statut</mat-label>
+        <mat-select [ngModel]="activeFilter" (ngModelChange)="onActiveChange($event)">
+          <mat-option value="">Tous</mat-option>
+          <mat-option value="active">Actif</mat-option>
+          <mat-option value="inactive">Inactif</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" class="orient-table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nom</th>
+          <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="kind">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let row">{{ kindLabel[row.kind] }}</td>
+        </ng-container>
+        <ng-container matColumnDef="draw">
+          <th mat-header-cell *matHeaderCellDef>Dessin</th>
+          <td mat-cell *matCellDef="let row">{{ drawLabel(row) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="active">
+          <th mat-header-cell *matHeaderCellDef>Actif</th>
+          <td mat-cell *matCellDef="let row">
+            <span [class]="chipClass(row.active ? 'ok' : 'neutral', true)">
+              {{ row.active ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button type="button" [matMenuTriggerFor]="cartoMenu" aria-label="Actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #cartoMenu="matMenu">
+              <button mat-menu-item type="button" *ngIf="row.kind !== 'trajet'" (click)="edit(row)">
+                Modifier <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-menu-item type="button" *ngIf="row.kind !== 'trajet'" (click)="assign(row)">
+                Affecter <mat-icon>label</mat-icon>
+              </button>
+              <button mat-menu-item type="button" (click)="remove(row)">
+                Supprimer <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-menu-item type="button" *ngIf="row.kind !== 'none'" (click)="toggle(row)">
+                {{ row.active ? 'Désactiver' : 'Activer' }}
+                <mat-icon>{{ row.active ? 'toggle_off' : 'toggle_on' }}</mat-icon>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+      <mat-paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        showFirstLastButtons>
+      </mat-paginator>
+      <p class="orient-empty" *ngIf="!filteredRows.length">
+        {{ rows.length ? 'Aucun élément ne correspond aux filtres.' : 'Aucun élément de cartographie.' }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

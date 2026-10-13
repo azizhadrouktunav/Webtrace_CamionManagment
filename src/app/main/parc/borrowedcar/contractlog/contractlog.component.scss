@@ -1,0 +1,172 @@
+@import "src/@fuse/scss/fuse";
+
+.sample-button-row button,
+.sample-button-row a {
+  margin-right: 30px;
+}
+.group {
+  margin-bottom: 20px;
+  font-size: 50px;
+}
+.group {
+  margin-bottom: 20px;
+  font-size: 50px;
+}
+.sample-button-row {
+  margin-top: 20px;
+}
+.full-width-table {
+  width: 100%;
+}
+
+
+      .example-spacer {
+        flex: 1 1 auto;
+      }
+
+      .active-icon {
+        border-radius: 50%;
+    }
+    .tooltip{
+      position: relative;
+      display: inline-block;
+      
+    }
+    .tooltip .tooltiptxt{
+      visibility: hidden; 
+      width: 44px;
+      background-color: #1d1b1b;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: -1%;
+      left: -24%;
+      margin-left: -60x;
+    }
+    .tooltip:hover .tooltiptxt{
+      visibility: visible;
+    }
+    .tot{
+      position: relative;
+      display: inline-block;
+      
+    }
+   .tottxt{
+      visibility: hidden;
+      width: 74px;
+      background-color: #f44336;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 12%;
+      left: -12%;
+      margin-left: -60x;
+    }
+    .tot2{
+      position: relative;
+      display: inline-block;
+      
+    }
+   .tottxt2{
+      visibility: hidden;
+      width: 74px;
+      background-color: #039be5;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 12%;
+      left: -12%;
+      margin-left: -60x;
+    }
+   .tot:hover .tottxt{
+      visibility: visible;
+    }
+    .tot2:hover .tottxt2{
+      visibility: visible;
+    }
+    .row_effect:hover{
+      background-color: #c8c8c8;
+    }
+
+    .mat-toolbar.mat-white {
+      background:white;
+      margin-top: 5px;
+
+    }
+
+    .make-gold {
+      background-color: #ffe5e5
+      //#AFff5f49
+  }
+
+  .hidden {
+    display: none !important;
+  }
+  [hidden] {
+    display: none !important;
+  }
+  mat-page {
+   
+    margin-top: 100px;
+  }
+
+  table {
+    width: 100%;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    
+    font-weight: bold;
+  }
+
+ 
+  

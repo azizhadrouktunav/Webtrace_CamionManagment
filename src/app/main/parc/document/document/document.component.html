@@ -1,0 +1,160 @@
+<meta http-equiv="Cache-control" content="public">
+
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>file_copy</mat-icon>
+                <span class="h1">
+                    {{'NAV.HELLO' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données"  (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+
+           <form [formGroup]="vehicules" id="selectCar" class="select"  fxLayout="row" style="margin-top: 85px; margin-right: 10px;"> 
+            <input
+                        matInput
+                        #typeInput
+                        type="text"
+                        class="autoCompleteInput"
+                        formControlName="cars"
+                        [matAutocomplete]="auto"/>
+                        <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" (optionSelected)="selected($event.option)" [displayWith]="displayFn">
+                            <mat-option *ngFor="let trackingObject of filteredOptions | async" [value]="trackingObject.id">
+                                {{trackingObject.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-icon style="font-size: xx-large;" color="white">commute</mat-icon>
+        </form>
+          <!-- ADD BUTTON -->
+          <button mat-fab color="warn" class="add-button" (click)="addDocument()" *ngIf="selectedValue"
+                aria-label="Add document">
+                <mat-icon>add</mat-icon>
+            </button>
+            <!-- / ADD BUTTON -->
+            
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            
+            <mat-table matTableExporter class="products-table" #table [dataSource]="dataSource" matSort
+                #exporter="matTableExporter" fusePerfectScrollbar>
+
+                <!-- DocumentTypeString Column -->
+                <ng-container matColumnDef="DocumentTypeString">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.DocumentType' | translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let document">
+                        <button mat-icon-button [ngClass]="{'hidden':  document.ShowReminder === false}" color="warn"
+                            (click)="adjust(document)">
+                            <mat-icon>snooze</mat-icon>
+                        </button>
+                        <p class="text-truncate">{{document.DocumentTypeString}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Fréquence Column -->
+                <ng-container matColumnDef="CarDocumentReminderFrequenceString">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="text-truncate">{{'NAV.Frequence' | translate}}</p>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let document">{{document.CarDocumentReminderFrequenceString}} </mat-cell>
+
+                </ng-container>
+
+                <!-- reminder Column -->
+                <ng-container matColumnDef="WarnMeBeforeNDayKmString">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="text-truncate">{{'NAV.Reminder' | translate}}</p>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let document"> {{document.WarnMeBeforeNDayKmString}} </mat-cell>
+
+                </ng-container>
+                <!-- NextPayment Column -->
+                <ng-container matColumnDef="NextCarDocumentReminder">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.NextPayment' | translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let document">
+                        <p class="text-truncate">{{document.NextCarDocumentReminder}}</p>
+                    </mat-cell>
+
+                </ng-container>
+                <!-- actions -->
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>
+
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let document; let i=index;">
+                        <button mat-icon-button (click)="editDocument(document)">
+                            <div class="tooltip">
+                                <mat-icon>create</mat-icon><span class="tooltiptxt">{{'PARC.Edit' | translate}}</span>
+                            </div>
+                        </button>
+
+                        <a><button mat-icon-button color="accent" (click)="navigate(document)">
+                                <div class="tot2">
+                                    <mat-icon aria-label="Delete">restore</mat-icon><span
+                                        class="tottxt2">{{'PARC.History' | translate}}</span>
+                                </div>
+                            </button></a>
+
+                        <button mat-icon-button color="warn" (click)="removeDocument(document)" [disabled]="isDisabledDelete">
+                            <div class="tot">
+                                <mat-icon aria-label="Delete">delete</mat-icon><span class="tottxt">{{'PARC.Delete' | translate}}</span>
+                            </div>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="tableColumns; sticky:true"></mat-header-row>
+
+                <mat-row [ngClass]="{'make-gold': product.ShowReminder == true}"
+                    *matRowDef="let product; columns: tableColumns;" class="product" matRipple>
+                </mat-row>
+
+            </mat-table>
+            <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+                <h4>{{'NAV.NoResult' | translate}}</h4>
+            </div>
+
+            <mat-toolbar style="background-color: white;width:calc(100% - 65px);" [hidden]="disabled">
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                    <mat-icon (click)="downloadPdf()" class="pdf red" title="Export as pdf file">picture_as_pdf
+                    </mat-icon>
+                    <img (click)="exportExcel()" src="assets/icons/excel.png" class="excel" title="Export as excel file">
+                </div>
+                <span class="spacer"></span>
+                <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="5"
+                    [pageSizeOptions]="[1, 5, 10]">
+                </mat-paginator>
+
+            </mat-toolbar>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

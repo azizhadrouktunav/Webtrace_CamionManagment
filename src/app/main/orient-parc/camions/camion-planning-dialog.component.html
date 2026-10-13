@@ -1,0 +1,46 @@
+<div class="orient-form-dlg">
+  <header class="orient-form-dlg__header">
+    <div>
+      <h2 class="orient-form-dlg__title">Planning mission du camion</h2>
+      <p class="orient-form-dlg__subtitle">{{ truck.plate }} · {{ truck.name }}</p>
+    </div>
+    <button mat-icon-button type="button" (click)="close()" aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="orient-form-dlg__body">
+    <table class="orient-table" *ngIf="missions.length">
+      <thead>
+        <tr>
+          <th>Mission</th>
+          <th>Date</th>
+          <th>Créneau</th>
+          <th>Poste</th>
+          <th>Navire</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of missions">
+          <td><strong>{{ m.id }}</strong></td>
+          <td>{{ m.date }}</td>
+          <td>{{ m.start }} – {{ m.end }}</td>
+          <td>{{ shiftLabel(m) }}</td>
+          <td>{{ shipName(m) }}</td>
+          <td>
+            <span [class]="chipClass(missionStatusMeta[m.status].tone, true)">
+              {{ missionStatusMeta[m.status].label }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="orient-empty" *ngIf="!missions.length">Aucune mission planifiée pour ce camion.</p>
+  </div>
+
+  <footer class="orient-form-dlg__footer">
+    <span class="orient-form-dlg__spacer"></span>
+    <button mat-raised-button color="primary" type="button" (click)="close()">Fermer</button>
+  </footer>
+</div>

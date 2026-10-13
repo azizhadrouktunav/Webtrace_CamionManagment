@@ -1,0 +1,134 @@
+@import "src/@fuse/scss/fuse";
+.products-table {
+  flex: 1 1 auto;
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  overflow: scroll  !important;
+}
+.mat-column-actions {
+    min-width: 100px !important;
+    position: sticky;
+    right: 0;
+    background: white;
+}
+.mat-column-Nfamille {
+  min-width: 120px !important;
+  position: sticky;
+  left: 0;
+  background: white;
+}
+
+.mat-column-Code_personnel {
+  min-width: 150px !important;
+  
+}
+.mat-column-Email {
+  min-width: 200px !important;
+  
+}
+/*.mat-cell{
+  min-width: 175px;
+}*/
+ .mat-header-row {
+            //min-height: 64px;
+            height: 30px;
+        }
+.mat-row{
+  height: 50px;
+  overflow: inherit !important;
+}
+#applyButton {
+
+    margin: 20% 0;
+}
+
+
+
+        .mat-error{
+            position: absolute;
+            top: 110px;
+            width: 100%;
+            text-align: center;
+        }
+        .example-loading-shade {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 56px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          
+    .tooltip{
+      position: relative;
+      display: inline-block;
+      
+    }
+    .tooltip .tooltiptxt{
+      visibility: hidden; 
+      width: 44px;
+      background-color: #039be5;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: -1%;
+      left: -24%;
+      margin-left: -60x;
+    }
+    .tooltip:hover .tooltiptxt{
+      visibility: visible;
+    }
+    .tot{
+      position: relative;
+      display: inline-block;
+      
+    }
+   .tottxt{
+      visibility: hidden;
+      width: 52px;
+      background-color: #f44336;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 12%;
+      left: -12%;
+      margin-left: -60x;
+    }
+   .tot:hover .tottxt{
+      visibility: visible;
+    }
+    .excel {
+      height: 30px;
+      cursor: pointer;
+    }
+    .pdf{
+      color: red;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    .Scolling_wigh{
+    //  width: 200%;
+      overflow: scroll;
+    }
+    .app-table-wrapper {
+      overflow-x: scroll;
+    }
+
+    tr.mat-footer-row {
+      height: 100px;
+    }
+
+    .table-container{
+      //max-height: calc(100% - 70px);
+      width: 130%;
+    }

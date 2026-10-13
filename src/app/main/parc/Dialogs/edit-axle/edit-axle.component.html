@@ -1,0 +1,165 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'PARC.UpdateCarAxleWheelDefOfThisCar' | translate}}</span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+            <mat-label>{{'PARC.EnableCarAxleWheelDef' | translate}} :</mat-label>
+       
+           
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                   
+                    <div  appearance="outline" class="pr-sm-8" fxFlex="50">
+                       
+                        <mat-slide-toggle style="margin-top: 20px;" formControlName="Axle1Enabled" (change)="ChangeAxle1Enabled()">
+                                      {{'PARC.Axle1' | translate}} 
+                    </mat-slide-toggle>
+
+                </div>
+
+                    <div appearance="outline" class="pl-sm-8" fxFlex="50" style="margin-top: 20px;">
+
+                        <mat-label>{{'PARC.NbrWheel' | translate}}</mat-label>
+
+                        <input  type="number"
+                               formControlName="DualWheelAxle1" max="4" min="2" step="2" />
+
+                    </div>
+
+                </div>
+            </div>
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                   
+                    <div  appearance="outline" class="pr-sm-8" fxFlex="50">
+                       
+                        <mat-slide-toggle style="margin-top: 20px;" formControlName="Axle2Enabled" (change)="ChangeAxle2Enabled()">
+                            {{'PARC.Axle2' | translate}}
+                    </mat-slide-toggle>
+
+                </div>
+
+                    <div appearance="outline" class="pl-sm-8" fxFlex="50" style="margin-top: 20px;">
+
+                        <mat-label>{{'PARC.NbrWheel' | translate}}</mat-label>
+
+                        <input  type="number"
+                               formControlName="DualWheelAxle2" max="4" min="2" step="2" />
+
+                    </div>
+
+                </div>
+            </div>
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                   
+                    <div  appearance="outline" class="pr-sm-8" fxFlex="50">
+                       
+                        <mat-slide-toggle style="margin-top: 20px;" formControlName="Axle3Enabled" (change)="ChangeAxle3Enabled()">
+                            {{'PARC.Axle3' | translate}}
+                    </mat-slide-toggle>
+
+                </div>
+
+                    <div appearance="outline" class="pl-sm-8" fxFlex="50" style="margin-top: 20px;">
+
+                        <mat-label>{{'PARC.NbrWheel' | translate}}</mat-label>
+
+                        <input  type="number"
+                               formControlName="DualWheelAxle3" max="4" min="2" step="2" />
+
+                    </div>
+
+                </div>
+            </div>
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                   
+                    <div  appearance="outline" class="pr-sm-8" fxFlex="50">
+                       
+                        <mat-slide-toggle style="margin-top: 20px;" formControlName="Axle4Enabled" (change)="ChangeAxle4Enabled()">
+                            {{'PARC.Axle4' | translate}}
+                    </mat-slide-toggle>
+
+                </div>
+
+                    <div appearance="outline" class="pl-sm-8" fxFlex="50" style="margin-top: 20px;">
+
+                        <mat-label>{{'PARC.NbrWheel' | translate}}</mat-label>
+
+                        <input  type="number"
+                               formControlName="DualWheelAxle4" max="4" min="2" step="2" />
+
+                    </div>
+
+                </div>
+            </div>
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                   
+                    <div  appearance="outline" class="pr-sm-8" fxFlex="50">
+                       
+                        <mat-slide-toggle style="margin-top: 20px;" formControlName="Axle5Enabled" (change)="ChangeAxle5Enabled()" >
+                            {{'PARC.Axle5' | translate}}
+                    </mat-slide-toggle>
+
+                </div>
+
+                    <div appearance="outline" class="pl-sm-8" fxFlex="50" style="margin-top: 20px;">
+
+                        <mat-label>{{'PARC.NbrWheel' | translate}}</mat-label>
+
+                        <input  type="number"
+                               formControlName="DualWheelAxle5" max="4" min="2" step="2" />
+
+                    </div>
+
+                </div>
+            </div>
+           
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                   
+                    <div  appearance="outline" class="pr-sm-8" fxFlex="50">
+                       
+                        <mat-slide-toggle style="margin-top: 20px;" formControlName="Axle6Enabled" (change)="ChangeAxle6Enabled()" >
+                            {{'PARC.Axle6' | translate}}
+                    </mat-slide-toggle>
+
+                </div>
+
+                    <div appearance="outline" class="pl-sm-8" fxFlex="50" style="margin-top: 20px;">
+
+                        <mat-label>{{'PARC.NbrWheel' | translate}}</mat-label>
+
+                        <input  type="number"
+                               formControlName="DualWheelAxle6" max="4" min="2" step="2" />
+
+                    </div>
+
+                </div>
+            </div>
+            
+           
+         
+            <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+                <button mat-raised-button color="accent" type="submit" class="button" [disabled]="!dataForm.valid">{{'PARC.Update' | translate}}</button>
+
+
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+

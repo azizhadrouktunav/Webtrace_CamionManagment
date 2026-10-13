@@ -1,0 +1,118 @@
+
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            
+
+             <!-- APP TITLE -->
+             <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>dvr</mat-icon>
+                <span class="h1">
+                    {{'NAV.ArticleTitle' | translate}}
+                </span> 
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- / ADD BUTTON -->
+            <button mat-fab
+            color="warn"
+            class="add-button"
+            (click)="addarticle()"
+            aria-label="Add Articles"
+            >
+            <mat-icon>add</mat-icon>
+            </button>
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <dx-data-grid id="gridContainer"
+                [dataSource]="ProductListDisplays"
+                [remoteOperations]="false"
+                [allowColumnReordering]="true"
+                [rowAlternationEnabled]="false"
+                [showColumnLines]="false"
+                [showBorders]="false">
+
+                <dxo-paging [pageSize]="10"></dxo-paging>
+                <dxo-pager
+                    [showPageSizeSelector]="true"
+                    [allowedPageSizes]="[10, 25, 50, 100]"
+                ></dxo-pager>
+                <dxo-search-panel
+                    [visible]="false"
+                    [highlightCaseSensitive]="true"
+                ></dxo-search-panel>
+                <dxo-group-panel
+                    [visible]="true"
+                ></dxo-group-panel>
+                <dxo-grouping
+                    [autoExpandAll]="true"
+                ></dxo-grouping>
+
+                <dxi-column caption="Catégorie"  dataField="Category.NameCategory" [groupIndex]="0" alignment="center"></dxi-column>
+                <dxi-column caption="Modèle"  dataField="Model.NameModel" alignment="center"></dxi-column>
+                <dxi-column caption="Référence"  dataField="Reference" alignment="center"></dxi-column>
+                <dxi-column caption="Nom" dataField="Name" alignment="center"></dxi-column>
+                <dxi-column caption="Quantité restante" dataField="RemainingQuantities" alignment="center"></dxi-column>
+                <dxi-column caption="Département" dataField="Department.Name" alignment="center"></dxi-column>
+                <dxi-column caption="Dimension" dataField="Dimension" dataType="Number" alignment="center"></dxi-column>
+                <dxi-column caption="Numéro de série"dataField="NumSerie" alignment="center"></dxi-column>
+                <dxi-column caption="Code à barre" dataField="BarCode" alignment="center"></dxi-column>
+                <dxi-column caption="Fournisseur" dataField="Supplier.Name" alignment="center"></dxi-column>
+                <dxi-column caption="Prix d'achat" dataField="UnitPurchasePriceTTC" alignment="center"></dxi-column>
+                <dxi-column caption="Prix de vente" dataField="UnitSellingPriceTTC" alignment="center"></dxi-column>
+                <dxi-column caption="TVA" dataField="TVAInPercents" alignment="center"></dxi-column>
+
+                <dxi-column cellTemplate="ActionButtonsMenu" alignment="center"></dxi-column>
+                <dxo-summary>
+                    <dxi-total-item
+                        column="Reference"
+                        displayFormat="{0}"
+                        summaryType="count">
+                    </dxi-total-item>
+                    <dxi-total-item
+                        column="RemainingQuantities"
+                        displayFormat="{0}"
+                        summaryType="sum">
+                    </dxi-total-item>
+                </dxo-summary>
+                <div *dxTemplate="let action of 'ActionButtonsMenu'">
+                    <mat-icon aria-label="Edit" (click) = "onEdit(action.data.ID)" >edit</mat-icon>
+                    <mat-icon aria-label="Delete" (click) = "openDialog(action.data.ID)" color="warn" >delete</mat-icon>
+                    <mat-icon aria-label="Log" (click) = "openLog(action.data.ID)" color="primary">history</mat-icon>
+                </div>
+            </dx-data-grid> 
+            <div class="exportation">
+                <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf</mat-icon>
+                <img (click)="exportExcel()" src="assets/icons/excel.png" class="excel" title="Export as excel file" style="margin-left: 15%;">
+            </div>
+            
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -1,0 +1,57 @@
+<div class="orient-page orient-page--wide">
+  <div class="orient-page-header">
+    <div class="orient-page-header__text">
+      <h1 class="orient-page-header__title">Gestion des navires</h1>
+      <p class="orient-page-header__subtitle">Liste des navires, numéro IMO et port.</p>
+    </div>
+    <div class="orient-page-header__actions">
+      <button mat-stroked-button type="button" (click)="exportPdf()" [disabled]="!ships.length">PDF</button>
+      <button mat-stroked-button type="button" (click)="exportExcel()" [disabled]="!ships.length">Excel</button>
+      <button mat-raised-button type="button" class="orient-btn-icon-end" (click)="startAdd()">
+        Ajouter un navire <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="orient-table-card">
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" class="orient-table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nom</th>
+          <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="imo">
+          <th mat-header-cell *matHeaderCellDef>IMO</th>
+          <td mat-cell *matCellDef="let row">{{ row.imo }}</td>
+        </ng-container>
+        <ng-container matColumnDef="portId">
+          <th mat-header-cell *matHeaderCellDef>Port</th>
+          <td mat-cell *matCellDef="let row">{{ portName(row.portId) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button type="button" [matMenuTriggerFor]="shipMenu" aria-label="Actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #shipMenu="matMenu">
+              <button mat-menu-item type="button" (click)="startEdit(row)">
+                Modifier <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-menu-item type="button" (click)="remove(row)">
+                Supprimer <mat-icon>delete</mat-icon>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+      <mat-paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        showFirstLastButtons>
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

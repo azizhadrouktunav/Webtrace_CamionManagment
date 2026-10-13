@@ -1,0 +1,27 @@
+<div class="orient-dash-dlg">
+  <header class="orient-dash-dlg__header">
+    <h2 class="orient-dash-dlg__title">Détail de la mission</h2>
+    <button mat-icon-button type="button" (click)="close()" aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+  <div class="orient-dash-dlg__body">
+    <dl class="orient-detail">
+      <div><dt>Nom</dt><dd>{{ data.name }}</dd></div>
+      <div><dt>Navire</dt><dd>{{ data.ship }}</dd></div>
+      <div><dt>Date</dt><dd>{{ data.date }}</dd></div>
+      <div><dt>Heure</dt><dd>{{ data.start }}</dd></div>
+      <div><dt>Poste</dt><dd>{{ data.poste }}</dd></div>
+      <div><dt>Stock</dt><dd>{{ data.stock }}</dd></div>
+      <div><dt>Port</dt><dd>{{ data.port }}</dd></div>
+      <div><dt>Camions</dt><dd>{{ data.trucks }}</dd></div>
+      <div><dt>Chauffeurs</dt><dd>{{ data.drivers }}</dd></div>
+      <div><dt>Voyages</dt><dd>{{ data.trips }}</dd></div>
+      <div><dt>Cycle</dt><dd>{{ data.cycle }}</dd></div>
+      <div><dt>Notes</dt><dd>{{ data.notes }}</dd></div>
+    </dl>
+  </div>
+  <footer class="orient-dash-dlg__footer">
+    <button mat-button type="button" (click)="close()">Fermer</button>
+  </footer>
+</div>

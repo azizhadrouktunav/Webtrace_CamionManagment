@@ -1,0 +1,201 @@
+
+<div id="DepenceGeneral" class="page-layout MainContainer carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>assessment</mat-icon>
+                <span class="h1">
+                  Graphic Report
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" fusePerfectScrollbar>
+            <div class="content">
+                <div class="page-layout blank" style="background-color: rgba(255, 255, 252, 0.9);">
+                    <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+                        <div class="content p-24">
+
+                            <form novalidate [formGroup]="form" class="page-layout simple fullwidth" fxLayout="column" style="overflow: scroll; height:100%">
+
+
+                                <div  fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <mat-form-field floatLabel="always" class="mr-sm-12" fxFlex appearance="outline">
+
+                                        <mat-label>Select car</mat-label>
+                                        <mat-select  formControlName="Car" [(ngModel)]="Selected_chauffeur" required> 
+                                            <mat-option *ngFor="let car of trackingObjects" [value]="car.Key">{{car.FullName}}
+                                            </mat-option>
+                                        </mat-select> 
+                                       
+                                        <mat-error>Selecter car</mat-error>
+                                    </mat-form-field>
+
+                                    
+                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                        <mat-label>Date début</mat-label>
+
+                                        <input matInput [ngxMatDatetimePicker]="picker" 
+                                                        placeholder="Choose a date" 
+                                                        [min]="minDate" [max]="maxDate" 
+                                                        formControlName="StartDateGMT" required>
+                                        <mat-datepicker-toggle matSuffix [for]="picker">
+                                        </mat-datepicker-toggle>
+                                        <ngx-mat-datetime-picker #picker 
+                                          [showSpinners]="showSpinners" 
+                                          [showSeconds]="showSeconds"
+                                          [stepHour]="stepHour" [stepMinute]="stepMinute" 
+                                          [stepSecond]="stepSecond"
+                                          [touchUi]="touchUi"
+                                         >
+                                        </ngx-mat-datetime-picker>
+                                      </mat-form-field>
+                                      <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                        <mat-label>Date fin</mat-label>
+
+                                        <input matInput [ngxMatDatetimePicker]="picker1" 
+                                                        placeholder="Choose a date" 
+                                                        [min]="minDate" [max]="maxDate" 
+                                                        formControlName="EndDateGMT" required>
+                                        <mat-datepicker-toggle matSuffix [for]="picker1">
+                                        </mat-datepicker-toggle>
+                                        <ngx-mat-datetime-picker #picker1 
+                                          [showSpinners]="showSpinners" 
+                                          [showSeconds]="showSeconds"
+                                          [stepHour]="stepHour" [stepMinute]="stepMinute" 
+                                          [stepSecond]="stepSecond"
+                                          [touchUi]="touchUi"
+                                          [color]="color">
+                                        </ngx-mat-datetime-picker>
+                                      </mat-form-field>
+                                   
+                                   
+                                </div>
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-around center">
+                                    
+                                    
+                                  
+                                    
+                                   
+                                </div>
+                                <mat-grid-list cols="2" rowHeight="220px">
+                                    <mat-grid-tile>
+                                        <div class="card-preview">
+
+                                            <div class="fuse-card">
+                        
+                                                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                        
+                                                    <div class="pr-16">
+                                                        <div class="h3">Visibilité Emplacement</div>
+                                                    </div>
+                        
+                                                    <div class="w-40 h-40">
+                                                        <img src="assets/images/cards/gps.png">
+                                                    </div>
+                        
+                                                </div>
+                        
+                                                <div class="p-16 pt-0 line-height-1.75">
+                                                    <mat-form-field floatLabel="always" class="mr-sm-12" fxFlex appearance="outline">
+
+                                                        <mat-label>Select Type Emplacement</mat-label>
+                                                        <mat-select formControlName="Emplacement" required>
+                                                            <mat-option  [value]="1"> Tout les emplacements (Général)
+                                                            </mat-option>
+                                                            <mat-option  [value]="2">Propres emplacements (Privé)
+                                                            </mat-option>
+                                                        </mat-select>
+                                                       
+                                                    </mat-form-field>
+                                                    
+                                                </div>
+                        
+                                               
+                        
+                                            </div>
+                        
+                                        </div>
+                                    </mat-grid-tile>
+                                   
+                                    <mat-grid-tile>
+                                        <div class="card-preview">
+
+                                            <div class="fuse-card">
+                        
+                                                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                        
+                                                    <div class="pr-16">
+                                                        <div class="h3">Choose report</div>
+                                                    </div>
+                        
+                                                    <div class="w-40 h-40">
+                                                        <img src="assets/images/cards/report.png">
+                                                    </div>
+                        
+                                                </div>
+                        
+                                                <div class="p-16 pt-0 line-height-1.75">
+                                                    <mat-form-field multiple floatLabel="always" class="mr-sm-12" fxFlex appearance="outline">
+
+                                                        <mat-label>Select reports </mat-label>
+                                                        <mat-select multiple formControlName="report" required>
+                                                            <mat-option  [value]="1"> Fuel/time
+                                                            </mat-option>
+                                                            <mat-option  [value]="2">RPM/time
+                                                            </mat-option>
+                                                            <mat-option  [value]="3">Temperature/time
+                                                            </mat-option>
+                                                            <mat-option  [value]="4">Speed/time
+                                                            </mat-option>
+                                                        </mat-select>
+                                                       
+                                                    </mat-form-field>
+                                                </div>
+                        
+                                               
+                        
+                                            </div>
+                        
+                                        </div>
+                                    </mat-grid-tile>
+                                  
+                                  </mat-grid-list>
+                             <div style="width: 100%; text-align: center;">
+                                    <button mat-raised-button color="accent" style="width:150px;height: 48px;margin: auto;" type="button" class="button" [disabled]="!form.valid"
+                                    (click)="GetReportParam()">Generate Report</button>
+                                
+                                </div> 
+                            
+
+
+                            </form>
+
+                          
+                
+                
+                
+                               
+                          
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- / CONTENT CARD -->
+
+        </div>
+        <!--/ CENTER-->
+    </div>    

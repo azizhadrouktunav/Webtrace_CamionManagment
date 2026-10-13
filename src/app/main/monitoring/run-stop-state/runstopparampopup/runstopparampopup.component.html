@@ -1,0 +1,99 @@
+<div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" inner-scroll>
+
+      <form [formGroup] = "form" [formGroup]="form" >
+        <div fxLayout="row">
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+
+      <!-- <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
+        <mat-label>{{'choose_option' | translate }}</mat-label>
+        <input type="text" aria-label="Select Vehicles" matInput [matAutocomplete]="autoGroup" formControlName="keyTrackingObject" >
+        <mat-error *ngIf="form.get('keyTrackingObject').hasError('required')">Must select a vehicle</mat-error>
+        <mat-icon matSuffix class="secondary-text">directions_car</mat-icon>
+  
+          <mat-autocomplete [panelWidth]="'auto'" #autoGroup="matAutocomplete" [displayWith]="displayVehicle">
+            <mat-optgroup *ngFor="let group of CarGroupOptions | async" >
+              <div>
+                <mat-checkbox [checked]="group.selected" (change)="toggleParent($event, group)" 
+                  (click)="$event.stopPropagation()" >
+                    {{group.department}}
+                </mat-checkbox>
+                <button mat-button (click)="expandDocumentTypes(group)">
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+                </div>  
+                <mat-option *ngFor="let name of group.car" [value]="name"
+                   [ngClass]="isExpandCategory[group.department] ? 'list-show' : 'list-hide'">
+                   <mat-checkbox [checked]="group.checked" (change)="toggleSelection2($event, name, group)" 
+            (click)="$event.stopPropagation()">
+			        {{name.FullName}}
+		    	</mat-checkbox>
+                </mat-option>
+          </mat-optgroup>
+        </mat-autocomplete>
+      </mat-form-field> -->
+      
+<mat-form-field appearance="outline" class="pr-4" fxFlex="50">
+  <mat-label>{{'choose_option' | translate }}</mat-label>
+  <input type="text" aria-label="Select Vehicles" matInput [matAutocomplete]="autoGroup" formControlName="keyTrackingObject" >
+  <mat-error *ngIf="form.get('keyTrackingObject').hasError('required')">Must select a vehicle</mat-error>
+  <mat-icon matSuffix class="secondary-text">directions_car</mat-icon>
+
+    <mat-autocomplete [panelWidth]="'auto'" #autoGroup="matAutocomplete" [displayWith]="displayVehicle">
+      <mat-optgroup *ngFor="let group of CarGroupOptions | async" >
+        <div>
+          <mat-checkbox [checked]="group.selected" (change)="toggleParent($event, group)" 
+            (click)="$event.stopPropagation()" >
+              {{group.department}}
+          </mat-checkbox>
+          <button mat-button (click)="expandDocumentTypes(group)">
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+          </div>  
+          <mat-option *ngFor="let name of group.car" [value]="name"
+             [ngClass]="isExpandCategory[group.department] ? 'list-show' : 'list-hide'">
+             <mat-checkbox [checked]="group.checked ? true : name.checked" (change)="toggleSelection2($event, name, group)" 
+      (click)="$event.stopPropagation()">
+        {{name.FullName}}
+    </mat-checkbox>
+          </mat-option>
+    </mat-optgroup>
+  </mat-autocomplete>
+</mat-form-field>
+
+      <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
+        <mat-label>{{'NAV.StartDate' | translate }}</mat-label>
+        <input matInput [ngxMatDatetimePicker]="picker1"  class="text-semibold"
+        placeholder="Choose a start date" formControlName="dateTo" required>
+        <mat-error *ngIf="form.get('dateTo').hasError('mustBeMoreThan')">
+        {{'Common.Month_max_between_start_end' | translate }}
+        </mat-error>
+        <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker1 [showSeconds]="true" ></ngx-mat-datetime-picker>
+        
+    </mat-form-field>
+            </div></div>
+            <div fxLayout="row">
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+   
+
+   <mat-form-field appearance="outline"  class="pr-4" fxFlex="100">
+    <mat-label>{{'NAV.EndDate' | translate }}</mat-label>
+    <input matInput [ngxMatDatetimePicker]="picker2" class="text-semibold"
+    placeholder="Choose a end date"  formControlName="dateFrom"  [min]="minDate" required>
+    <mat-error *ngIf="form.get('dateFrom').hasError('required')">End date is required!</mat-error>
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <ngx-mat-datetime-picker #picker2 [showSeconds]="true" ></ngx-mat-datetime-picker>
+   </mat-form-field>
+</div></div>
+<div class="px-24 pb-12" fxLayout="row" fxLayoutAlign="center center">
+  <button mat-raised-button
+          class="mat-primary compose-dialog-button w-100-p"
+          (click)="matDialogRef.close(form);"
+          (keydown.enter)="onSubmit()"
+          aria-label="Submit">
+       {{'appliquer' | translate}}
+  </button>
+</div>
+
+    </form> 
+    </div>

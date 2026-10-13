@@ -1,0 +1,45 @@
+<mat-expansion-panel >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+       {{'AlertConfiguration.SpeedSection.SpeedSectionTitle' | translate}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form [formGroup]="SpeedSection">
+        <div fxLayout="column" fxFlex>
+            <div class="space-between" *ngIf="defaultParams?.HardwareSupportOverSpeedAlarm == true"><!---->
+                <mat-checkbox formControlName="activateOfOverSpeed" class="margintop" (change)="changeSpeedlimitStatus($event)">
+                    {{'AlertConfiguration.SpeedSection.speedingSup' | translate}}
+                </mat-checkbox>
+                <mat-form-field appearance="outline">
+                    <mat-label>Km Per h</mat-label>
+                    <input matInput formControlName="speedLimit" type="number">
+                </mat-form-field> 
+                <p class="margintop"> {{'AlertConfiguration.SpeedSection.speedingSupTime' | translate}} </p>
+                <mat-form-field appearance="outline">
+                    <mat-label>s</mat-label>
+                    <input matInput formControlName="TimeOverSpeedLimit" type="number">
+                </mat-form-field> 
+            </div>
+            <div class="centring-contant" *ngIf="defaultParams?.HardwareSupportOverSpeedAlarm == true"><!-- -->
+                <mat-checkbox formControlName="activateOfAlarmSiren" class="red-A700-fg">
+                    {{'AlertConfiguration.SpeedSection.activateSiren' | translate}}
+                </mat-checkbox>
+            </div>
+            <div class="space-between" style="margin-top: 25px;" *ngIf="defaultParams?.HardwareSupportExceedingTheSpeedLimitOnTunisianRoadAlarm == true"><!---->
+                <mat-checkbox formControlName="activateOfAlarmSpeedRange" class="margintop" (change)="changeSpeedlimitplusmoisStatus($event)">
+                    {{'AlertConfiguration.SpeedSection.speedingInterval' | translate}}
+                </mat-checkbox>
+                <mat-form-field appearance="outline" class="pr-sm-8">
+                    <mat-label>Km Per h</mat-label>
+                    <input matInput formControlName="overSpeedValue" type="number">
+                </mat-form-field> 
+                <p class="margintop"> {{'AlertConfiguration.SpeedSection.speedingIntervalLabel' | translate}} </p>
+            </div>
+        </div>
+    </form>
+    <mat-action-row>    
+        <button type="button" mat-button color="warn" (click)="SpeedDefault()">{{'AlertConfiguration.SpeedSection.DefaultParams' | translate}}</button>
+        <button type="button" mat-button color="#26bcfb" (click)="SpeedSabmit(SpeedSection)">{{'AlertConfiguration.SpeedSection.SendParms' | translate}}</button>
+    </mat-action-row>
+</mat-expansion-panel>
+

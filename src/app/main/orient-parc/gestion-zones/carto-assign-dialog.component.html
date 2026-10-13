@@ -1,0 +1,25 @@
+<div class="orient-form-dlg">
+  <header class="orient-form-dlg__header">
+    <div>
+      <h2 class="orient-form-dlg__title">Affecter</h2>
+    </div>
+    <button mat-icon-button type="button" (click)="cancel()" aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="orient-form-dlg__body">
+    <mat-form-field appearance="outline" class="orient-form-full">
+      <mat-label>Affectation</mat-label>
+      <mat-select [(ngModel)]="kind">
+        <mat-option *ngFor="let option of options" [value]="option.id">{{ option.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <footer class="orient-form-dlg__footer">
+    <span class="orient-form-dlg__spacer"></span>
+    <button mat-button type="button" (click)="cancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="button" (click)="save()">Enregistrer</button>
+  </footer>
+</div>

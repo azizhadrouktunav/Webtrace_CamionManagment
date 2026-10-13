@@ -1,0 +1,550 @@
+<div id="report" class="page-layout simple right-sidebar inner-scroll">
+
+    
+
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+
+        <!-- HEADER -->
+        <div class="header accent p-24" >
+
+           
+
+           
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <span class="h2">
+                    <!-- APP TITLE -->
+                    <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+
+                        <button mat-icon-button [routerLink]="'/reports/generalreport'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                        <span class="logo-text h1">
+                            {{'NAV.GeneralReport' | translate}} 
+                        <span class="logo-text h1" *ngIf="IsContainProBUSCAN"> Buscan</span>
+                        </span>
+                    </div>
+                    <!-- / APP TITLE -->
+                </span>
+                <span class="h5 secondary-text"> {{'NAV.Dashboard' | translate}}
+                    {{CarMatricule}} {{'NAV.Between' | translate}}
+                    {{startdate | localizedDate}}    {{'NAV.and' | translate}} {{enddate| localizedDate}}
+                </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="exportIcon">
+                    <img (click)="downloadPdf()" src="../../../../assets/icons/pdf.webp" class="pdf" title="Export as pdf file" height="50px">
+                    <img (click)="downloadExcel()" src="../../../../assets/icons/excel.png" class="excel" title="Export as excel file" height="50px">
+                </div>
+            </div>
+
+        
+
+           
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="container" fusePerfectScrollbar>
+            <div class="content">
+     
+                <div class="left mr-lg-32">
+        
+        
+                    <div id="chart">
+        
+        
+                        <ngx-charts-number-card [view]="view2" [scheme]="colorScheme2" [results]="singleSpeed"
+                            [cardColor]="cardColor">
+                        </ngx-charts-number-card>
+        
+        
+                        <ngx-charts-number-card [view]="view2" [scheme]="colorScheme3" [results]="singleStatistic"
+                            [cardColor]="cardColor">
+                        </ngx-charts-number-card>
+        
+                        <ngx-charts-number-card [view]="view2" [scheme]="colorScheme4" [results]="singleStatistic2"
+                        [cardColor]="cardColor">
+                    </ngx-charts-number-card>
+                       
+                        <div *ngIf="IsContainProBUSCAN">
+                            
+                            <ngx-charts-number-card [view]="view2" [scheme]="colorScheme2" [results]="singleStatistic3"
+                            [cardColor]="cardColor">
+                        </ngx-charts-number-card>
+                        </div>
+                    </div>
+        
+                </div>
+        
+                <div class="right">
+                    <div class="fuse-card">
+                        <div class="p-16">
+                            <div class="h1 font-weight-300" fxLayout="row" fxLayoutAlign="space-between center">
+                                <span>
+                                    {{'NAV.StopCirculationChart' | translate}}
+                                </span>
+        
+                             
+                            </div>
+                            
+                        </div>
+                        <div id="chart2" #chart2 class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <ngx-charts-pie-chart 
+                                [results]="singleStop" 
+                                [scheme]="colorScheme" 
+                                [legend]="false"
+                                [legendTitle]="'stop circulation Report'" 
+                                [view]="[chart2.offsetWidth, chart2.offsetHight]"
+                                [doughnut]="true" 
+                                [labels]="true">
+                            </ngx-charts-pie-chart>
+                        </div>
+                    </div>
+                    <!-- / Widget 7 -->
+                </div>
+            </div>
+        
+            <div style="background:white;border-radius:10px;width:-webkit-fill-available;margin:30px">
+        
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="h2 pr-16"> {{'NAV.Carposition' | translate}}</div>
+        
+                    <div>
+                        <button mat-icon-button [matMenuTriggerFor]="card20Menu" aria-label="more">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+        
+                        <mat-menu #card20Menu="matMenu">
+                            <button (click)="exportpdf()" fxLayout="row" fxLayoutAlign="start center" mat-menu-item>
+                                <span> {{'NAV.ToPDFFile' | translate}}</span>
+                            </button>
+                            <button (click)="exportexcel()" fxLayout="row" fxLayoutAlign="start center" mat-menu-item>
+                                <span> {{'NAV.ToExcelFile' | translate}}</span>
+                            </button>
+        
+                        </mat-menu>
+                    </div>
+                </div>
+                <div class="position-relative h-450 pb-16">
+                    <div id="ExampleTable" #ExampleTable class="content-card">
+                        <mat-table [dataSource]="extendedgpspositions" matSort class="products-table" fusePerfectScrollbar>
+        
+        
+                            <ng-container matColumnDef="State">
+                                <mat-header-cell *matHeaderCellDef fxHide mat-sor t-header fxShow.gt-md>
+                                    {{'NAV.Status' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
+        
+                                    <p class="status text-truncate h6 p-4" [ngClass]="{'green-800': element.StopRunStatusEnum === 0 , 
+                                
+                                    'red-500': element.StopRunStatusEnum === 1 ,'orange-800':element.StopRunStatusEnum === 2 }">
+                                        {{element.StopRunStatusEnumString}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+        
+        
+                            <ng-container matColumnDef="AcquisitionTime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                                    {{'NAV.AcquisitionTime' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-xs>
+                                    <p style="margin-bottom: 2rem;white-space:pre-wrap;" class="price text-truncate">
+                                        {{element.BeginDateLocalString }}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="Speed">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Speed' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Speed}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+        
+        
+                            <ng-container matColumnDef="Distance">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.TraveledDistance' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.CumulativeDistanceString}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="NearestPlace">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.NearAddress' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.NearestPlaceString}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container  matColumnDef="FuelLevel">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.FuelLevel' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.FuelLevel}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="RPM">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.RPM' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.RPM}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="EngineTemperature">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.EngineTemperature' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.EngineTemperature}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Acceleration">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Acceleration' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Acceleration}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="FuelConsumptionAvg">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.TotalFuelConsumed' | translate}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.FuelConsumptionAvgInL100Km}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container> 
+                            <ng-container matColumnDef="Latitude">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Latitude' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Latitude}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Longitude">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Longitude' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Longitude}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="Scolling_wigh">
+                            </mat-header-row>
+                            <mat-row [ngClass]="{'make-gold': element.isOverSpeed == true}"
+                                *matRowDef="let element; columns: displayedColumns;" class="element" matRipple
+                                class="Scolling_wigh"></mat-row>
+        
+        
+                        </mat-table>
+                        <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+        
+                            <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[1, 5, 10]">
+                            </mat-paginator>
+        
+                        </mat-toolbar>
+                    </div>
+                </div>
+        
+            </div>
+        
+            <div style="background:white;border-radius:10px;width:-webkit-fill-available;margin:30px">
+        
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="h2 pr-16">{{'NAV.CarRunStop' | translate}}</div>
+        
+                    <div>
+                        <button mat-icon-button [matMenuTriggerFor]="card20Menu2" aria-label="more">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+        
+                        <mat-menu #card20Menu2="matMenu">
+                            <button (click)="downloadPdfReportRunStop()" fxLayout="row" fxLayoutAlign="start center" mat-menu-item>
+                                <span> {{'NAV.ToPDFFile' | translate}}</span>
+                            </button>
+                            <button (click)="downloadRunStopExcel()" fxLayout="row" fxLayoutAlign="start center" mat-menu-item>
+                                <span> {{'NAV.ToExcelFile' | translate}}</span>
+                            </button>
+        
+                        </mat-menu>
+                    </div>
+                </div>
+        
+                <div class="position-relative h-450 pb-16">
+                    <div id="ExampleTable" #ExampleTable class="content-card">
+                        <mat-table [dataSource]="gpsdataPositions" matSort class="products-table" fusePerfectScrollbar>
+        
+        
+                            <ng-container matColumnDef="State">
+                                <mat-header-cell *matHeaderCellDef fxHide mat-sor t-header fxShow.gt-md>
+                                    {{'NAV.Status' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
+        
+        
+                                    <p class="status text-truncate h6 p-4" [ngClass]="{'green-800': element.StopRunStatusEnum === 0 , 
+                                        
+                                        'red-500': element.StopRunStatusEnum === 1  }">
+                                        {{element.StopRunStatusEnumString}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+        
+        
+                            <ng-container matColumnDef="AcquisitionTime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                                    {{'NAV.AcquisitionTime' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-xs>
+                                    <p class="price text-truncate">
+                                        {{element.BeginDateLocalString }}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="NearestPlace">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.NearAddress' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.NearestPlaceString}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="FuelLevel">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Duration' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.PeriodString}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Speed">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Speed' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Speed}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+        
+        
+                            <ng-container matColumnDef="Distance">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.TraveledDistance' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.CumulativeDistanceString}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="Latitude">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Latitude' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Latitude}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Longitude">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Longitude' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Longitude}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+        
+                            <mat-header-row *matHeaderRowDef="displayedColumns2; sticky:true" class="Scolling_wigh">
+                            </mat-header-row>
+                            <mat-row [ngClass]="{'make-gold': element.isOverSpeed == true}"
+                                *matRowDef="let element; columns: displayedColumns2;" class="element" matRipple
+                                class="Scolling_wigh"></mat-row>
+        
+        
+                        </mat-table>
+                        <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+        
+                            <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[1, 5, 10]">
+                            </mat-paginator>
+        
+                        </mat-toolbar>
+                    </div>
+                </div>
+        
+            </div>
+        
+            <div style="background:white;border-radius:10px;width:-webkit-fill-available;margin:30px">
+        
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="h2 pr-16">{{'NAV.CarStop' | translate}}</div>
+        
+                    <div>
+                        <button mat-icon-button [matMenuTriggerFor]="card20Menu3" aria-label="more">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+        
+                        <mat-menu #card20Menu3="matMenu">
+                            <button (click)="exportpdf3()" fxLayout="row" fxLayoutAlign="start center" mat-menu-item>
+                                <span>{{'NAV.ToPDFFile' | translate}}</span>
+                            </button>
+                            <button (click)="exportexcel3()" fxLayout="row" fxLayoutAlign="start center" mat-menu-item>
+                                <span> {{'NAV.ToExcelFile' | translate}}</span>
+                            </button>
+        
+                        </mat-menu>
+                    </div>
+                </div>
+        
+                <div class="position-relative h-450 pb-16">
+                    <div id="ExampleTable" #ExampleTable class="content-card">
+                        <mat-table [dataSource]="gpsStops" matSort class="products-table" fusePerfectScrollbar>
+        
+        
+                            <ng-container matColumnDef="State">
+                                <mat-header-cell *matHeaderCellDef fxHide mat-sor t-header fxShow.gt-md>
+                                    {{'NAV.Status' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
+                                    <p class="status text-truncate h6 p-4" [ngClass]="{'green-800': element.StopRunStatusEnum === 0 , 
+                                        
+                                        'red-500': element.StopRunStatusEnum === 1  }">
+                                        {{element.StopRunStatusEnumString}}
+                                    </p>
+        
+                                </mat-cell>
+                            </ng-container>
+        
+        
+                            <ng-container matColumnDef="AcquisitionTime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                                    {{'NAV.StartTime' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-xs>
+                                    <p class="price text-truncate">
+                                        {{element.BeginDateLocalString}}
+                                    </p>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="FuelLevel">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.EndTime' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.EndDateLocalStringFromJson}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Speed">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Speed' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Speed}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Period">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Duration' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.PeriodString}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="Distance">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.TraveledDistance' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.CumulativeDistanceString}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="NearestPlace">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.NearAddress' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.NearestPlaceString}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="Latitude">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Latitude' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Latitude}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Longitude">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    {{'NAV.Longitude' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>
+                                        {{element.Longitude}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                           
+        
+                            <mat-header-row *matHeaderRowDef="displayedColumns3; sticky:true" class="Scolling_wigh">
+                            </mat-header-row>
+                            <mat-row [ngClass]="{'make-gold': element.isOverSpeed == true}"
+                                *matRowDef="let element; columns: displayedColumns3;" class="element" matRipple
+                                class="Scolling_wigh"></mat-row>
+        
+        
+                        </mat-table>
+                        <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+        
+                            <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[1, 5, 10]">
+                            </mat-paginator>
+        
+                        </mat-toolbar>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
+
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+    fullScreenBackdrop: 'true',
+   
+    primaryColour: '#e2f000', 
+    secondaryColour: '#e2f000', 
+    tertiaryColour: '#e2f000' }" [template]="customLoadingTemplate"></ngx-loading>
+
+</div>

@@ -1,0 +1,294 @@
+<div id="DepenceGeneral" class="page-layout MainContainer carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>timeline</mat-icon>
+                <span class="h1">
+                      {{'GeneralExpenses' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" fusePerfectScrollbar [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+            <div class="content">
+                <div class="page-layout blank" style="background-color: rgba(255, 255, 252, 0.9);">
+                    <div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+                        <div class="content p-24">
+
+                            <form novalidate [formGroup]="form" class="page-layout simple fullwidth" fxLayout="column">
+
+                                <div class="dates" fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                        <mat-label>{{'StartDate' | translate}}</mat-label>
+                                        <input matInput [matDatepicker]="picker1" formControlName="StartDateGMT">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                                        <mat-label>{{'EndDate' | translate}}</mat-label>
+                                        <input matInput [matDatepicker]="picker2" formControlName="EndDateGMT">
+                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker2></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-around center">
+                                    
+                                    <mat-form-field class="mr-sm-12" fxFlex appearance="outline">
+                                        <mat-label>{{'PARC.Type' | translate}}</mat-label>
+                                        <mat-select formControlName="Type" >
+                                            <mat-option *ngFor="let item of Types" (click)="onChangeType(item.value)"
+                                                [value]="item.value">
+                                                {{item.name | translate}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    
+                                    
+                                    <mat-form-field class="mr-sm-12" fxFlex appearance="outline">
+                                        <mat-label>{{NameObject | translate}}</mat-label>
+                                        <input type="text"   matInput [matAutocomplete]="auto" formControlName="ListFourOrCatgOrMdlOrCmpOrTTOrDepOrDri" >
+                                        <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" [displayWith]="displayCar"  (optionSelected)='selectedOption($event)'>
+                                         <app-select-check-all  [model]="form.get('ListFourOrCatgOrMdlOrCmpOrTTOrDepOrDri')" [values]="ListTypeSelected"  >
+                                            </app-select-check-all>
+                                        	
+                                            <mat-option *ngFor="let obj of filteredOptions | async" [value]="obj">
+                                                <div (click)="optionClicked($event, obj)">
+                                                    <mat-checkbox [checked]="obj.selected" (change)="toggleSelection(obj)" (click)="$event.stopPropagation()">
+                                                        {{obj.Name}}
+                                                    </mat-checkbox>
+                                                </div>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                     <!--   <mat-select multiple formControlName="ListFourOrCatgOrMdlOrCmpOrTTOrDepOrDri">
+                                            
+                                            <mat-option *ngFor="let TypeSelected of ListTypeSelected"
+                                                [value]="TypeSelected.ID">
+                                                {{TypeSelected.Name}}
+                                            </mat-option>
+                                        </mat-select>-->
+                                    </mat-form-field>
+                                </div>
+                                <div style="width: 100%; text-align: center;">
+                                    <button mat-raised-button color="accent" style="width:150px;height: 48px;margin: auto;" type="submit" class="button"
+                                    (click)="GetObjListCost(form.value)">Filtrer</button>
+                                </div>
+                            
+
+
+                            </form>
+
+                            <div id="dashboard-analytics" class="page-layout blank">
+                                <div class="content">
+                                    <div class="left">
+
+                                        <div class="fuse-card">
+                                            <ngx-flip [flip]="flip">
+                                                <div front>
+                                                    <div class="p-16">
+                                                        <div class="h1 font-weight-300" id="depenceCar"></div>
+                                                    </div>
+                                                    <div class="position-relative h-368 pb-16">
+                                                        <ngx-charts-pie-chart  [scheme]="MyShema" 
+                                                            [results]="single" [gradient]="gradient" [legend]="false"
+                                                            [labels]="true" [doughnut]="true"
+                                                            (select)="onSelectPie($event)">
+                                                        
+                                                        </ngx-charts-pie-chart>
+                                                    </div>
+                                                </div>
+                                                <div back>
+                                                    <div class="light-blue-600">
+                                                        <div class="p-16" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="p-16">
+                                                                <div class="h1 font-weight-300" id="car"></div>
+                                                                <div class="h5 secondary-text" id="cost"></div>
+                                                                <!--<div class="h1 font-weight-300">Sessions by device</div>-->
+                                                            </div>
+                                                            <button mat-icon-button (click)="rotate()">
+                                                                <mat-icon>close</mat-icon>
+
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="position-relative h-368 pb-16">
+                                                        <mat-form-field
+                                                            [ngStyle]="{'width':'50%','justify-content': 'center'}">
+                                                            <mat-label>
+                                                                <mat-icon>search</mat-icon>search
+                                                            </mat-label>
+                                                            <input matInput
+                                                                (keyup)="applyFilterDetail($event.target.value)"
+                                                                placeholder="Filter" [(ngModel)]="searchkey"
+                                                                autocomplete="off" type="text">
+                                                        </mat-form-field>
+                                                        <table mat-table [dataSource]="dataSourceDetails2" matSort
+                                                            width="100%">
+                                                            <ng-container matColumnDef="ActionDate">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Date </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.ActionDate | date: 'yyyy/MM/dd hh:mm'}} </td>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="Reference">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    {{'PARC.Reference' | translate}} </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.Reference}} </td>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="Quantity">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    {{'PARC.quantity' | translate}}  </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.Quantity}} </td>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="PUTTC">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    PUTTC </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.PUTTC}} </td>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="TotalCost">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    {{'PARC.TotalCost' | translate}} (TTC) </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.TotalCost}} </td>
+                                                            </ng-container>
+                                                            <tr mat-header-row *matHeaderRowDef="displayedColumns2"
+                                                                class="headerDet"></tr>
+                                                            <tr mat-row
+                                                                *matRowDef="let elem; columns: displayedColumns2;"></tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </ngx-flip>
+                                        </div>
+
+                                    </div>
+                                    <div class="right">
+                                        <div class="fuse-card">
+                                            <ngx-flip [flip]="flip2">
+                                                <div front>
+                                                    <div class="p-16">
+                                                        <!--<div class="h1 font-weight-300">Sessions by device</div>-->
+                                                    </div>
+                                                    <div class="h-360">
+
+                                                        <ngx-charts-bar-vertical 
+                                                            [results]="barChartData2" [gradient]="gradientBar"
+                                                            [xAxis]="showXAxis" [yAxis]="showYAxis"
+                                                            [legend]="'true'" [showXAxisLabel]="showXAxisLabel"
+                                                            [showYAxisLabel]="showYAxisLabel" [legendPosition]="'below'"
+                                                            (select)="onSelectBar($event)" [scheme]="MyShema">
+                                                        </ngx-charts-bar-vertical>
+                                                    </div>
+                                                </div>
+                                                <div back>
+                                                    <div class="light-blue-600">
+                                                        <div class="p-16" fxLayout="row"
+                                                            fxLayoutAlign="space-between center">
+                                                            <div class="p-16">
+                                                                <div class="h1 font-weight-300" id="TypeDep"></div>
+                                                                <div class="h5 secondary-text" id="costType"></div>
+                                                                <!--<div class="h1 font-weight-300">Sessions by device</div>-->
+                                                            </div>
+                                                            <button mat-icon-button (click)="rotateType()">
+                                                                <mat-icon>close</mat-icon>
+
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="position-relative h-368 pb-16">
+                                                        <mat-form-field
+                                                            [ngStyle]="{'width':'50%','justify-content': 'center'}">
+                                                            <mat-label>
+                                                                <mat-icon>search</mat-icon>search
+                                                            </mat-label>
+                                                            <input matInput
+                                                                (keyup)="applyFilterDetailType($event.target.value)"
+                                                                placeholder="Filter" [(ngModel)]="searchkey"
+                                                                autocomplete="off" type="text">
+                                                        </mat-form-field>
+                                                        <table mat-table [dataSource]="dataSourceDetailsType" matSort
+                                                            width="100%">
+                                                            <ng-container matColumnDef="ActionDate">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    {{'Date' | translate}} </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.ActionDate | date: 'yyyy/MM/dd hh:mm'}} </td>
+                                                            </ng-container>
+                                                            
+                                                            <ng-container matColumnDef="carLib">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    {{NameObject | translate}} </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.carLib}} </td>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="Quantity">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    {{'PARC.quantity' | translate}}  </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.Quantity}} </td>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="PUTTC">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    PUTTC </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.PUTTC}} </td>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="TotalCost">
+                                                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    {{'PARC.TotalCost' | translate}} (TTC) </th>
+                                                                <td mat-cell *matCellDef="let elem" align="center">
+                                                                    {{elem.TotalCost}} </td>
+                                                            </ng-container>
+                                                            <tr mat-header-row *matHeaderRowDef="displayedColumnsType"
+                                                                class="headerDet"></tr>
+                                                            <tr mat-row
+                                                                *matRowDef="let elem; columns: displayedColumnsType;">
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </ngx-flip>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div id="dashboard-analytics" style="
+                            position: relative;
+                            overflow: hidden;
+                            width: 100%;
+                            min-height: 400px;">
+                                <ngx-charts-line-chart  [legend]="legendLine" [xAxis]="xAxis"
+                                    [yAxis]="yAxis" [timeline]="false" [results]="DataLine" [scheme]="MyShema"
+                                    [roundDomains]="true">
+
+                                </ngx-charts-line-chart>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- / CONTENT CARD -->
+
+        </div>
+        <!--/ CENTER-->
+    </div>

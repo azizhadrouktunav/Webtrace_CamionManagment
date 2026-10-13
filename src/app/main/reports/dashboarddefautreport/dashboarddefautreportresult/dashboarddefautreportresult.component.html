@@ -1,0 +1,358 @@
+<div id="report" class="page-layout simple right-sidebar inner-scroll">
+
+
+
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+
+        <!-- HEADER -->
+        <div class="header accent p-24">
+
+
+
+
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <span class="h2">
+                    <!-- APP TITLE -->
+                    <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+
+                        <button mat-icon-button [routerLink]="'/reports/dashboarddefautreport'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                        <span class="logo-text h1">
+                            {{'NAV.Dashboarddefautreport' | translate}}
+                        </span>
+                    </div>
+                    <!-- / APP TITLE -->
+                </span>
+                <span class="h5 secondary-text"> {{'NAV.Dashboard' | translate}}
+                    {{'NAV.Between' | translate}}
+                    {{startdate | localizedDate}} and {{'NAV.and' | translate}} {{enddate| localizedDate}}
+                </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <!--    <mat-form-field>
+                   <mat-label>Choose an option</mat-label>
+                    <mat-select multiple [(ngModel)]="selectedAlerts" style="width: 550px;">
+                        <mat-option *ngFor="let alert of alerts" (click)="setAlertFilter()" [value]="alert.type">{{alert.tooltip}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="exportIcon">
+                    <img (click)="downloadPdf()" src="../../../../assets/icons/pdf.webp" class="pdf" title="Export as pdf file" height="50px">
+                    <img (click)="downloadExcel()" src="../../../../assets/icons/excel.png" class="excel" title="Export as excel file" height="50px">
+                </div>-->
+            </div>
+
+
+
+
+
+        </div>
+
+
+        <div class="container">
+
+            <div class="left mr-lg-70">
+
+
+                <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+
+                    <!-- Widget 2 -->
+                    <div class="widget" fxFlex="100" fxFlex.gt-sm="100">
+                        <div class="alerts-grid">
+                            <ng-container *ngFor="let alert of alerts">
+                                <mat-card class="alert-card"
+                                    *ngIf="alertTypes.includes(alert.type) && !alert.disable && alert.cars.length > 0">
+                                    <mat-card-header>
+                                        <mat-card-title-group>
+                                            <mat-card-title>{{ alert.tooltip }}</mat-card-title>
+                                            <img mat-card-sm-image [src]="alert.icon" />
+                                        </mat-card-title-group>
+                                    </mat-card-header>
+                                    <mat-card-content class="alert-content">
+                                        <div class="chips">
+                                            <div class="chip" *ngFor="let car of getUniqueCars(alert.cars)">
+                                                <div class="truncate">{{ car.Matricule }}</div>
+                                                <div>|{{ car.Count }}|</div>
+                                                <div>{{ car.DateString }}</div>
+                                            </div>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </ng-container>
+                        </div>
+
+
+                        <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
+
+
+                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                                <div class="h2 pr-16"> Liste des défauts</div>
+
+                                <div>
+                                    <button mat-icon-button [matMenuTriggerFor]="card20Menu" aria-label="more">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+
+                                    <mat-menu #card20Menu="matMenu">
+                                        <button (click)="downloadPdf()" fxLayout="row" fxLayoutAlign="start center"
+                                            mat-menu-item>
+                                            <span> {{'NAV.ToPDFFile' | translate}}</span>
+                                        </button>
+                                        <button (click)="downloadExcel()" fxLayout="row" fxLayoutAlign="start center"
+                                            mat-menu-item>
+                                            <span> {{'NAV.ToExcelFile' | translate}}</span>
+                                        </button>
+
+                                    </mat-menu>
+                                </div>
+                            </div>
+                            <div class="h-400 w-100-p">
+                                <div class="position-relative h-400 pb-16">
+                                    <div id="ExampleTable" #ExampleTable class="content-card">
+                                        <mat-table [dataSource]="datasource" matSort class="products-table"
+                                            fusePerfectScrollbar>
+
+
+
+
+
+                                            <ng-container matColumnDef="TrackingObject">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                                                    {{'NAV.TrackingObject' | translate}}</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-xs>
+                                                    <p class="price text-truncate">
+                                                        {{element.Matricule}}
+                                                    </p>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="AcquisitionTime">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    {{'NAV.AcquisitionTime' | translate}}</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span>
+                                                        {{element.Date}}
+                                                    </span>
+                                                </mat-cell>
+                                            </ng-container>
+
+
+                                            <ng-container matColumnDef="Speed">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    {{'NAV.Speed' | translate}}</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span>
+                                                        {{element.Speed}}
+                                                    </span>
+                                                </mat-cell>
+                                            </ng-container>
+
+
+                                            <ng-container matColumnDef="NearAddress">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    {{'NAV.NearAddress' | translate}}</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    <span>
+                                                        {{element.NearestPlaceString}}
+                                                    </span>
+                                                </mat-cell>
+                                            </ng-container>
+
+
+                                            <ng-container matColumnDef="OtherInfo">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element">
+
+                                                    <img *ngIf="element.TypeAlert == 'Hood'"
+                                                        src="./assets/icons/FlatIcons/png/alarm.png" class="w-24 h-24"
+                                                        [matTooltip]="Capot">
+                                                    <img *ngIf="element.TypeAlert == 'Trunk'"
+                                                        src="./assets/icons/FlatIcons/png/trunk.png" class="w-24 h-24"
+                                                        [matTooltip]="Coffre">
+
+                                                    <img *ngIf="element.TypeAlert =='FuelLow'"
+                                                        src="./assets/icons/FlatIcons/png/gas-pump.png"
+                                                        class="w-24 h-24" matTooltip="Carburant bas" class="w-24 h-24">
+
+
+                                                    <img *ngIf="element.TypeAlert=='DriverSeatbelt'"
+                                                        src="./assets/icons/FlatIcons/png/seatbelt.png"
+                                                        class="w-24 h-24" matTooltip="Ceinture de sécurité conducteur">
+
+
+                                                    <img *ngIf="element.TypeAlert=='AirConditioning'"
+                                                        src="./assets/icons/FlatIcons/png/fan.png" class="w-24 h-24"
+                                                        matTooltip="Climatisation">
+
+
+
+
+                                                    <img *ngIf="element.TypeAlert=='CentralLock'"
+                                                        src="./assets/icons/FlatIcons/png/lock.png" class="w-24 h-24"
+                                                        matTooltip="Fermeture centrale">
+
+                                                    <img *ngIf="element.TypeAlert=='RuningLight'"
+                                                        src="./assets/icons/FlatIcons/png/carlight.png"
+                                                        class="w-24 h-24" matTooltip="Feux de position">
+
+
+                                                    <img *ngIf="element.TypeAlert=='RearFogLight'"
+                                                        src="./assets/icons/FlatIcons/png/fog-lamp.png"
+                                                        class="w-24 h-24" matTooltip="Feu brouillard arriére">
+
+                                                    <img *ngIf="element.TypeAlert=='FrontFogLight'"
+                                                        src="./assets/icons/FlatIcons/png/fogleft-lamp.png"
+                                                        class="w-24 h-24" matTooltip="Feu brouillard avant">
+
+
+                                                    <img *ngIf="element.TypeAlert=='LowBeams'"
+                                                        src="./assets/icons/FlatIcons/png/car-light.png"
+                                                        class="w-24 h-24" matTooltip="Feux de croisement">
+
+                                                    <img *ngIf="element.TypeAlert=='HazardLight'"
+                                                        src="./assets/icons/FlatIcons/png/turn-signal.png"
+                                                        class="w-24 h-24" matTooltip="Feux clignotants">
+
+                                                    <img *ngIf="element.TypeAlert=='HighBeams'"
+                                                        src="./assets/icons/FlatIcons/png/high-beam.png"
+                                                        class="w-24 h-24" matTooltip="Feux de route">
+
+
+                                                    <img *ngIf="element.TypeAlert=='Handbrake'"
+                                                        src="./assets/icons/FlatIcons/png/frein.png" class="w-24 h-24"
+                                                        matTooltip="Frein à main">
+
+                                                    <img *ngIf="element.TypeAlert=='ReverseGear'"
+                                                        src="./assets/icons/FlatIcons/png/gearshift.png"
+                                                        class="w-24 h-24" matTooltip="Marche arriére">
+
+                                                    <img *ngIf="element.TypeAlert=='CruiseControl'"
+                                                        src="./assets/icons/FlatIcons/png/page-speed.png"
+                                                        class="w-24 h-24" matTooltip="Regulateur de vitesse">
+
+
+                                                    <img *ngIf="element.TypeAlert=='BrakePedal'"
+                                                        src="./assets/icons/FlatIcons/png/pedal.png" class="w-24 h-24"
+                                                        matTooltip="Frein à pied">
+                                                    <img *ngIf="element.TypeAlert=='ClutchPedal'"
+                                                        src="./assets/icons/FlatIcons/png/clutch.png" class="w-24 h-24"
+                                                        matTooltip="Pédale embrayage">
+
+
+
+                                                    <img *ngIf="element.TypeAlert=='Doors'"
+                                                        src="./assets/icons/FlatIcons/png/car-door.png"
+                                                        class="w-24 h-24" matTooltip="Portes">
+                                                    <img *ngIf="element.TypeAlert=='PassengerDoor'"
+                                                        src="./assets/icons/FlatIcons/png/doorleft.png"
+                                                        class="w-24 h-24" matTooltip="Porte passager">
+                                                    <img *ngIf="element.TypeAlert=='DriverDoor'"
+                                                        src="./assets/icons/FlatIcons/png/doorright.png"
+                                                        class="w-24 h-24" matTooltip="Porte du conducteur">
+                                                    <img *ngIf="element.TypeAlert=='RearRightDoor'"
+                                                        src="./assets/icons/FlatIcons/png/doorleft.png"
+                                                        class="w-24 h-24" matTooltip="Porte arriére gauche">
+                                                    <img *ngIf="element.TypeAlert=='DriverDoor'"
+                                                        src="./assets/icons/FlatIcons/png/doorright.png"
+                                                        class="w-24 h-24" matTooltip="Porte arriére droite">
+
+                                                    <img *ngIf="element.TypeAlert=='Webcast'"
+                                                        src="./assets/icons/FlatIcons/png/heating.png" class="w-24 h-24"
+                                                        matTooltip="Un système de chauffage de stationnement">
+                                                    <img *ngIf="element.TypeAlert=='BrakeFluidLowIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/brake.png" class="w-24 h-24"
+                                                        matTooltip="Indicateur de liquide de frein">
+                                                    <img *ngIf="element.TypeAlert=='CoolantLevelLowIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/coolant.png"
+                                                        style="height: 32px;width: 32px;"
+                                                        matTooltip="Indicateur de niveau de liquide de refroidissement bas">
+                                                    <img *ngIf="element.TypeAlert=='BatteryIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/battery.png" class="w-24 h-24"
+                                                        matTooltip="Indicateur de batterie">
+                                                    <img *ngIf="element.TypeAlert=='BrakeFailureIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/brake.png" class="w-24 h-24"
+                                                        matTooltip="Indicateur de panne du système de freinage">
+                                                    <img *ngIf="element.TypeAlert=='OilPressureIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/pressure-gauge.png"
+                                                        class="w-24 h-24" matTooltip="Indicateur de pression huile">
+                                                    <img *ngIf="element.TypeAlert=='ABSFailureIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/temperature.png"
+                                                        class="w-24 h-24" matTooltip="Indicateur de moteur chaud">
+                                                    <img *ngIf="element.TypeAlert=='EngineHotIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/abs.png"
+                                                        style="height: 32px;width: 32px;"
+                                                        matTooltip="Indicateur de panne ABS">
+                                                    <img *ngIf="element.TypeAlert=='CheckEngine'"
+                                                        src="./assets/icons/FlatIcons/png/car-engine.png"
+                                                        class="w-24 h-24" matTooltip="Check Engine">
+                                                    <img *ngIf="element.TypeAlert=='AirBagIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/airbag.png" class="w-24 h-24"
+                                                        matTooltip="Indicateur airbags">
+                                                    <img *ngIf="element.TypeAlert=='ServiceCallIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/call.png" class="w-24 h-24"
+                                                        matTooltip="Indicateur appel de service">
+                                                    <img *ngIf="element.TypeAlert=='OilLevelLowIndicator'"
+                                                        src="./assets/icons/FlatIcons/png/engine-oil.png"
+                                                        style="height: 35px;width: 35px;"
+                                                        matTooltip="Indicateur de niveau huile bas">
+                                                    <img *ngIf="element.TypeAlert=='BatteryCharging'"
+                                                        src="./assets/icons/FlatIcons/png/batterycharging.png"
+                                                        class="w-24 h-24"
+                                                        matTooltip="Recharge de batterie pour voitures électriques">
+                                                    <img *ngIf="element.TypeAlert=='FuelSource'"
+                                                        src="./assets/icons/FlatIcons/png/fuel.png" class="w-24 h-24"
+                                                        matTooltip="Source de carburant">
+                                                    <img *ngIf="element.TypeAlert=='PTO'"
+                                                        src="./assets/icons/FlatIcons/png/pto.png" class="w-24 h-24"
+                                                        matTooltip="Power take-off">
+
+
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"
+                                                class="Scolling_wigh"></mat-header-row>
+                                            <mat-row *matRowDef="let element; columns: displayedColumns;"
+                                                class="element" matRipple class="Scolling_wigh"></mat-row>
+
+                                            <!--[ngClass]="{'make-gold': element.isOverSpeed == true}"-->
+                                        </mat-table>
+                                        <mat-toolbar style="background-color: white;width:calc(100% );">
+
+                                            <!-- <mat-paginator #paginator [pageSize]="25"
+                                        [pageSizeOptions]="[25, 50, 100]">
+                                    </mat-paginator> -->
+                                            <mat-paginator #paginator [length]="totalAlerts" [pageSize]="pageSize"
+                                                [pageIndex]="currentPage - 1" [pageSizeOptions]="[5, 10, 20, 50]"
+                                                (page)="onPageChange($event)">
+                                            </mat-paginator>
+
+
+                                        </mat-toolbar>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- / Widget 2 -->
+
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+    fullScreenBackdrop: 'true',
+   
+    primaryColour: '#e2f000', 
+    secondaryColour: '#e2f000', 
+    tertiaryColour: '#e2f000' }"></ngx-loading>
+    </div>

@@ -1,0 +1,161 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate }}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+
+        <form name="supplierForm" [formGroup]="supplierForm" class="event-form w-100-p" fxLayout="column" fxFlex>
+
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'Name' | translate}}</mat-label>
+                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                <input matInput
+                       name="title"
+                       formControlName="Name"
+                       required>
+            </mat-form-field>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'Address' | translate}}</mat-label>
+                    <input matInput
+                           class="border-radius-4"
+                           formControlName="Address"
+                          />
+                    <mat-icon matSuffix class="secondary-text">home</mat-icon>      
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'Phone' | translate}}</mat-label>
+                    <input matInput
+                           class="border-radius-4"
+                           type="tel"
+                           formControlName="Phone"
+                          />
+                    <mat-icon matSuffix>phone</mat-icon>
+                </mat-form-field>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'email' | translate}}</mat-label>
+                    <input matInput
+                           class="border-radius-4"
+                           name="primary color"
+                           formControlName="Mail"
+                          />
+                    <mat-icon matSuffix>email</mat-icon>
+                    <mat-error *ngIf="supplierForm.controls.Mail.hasError('email')">
+                        {{'validEmail' | translate}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'website' | translate}}</mat-label>
+                    <input matInput
+                           class="border-radius-4"
+                           name="primary color"
+                           formControlName="WebSite"
+                          />
+                          <mat-icon matSuffix>public</mat-icon>
+                </mat-form-field>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'responsible_1' | translate}}</mat-label>
+                    <input matInput
+                           class="border-radius-4"
+                           name="primary color"
+                           formControlName="Responsible1Name"
+                          />
+                    <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'responsible_2' | translate}}</mat-label>
+                    <input matInput
+                           class="border-radius-4"
+                           formControlName="Responsible2Name"
+                          />
+                    <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'PARC.Supplier' | translate}}</mat-label>
+                    <mat-select
+                           class="border-radius-4"
+                           formControlName="IsConstructer">
+                           <mat-option value="" selected></mat-option>
+                           <mat-option *ngFor="let supplier of suppliers" [value]="supplier.value">
+                             {{supplier.viewValue}}
+                           </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'maximum_budget' | translate}}</mat-label>
+                    <input matInput
+                           type="number"
+                           class="border-radius-4"                         
+                           formControlName="MaxBudget"
+                          />
+                </mat-form-field>
+
+            </div>
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'Description' | translate}}</mat-label>
+                <textarea matInput
+                          formControlName="Description"
+                          mat-maxlength="250"
+                          max-rows="4">
+                </textarea>
+                
+            </mat-form-field>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <!-- <button *ngIf="action ==='edit'"
+                mat-button color="primary"
+                class="mr-8"
+                (click)="matDialogRef.close(['delete',supplierForm])"
+                aria-label="Delete"
+                matTooltip="Delete">
+            {{'Delete' | translate}}
+        </button> -->
+
+        <button *ngIf="action !== 'edit'"
+                mat-button color="primary"
+                class="save-button"
+                (click)="matDialogRef.close(supplierForm)"
+                [disabled]="supplierForm.invalid"
+                aria-label="ADD">
+            {{'Add' | translate}}
+        </button>
+
+        <button *ngIf="action === 'edit'"
+                mat-button color="primary"
+                class="save-button"
+                (click)="matDialogRef.close(['save', supplierForm])"
+                [disabled]="supplierForm.invalid"
+                aria-label="SAVE">
+            {{'Save' | translate}}
+        </button>
+
+    </div>
+</div>

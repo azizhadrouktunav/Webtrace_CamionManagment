@@ -1,0 +1,114 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 bp-0 m-0" fusePerfectScrollbar>
+
+        <form name="beneficiaryForm" [formGroup]="beneficiaryForm" class="event-form w-100-p" fxLayout="column" fxFlex>
+
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'Beneficiary.Name' | translate}}</mat-label>
+                <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                <input matInput
+                       name="title"
+                       formControlName="FirstName"
+                       required>
+            </mat-form-field>
+
+            <!-- <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'Beneficiary.Department' | translate}}</mat-label>
+                    <mat-icon matSuffix class="secondary-text">domain</mat-icon>
+                    <mat-select formControlName="department" (selectionChange)="selected($event)">
+                        <mat-option *ngFor="let department of departments" [value]="department.Name" :key="department">
+                          {{department.Name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'Beneficiary.DriverBeneficiary' | translate}}</mat-label>
+                    <mat-select formControlName="Driver" (selectionChange)="selectedDriver($event)">
+                        <mat-option *ngFor="let driver of ListDriver" [value]="driver.FullName" :key="driver">
+                          {{driver.FullName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'Adresse' | translate}}</mat-label>
+                    <input matInput
+                    name="title"
+                    formControlName="Adresse"
+                    required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'Email' | translate}}</mat-label>
+                    <input matInput
+                       name="title"
+                       formControlName="Email"
+                       required>
+                </mat-form-field>
+
+            </div>
+
+           <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'Telephone' | translate}}</mat-label>
+                    <input matInput
+                    name="title"
+                    formControlName="Telephone"
+                    required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'Web' | translate}}</mat-label>
+                    <input matInput
+                       name="title"
+                       formControlName="Web"
+                       required>
+                </mat-form-field>
+
+            </div>
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+       <!--  <button *ngIf="action ==='edit'"
+                mat-button color="primary"
+                class="mr-8"
+                (click)="matDialogRef.close(['delete',beneficiaryForm])"
+                aria-label="Delete"
+                matTooltip="Delete">
+            {{'Delete' | translate}}
+        </button> -->
+
+        <button *ngIf="action !== 'edit'"
+                mat-button color="primary"
+                class="save-button"
+                (click)="matDialogRef.close(beneficiaryForm)"
+                [disabled]="beneficiaryForm.invalid"
+                aria-label="ADD">
+            {{'Add' | translate}}
+        </button>
+
+        <button *ngIf="action === 'edit'"
+                mat-button color="primary"
+                class="save-button"
+                (click)="matDialogRef.close(['save', beneficiaryForm])"
+                [disabled]="beneficiaryForm.invalid"
+                aria-label="SAVE">
+            {{'Save' | translate}}
+        </button>
+    </div>
+</div>
+

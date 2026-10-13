@@ -1,0 +1,243 @@
+<as-split 
+class="split-example ex-percent"
+unit="percent" 
+[direction]="direction"
+[gutterSize]="15"
+(dragEnd)="dragEnd('percent', $event)">
+
+<as-split-area  [size]="x" fusePerfectScrollbar>
+  <div class="page-layout simple tabbed">
+
+      <!-- CONTENT -->
+      <div class="content">
+          <mat-tab-group headerPosition="below" [selectedIndex]="selected.value"
+          (selectedIndexChange)="selected.setValue($event)"
+                 dynamicHeight="true"
+                 animationDuration="0ms"
+                 backgroundColor="primary"
+                 >
+                 <!--[color]="fuse-black-fg"-->
+            <ng-container *ngFor="let tab of tabs; let index = index">
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  {{tab.name | translate }}
+                <button mat-icon-button *ngIf="(tab.name !== 'Common.GeneralState') && (tab.name !== 'Common.Alerts') && (tab.name !== 'Common.RunStopState') && (tab.name !== 'Common.Trajectory') && (tab.name !== 'Common.SendingCommand')" (click)="closeTab(index, $event)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </ng-template>
+              
+              <div [ngSwitch]="tab.tabType" style="height: 100%;">
+                
+                <app-tracking *ngSwitchCase="0"></app-tracking>
+
+                <app-alerts *ngSwitchCase="1"></app-alerts>
+
+                <app-run-stop-state  *ngSwitchCase="2"></app-run-stop-state>
+                
+                <trajectory *ngSwitchCase="3"></trajectory>
+
+                <app-commands *ngSwitchCase="4"></app-commands>
+
+                <app-places *ngSwitchCase="5"></app-places>
+
+                <app-polygons *ngSwitchCase="6"></app-polygons>
+
+                <ways *ngSwitchCase="7"></ways>
+
+                <div *ngSwitchDefault>
+                  Default
+                </div>
+              </div>
+              
+            </mat-tab>
+            </ng-container>
+          </mat-tab-group>
+      </div>
+      <!-- / CONTENT -->
+  
+  </div>
+</as-split-area>
+  <as-split-area  [size]="y">
+    <div  style="height: 100%;"
+                id="map"
+                leaflet
+                [leafletOptions]="Map.options"
+                (leafletMapReady)="Map.onMapReady($event)"
+                   >
+                <!--  [leafletMarkerCluster]="Map.trackingObjectsMarkers"
+                [leafletMarkerClusterOptions]="Map.markerClusterOptions"
+                (leafletMarkerClusterReady)="Map.trackingMarkerClusterReady($event)"
+                  <ng-template 
+                          [leafletMarkerCluster]="Map.placesCluster"
+                          [leafletMarkerClusterOptions]="Map.placeClusterOptions"
+                          (leafletMarkerClusterReady)="Map.placesMarkerClusterReady($event)">
+                </ng-template> -->
+   </div>
+<!--    <div class='pointer'> Click search button</div>
+ -->
+   <div id="mapControls" [ngClass]="TabsHeight">
+    <div class="mapControlItem" matTooltip="{{'Common.GeographicOperation' | translate }}" matTooltipClass="MapControlsTip" [matTooltipPosition]="'left'" [matMenuTriggerFor]="menu">
+        <fa-icon [icon]="['fas', 'drafting-compass']"></fa-icon>
+    </div>
+    <div class="mapControlItem" matTooltip="{{'visibility' | translate }}" matTooltipClass="MapControlsTip"  [matMenuTriggerFor]="visibility" [matTooltipPosition]="'left'" >
+        <fa-icon [icon]="['fas', 'eye']"></fa-icon>
+    </div>
+    <div [matMenuTriggerFor]="MapLayersMenu" class="mapControlItem" matTooltip="map layer"
+        matTooltipClass="MapControlsTip" [matTooltipPosition]="'left'">
+        <fa-icon [icon]="['fas', 'layer-group']"></fa-icon>
+    </div>
+    <div class="mapControlItem" matTooltip="{{'claerLayers' | translate }}" [matMenuTriggerFor]="deletableLayers"
+          matTooltipClass="MapControlsTip" [matTooltipPosition]="'left'">
+             <fa-icon [icon]="['fas', 'eraser']"></fa-icon>
+   </div>
+   <div class="mapControlItem" matTooltip="{{'NAV.Trajectorys' | translate}}" [matMenuTriggerFor]="TrajectsList"
+          matTooltipClass="MapControlsTip" [matTooltipPosition]="'left'" *ngIf="Trajects.length">
+             <fa-icon [icon]="['fas', 'list-ol']"></fa-icon>
+   </div>
+   <div class="mapControlItem" matTooltip="{{'RunStopState' | translate}}" [matMenuTriggerFor]="RunStopsList"
+          matTooltipClass="MapControlsTip" [matTooltipPosition]="'left'" *ngIf="RunStops.length">
+             <fa-icon [icon]="['fas', 'stop-circle']"></fa-icon>
+   </div>
+   
+   <!-- <button  class="mapControlItem" matTooltip="print map"
+            matTooltipClass="MapControlsTip" [matTooltipPosition]="'left'"
+          (click)="printMap()">
+   <fa-icon [icon]="['fas', 'print']"></fa-icon>
+  </button> -->
+</div>
+<mat-menu #RunStopsList="matMenu" style=" max-width:none" class="TrajectsListMenu">
+    <div *ngFor="let runStop of RunStops" class="TrajectsList">
+        <mat-checkbox (change)="runStop.toggleVisiblity(!runStop.isVisible)" [checked]="false" matTooltip="{{'Visibilité' | translate }}"></mat-checkbox>
+        {{ runStop.name }}
+        <input type="color" [value]="runStop.color" (click)="$event.stopPropagation()" (change)="runStop.setColor($event.target.value)">
+
+        <!-- <button (click)="deleteTraject(traject)" matTooltip="{{'Supprimer' | translate }}"><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon></button>
+        <button (click)="Map.AnimateTrajectory(traject)" matTooltip="{{'Démarrer' | translate }}"><fa-icon [icon]="['fas', 'play-circle']"></fa-icon></button>
+        <button (click)="traject.ToggleFlow()" matTooltip="{{'Direction' | translate }}"><fa-icon [icon]="['fas', 'fast-forward']"></fa-icon></button>
+        <button (click)="Map.focusOn(traject.polyline.getLatLngs(), -35)" matTooltip="{{'Zoom Trajet' | translate }}"><fa-icon [icon]="['fas', 'expand-arrows-alt']"></fa-icon></button> -->
+    </div>
+</mat-menu>
+<mat-menu #TrajectsList="matMenu" style=" max-width:none" class="TrajectsListMenu">
+    <div *ngFor="let traject of Trajects" class="TrajectsList">
+        <mat-checkbox (change)="traject.ToggleVisibility()" [checked]="true" matTooltip="{{'Visibilité' | translate }}"></mat-checkbox>
+        {{ traject.name }}
+        <button (click)="deleteTraject(traject)" matTooltip="{{'Supprimer' | translate }}"><fa-icon [icon]="['fas', 'trash-alt']"></fa-icon></button>
+        <button (click)="Map.AnimateTrajectory(traject)" matTooltip="{{'Démarrer' | translate }}"><fa-icon [icon]="['fas', 'play-circle']"></fa-icon></button>
+        <button (click)="traject.ToggleFlow()" matTooltip="{{'Direction' | translate }}"><fa-icon [icon]="['fas', 'fast-forward']"></fa-icon></button>
+        <button (click)="Map.focusOn(traject.polyline.getLatLngs(), -35)" matTooltip="{{'Zoom Trajet' | translate }}"><fa-icon [icon]="['fas', 'expand-arrows-alt']"></fa-icon></button>
+    </div>
+</mat-menu>
+<div class="TrajectoryAnimationControls" *ngIf="Map.AnimationControlsVisibility">
+    
+    <mat-checkbox class="example-margin" [(ngModel)]="Map.MainTrajectory.keepTrakcing">suivre</mat-checkbox>
+    <div class="ControlsButton" matTooltip="{{'Speed' | translate }}" matTooltipClass="AnimationControlsTip"  [matTooltipPosition]="'above'" style="width: max-content;padding: 15px 10px;background: #001fb8;">
+        <input type="number" max="5" min="0" value="1" (change)="Map.SetAnimationSpeed(+$event.target.value/10)" style="background: white;border: none;width: 70px;border-radius: 50px;">
+    </div>
+    <div class="ControlsButton" matTooltip="{{'StepBack' | translate }}" matTooltipClass="AnimationControlsTip"  [matTooltipPosition]="'above'" (click)="Map.PlayBySteps(-1)">
+        <fa-icon [icon]="['fas', 'chevron-left']"></fa-icon>
+    </div>
+    <div class="ControlsButton" [ngClass]="{'active': Map.MainTrajectory.animationState === 'Play'}" matTooltip="{{'AutoPlay' | translate }}" matTooltipClass="AnimationControlsTip"  [matTooltipPosition]="'above'" (click)="Map.PlayAnimating()">
+        <fa-icon [icon]="['fas', 'play']"></fa-icon>
+    </div>
+    <div class="ControlsButton" matTooltip="{{'StepForward' | translate }}" matTooltipClass="AnimationControlsTip"  [matTooltipPosition]="'above'" (click)="Map.PlayBySteps(1)">
+        <fa-icon [icon]="['fas', 'chevron-right']"></fa-icon>
+    </div>
+    <div class="ControlsButton" [ngClass]="{'active': Map.MainTrajectory.animationState === 'Pause'}" matTooltip="{{'Pause' | translate }}" matTooltipClass="AnimationControlsTip"  [matTooltipPosition]="'above'" (click)="Map.PauseAnimating()">
+        <fa-icon [icon]="['fas', 'pause']"></fa-icon>
+    </div>
+    <div class="ControlsButton" [ngClass]="{'active': Map.MainTrajectory.animationState === 'Stop'}" matTooltip="{{'StopAnimating' | translate }}" matTooltipClass="AnimationControlsTip"  [matTooltipPosition]="'above'" (click)="Map.StopAnimating()">
+        <fa-icon [icon]="['fas', 'stop']"></fa-icon>
+    </div>
+  </div>
+<mat-menu #deletableLayers="matMenu" class="deletableLayers">
+    <div style="display: flex;flex-direction: column;text-align: left;">
+        <button (click)="Map.ClearAll($event)" mat-button color="primary"> <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon> Supprimer tous</button>
+        <button *ngFor="let layer of Map.deletableLayers;let i = index" (click)="Map.drawer.clearObject(layer, i, $event)" mat-button color="primary"> <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon> {{ layer.name }}</button>
+        <button *ngFor="let shape of Map.deletableShapes;let i = index" (click)="Map.deleteShape(shape, i, $event)" mat-button color="primary"> <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon> {{ shape.name }} </button>
+    </div>
+</mat-menu>
+<mat-menu #MapLayersMenu="matMenu" class="LayersMenu">
+    <button *ngIf="IsAuthorizedToUseGooglePlanMaps" mat-menu-item (click)="ChoiceMap('Terrain')">
+      <fa-icon [icon]="['fas', 'road']"></fa-icon>
+      <span>Plan</span>
+  </button>
+    <button *ngIf="IsAuthorizedToUseOSMMaps" mat-menu-item (click)="ChoiceMap('OSM')">
+        <fa-icon [icon]="['fas', 'globe-africa']"></fa-icon>
+        <span>OSM</span>
+    </button>
+    <button  *ngIf="IsAuthorizedToUseGoogleSatelliteMaps" mat-menu-item (click)="ChoiceMap('Satelite')">
+        <fa-icon [icon]="['fas', 'map']"></fa-icon>
+        <span>Satellite</span>
+        
+    </button>
+    <!-- <button  *ngIf="IsAuthorizedToUseHereMaps"mat-menu-item (click)="ChoiceMap('CycleMap')">
+        <fa-icon [icon]="['fas', 'sun']"></fa-icon>
+        <span>Cycle</span>
+    </button>
+    
+    <button  *ngIf="IsAuthorizedToUseTunavMaps" mat-menu-item (click)= "ChoiceMap('Tunav')">
+        <fa-icon [icon]="['fas', 'tenge']"></fa-icon>
+        <span>Tunav</span>
+    </button> -->
+</mat-menu>
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click) ="geofenceOpen()">
+      <mat-icon>add_location</mat-icon>
+      <span>{{'Geofence.AddGeofence' | translate }}</span>
+    </button>
+    <button mat-menu-item (click) ="itineraryAdd()">
+      <mat-icon>add_location</mat-icon>
+      <span>Ajouter un itinéraire</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="geographic" (click)="$event.stopPropagation()" xPosition="before">
+      <mat-icon>add_location</mat-icon>
+      <span>{{'Common.GeographicOperation' | translate }}</span>
+    </button>
+    <button mat-menu-item (click)="addTab(5)">
+      <mat-icon>location_city</mat-icon>
+      <span>{{'Common.PlaceManagement' | translate }}</span>
+    </button>
+    <button mat-menu-item (click)="addTab(6)">
+        <mat-icon>polymer</mat-icon>
+        <span>{{'Common.PolygonManagement' | translate }}</span>
+    </button>
+    <button mat-menu-item (click)="addTab(7)">
+        <mat-icon>streetview</mat-icon>
+        <span>{{'Common.WayManagement' | translate }}</span>
+    </button>
+</mat-menu>
+<mat-menu #geographic="matMenu">
+  <button mat-menu-item (click)="addPlace()" aria-label="location">
+    <mat-icon class="light-blue-900-fg">place</mat-icon>
+    <span>{{'Common.AddLocation' | translate }}</span>
+</button>
+<button mat-menu-item (click)="addWay()" aria-label="route">
+  <mat-icon class="light-blue-900-fg">streetview</mat-icon>
+  <span>{{'Common.AddRoute' | translate }}</span>
+</button>
+<button mat-menu-item (click)="addPolygon()" aria-label="polygon">
+  <mat-icon class="light-blue-900-fg">category</mat-icon>
+  <span>{{'Common.AddPolygon' | translate }}</span>
+</button>
+<!--<button mat-menu-item (click)="addGeofencing()" aria-label="polygon">
+  <mat-icon class="light-blue-900-fg">category</mat-icon>
+  <span>Geofencing</span>
+</button>-->
+</mat-menu>
+<mat-menu #visibility="matMenu">
+  <mat-list>
+      <mat-list-item *ngFor="let cluster of clusters">
+              <mat-checkbox
+                         #checkbox="matCheckbox"
+                          [checked]="cluster.checked"
+                          [value]="cluster.id"
+                          [labelPosition]="before"
+                          (change)="toggleSelection($event, cluster)"
+                          (click)="$event.stopPropagation()">
+                          {{cluster.label}}
+              </mat-checkbox>
+      </mat-list-item>
+  </mat-list>
+</mat-menu>
+  </as-split-area>
+</as-split>

@@ -1,0 +1,194 @@
+<div id="DepenceGeneral" class="page-layout MainContainer carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+
+                <mat-icon>timeline</mat-icon>
+                <span class="h1">
+                    {{'NAV.trajetreport' | translate}} </span>
+
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card p-24" >
+
+            <form novalidate [formGroup]="form" class="page-layout simple fullwidth" fxLayout="column" style="overflow: scroll; height:100%">
+
+
+                <div fxLayout="column" fxLayout.gt-sm="row">
+                    <!-- <mat-form-field appearance="outline"  [fxFlex]="noshrink" class="mr-12">
+                        <mat-label> {{'NAV.TrackingObject' | translate}}</mat-label>
+                      
+                       <input type="text" aria-label="Select Vehicles" matInput [matAutocomplete]="autoGroup" formControlName="Car" >
+                       <mat-autocomplete [panelWidth]="'auto'" #autoGroup="matAutocomplete" [displayWith]="displayVehicle">
+                        <mat-optgroup *ngFor="let group of CarGroupOptions | async" >
+                          <div>
+                            <mat-checkbox [checked]="group.selected" (change)="toggleParent($event, group)" 
+                              (click)="$event.stopPropagation()" >
+                                {{group.department}}
+                            </mat-checkbox>
+                            <button mat-button (click)="expandDocumentTypes(group)">
+                              <mat-icon>keyboard_arrow_down</mat-icon>
+                            </button>
+                            </div>  
+                            <mat-option *ngFor="let name of group.car" [value]="name"
+                               [ngClass]="isExpandCategory[group.department] ? 'list-show' : 'list-hide'">
+                               <mat-checkbox [checked]="group.checked" (change)="toggleSelection2($event, name, group)" 
+                        (click)="$event.stopPropagation()">
+                                {{name.FullName}}
+                            </mat-checkbox>
+                            </mat-option>   
+                      </mat-optgroup>
+                    </mat-autocomplete>
+                    </mat-form-field> -->
+                    <mat-form-field appearance="outline" class="pr-4" fxFlex="50">
+                        <mat-label>{{'NAV.TrackingObject' | translate}}</mat-label>
+                        <input type="text" aria-label="Select Vehicles" matInput [matAutocomplete]="autoGroup" formControlName="Car" (focus)="OnInputSelect()" (blur)="OnInputDisSelect()">
+                      
+                          <mat-autocomplete [panelWidth]="'auto'" #autoGroup="matAutocomplete" [displayWith]="displayVehicle">
+                            <mat-optgroup *ngFor="let group of CarGroupOptions | async" >
+                              <div>
+                                <mat-checkbox [checked]="group.selected" (change)="toggleParent($event, group)" 
+                                  (click)="$event.stopPropagation()" >
+                                    {{group.department}}
+                                </mat-checkbox>
+                                <button mat-button (click)="expandDocumentTypes(group)">
+                                  <mat-icon>keyboard_arrow_down</mat-icon>
+                                </button>
+                                </div>  
+                                <mat-option *ngFor="let name of group.car" [value]="name"
+                                   [ngClass]="isExpandCategory[group.department] ? 'list-show' : 'list-hide'">
+                                   <mat-checkbox [checked]="group.checked ? true : name.checked" (change)="toggleSelection2($event, name, group)" 
+                            (click)="$event.stopPropagation()">
+                              {{name.FullName}}
+                          </mat-checkbox>
+                                </mat-option>
+                          </mat-optgroup>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    <mat-form-field appearance="outline" [fxFlex]="noshrink" class="mr-12">
+                        <mat-label>{{'NAV.StartDate' | translate}} </mat-label>
+
+                        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" [min]="minDate"
+                            [max]="maxDate" formControlName="StartDateGMT" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                        </mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                            [touchUi]="touchUi" [color]="color">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" [fxFlex]="noshrink" class="mr-12">
+                        <mat-label>{{'NAV.EndDate' | translate}} </mat-label>
+
+                        <input matInput [ngxMatDatetimePicker]="picker1" placeholder="Choose a date" [min]="minDate"
+                            [max]="maxDate" formControlName="EndDateGMT" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker1">
+                        </mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker1 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                            [touchUi]="touchUi" [color]="color">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+
+                   
+                </div>
+
+                <div id="ReportFlexCards">
+                    <div class="fuse-card">
+                        
+
+                        <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+                            <div class="pr-16">
+                                <div class="h3">{{'NAV.Distance' | translate}} >= </div>
+                            </div>
+
+                            <div class="w-40 h-40">
+                                <img src="assets/images/cards/distance.png">
+                            </div>
+
+                        </div>
+
+                        <div class="p-16 pt-0 line-height-1.75">
+                            <mat-form-field floatLabel="always" class="mr-sm-12" fxFlex appearance="outline">
+
+                                <mat-label>Distance</mat-label>
+                                <input matInput type="number" placeholder="Mindistance" formControlName="mindistance">
+
+                            </mat-form-field>
+
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="fuse-card">
+                        
+
+                        <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+                            <div class="pr-16">
+                                <div class="h3">{{'NAV.VisibilityLocation' | translate}} </div>
+                            </div>
+
+                            <div class="w-40 h-40">
+                                <img src="assets/images/cards/gps.png">
+                            </div>
+
+                        </div>
+
+                        <div class="p-16 pt-0 line-height-1.75">
+                            <mat-form-field floatLabel="always" class="mr-sm-12" fxFlex appearance="outline">
+
+                                <mat-label>Select Type Emplacement</mat-label>
+                                <mat-select formControlName="Emplacement" required>
+                                    <mat-option [value]="1"> {{'NAV.AllLocations' | translate}}
+                                    </mat-option>
+                                    <mat-option [value]="2">
+                                        {{'NAV.PrivateLocations' | translate}}
+                                    </mat-option>
+                                </mat-select>
+
+                            </mat-form-field>
+
+                        </div>
+
+
+
+                    </div>
+
+                   
+
+                </div>
+
+
+                <div style="width: 100%; text-align: center;">
+                    <button mat-raised-button color="accent" style="width:150px;height: 48px;margin: auto;"
+                        type="button" class="button" [disabled]="!form.valid"
+                        (click)="GetReportParam()">{{'NAV.Generate' | translate}}</button>
+
+                </div>
+
+
+
+            </form>
+
+            <!-- / CONTENT CARD -->
+
+        </div>
+        <!--/ CENTER-->
+    </div>
+    </div>

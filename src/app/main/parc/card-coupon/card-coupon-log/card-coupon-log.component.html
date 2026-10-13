@@ -1,0 +1,141 @@
+<div id="element" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+          <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+         <!-- APP TITLE -->
+         <div class="logo mb-24 mb-md-0"
+              fxLayout="row" fxLayoutAlign="start center">
+             <button mat-icon-button class="mr-16" [routerLink]="'/parc/card-coupon'" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+               {{'MissionCardCoupon' | translate}}
+             </span>
+         </div>
+         <!-- / APP TITLE -->
+
+          <!-- SEARCH -->
+          <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+            <div class="search">
+                <input id="searchBtn" #filter placeholder="Filtrer les données" [(ngModel)]="searchkey" required>
+                <label for="searchBtn">
+                    <mat-icon class="grey-700-fg">search</mat-icon>
+                </label>
+            </div>
+        </div>
+        <!-- / SEARCH -->
+     </div>
+     <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                            <mat-table class="maintenances-table"
+                            #table [dataSource]="dataSource"
+                            matSort
+                            [@animateStagger]="{value:'50'}"
+                            fusePerfectScrollbar>
+                            <!-- Date Start Column -->
+                            <ng-container matColumnDef="Start_date">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >{{'StartDate' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let element" >
+                            <p class="text-truncate">
+                                {{element.ForMissionStartDateGMT | localizedDate}}
+                            </p>
+                            </mat-cell>
+                            </ng-container>
+                            <!-- Date End Column -->
+                            <ng-container matColumnDef="End_date">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'EndDate' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                            <p class="text-truncate">{{element.ForMissionEndDateGMT | localizedDate}}</p>
+                            </mat-cell>
+                            </ng-container> 
+                            
+                            <!-- Driver Column -->
+                            <ng-container matColumnDef="Driver">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Driver' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                            <p class="text-truncate">{{element.DriverName}}</p>
+                            </mat-cell>
+                            </ng-container> 
+                            <!-- Vehicle Column --> 
+                            <ng-container matColumnDef="Vehicle">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >{{'Vehicle' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                             <p class="total-price text-truncate">
+                                 {{element.CarName}}
+                             </p>
+                            </mat-cell>
+                            </ng-container>
+                            <!-- Price of a liter Column -->
+                            <ng-container matColumnDef="PriceOfLiter">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>{{'LittrePrice' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                            <p class="text-truncate">
+                               {{element.PricePerL}}
+                            </p>
+                            </mat-cell>
+                            </ng-container>
+                            <!-- Quantity Column -->
+                            <ng-container matColumnDef="Quantity">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'LittreQuantity' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                             <p class="text-truncate">{{element.QuantityL}}</p>
+                            </mat-cell>
+                            </ng-container>
+                            <!-- Total amount Column -->
+                            <ng-container matColumnDef="Total_amount">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'TotalAmount' | translate}}</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                            <p class="text-truncate">{{element.TotalPrice}}</p>
+                            </mat-cell>
+                            </ng-container>        
+                            <!-- Description Column -->
+                            <ng-container matColumnDef="Description">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Description' | translate}}</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                <p class="text-truncate">
+                                   {{element.Description}}
+                                </p>
+                                </mat-cell>
+                            </ng-container>
+                            
+                            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                            
+                            <mat-row *matRowDef="let element columns: displayedColumns;"
+                              class="maintenance"
+                              matRipple
+                             >
+                            </mat-row>
+                            </mat-table>
+                            <mat-toolbar style="background-color: white;width:calc(100% - 65px);" >
+
+                                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                                    <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                                    </mat-icon>
+                                    <img (click)="downloadExcel()" src="assets/icons/excel.png" class="excel" title="Export as excel file" (click)="downloadExcel()">
+                                </div>
+                                <span class="spacer"></span>
+                                <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="10"
+                                    [pageSizeOptions]="[1, 5, 10]">
+                                </mat-paginator>
+                
+                            </mat-toolbar>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+</div>

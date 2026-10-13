@@ -1,0 +1,207 @@
+
+<div id="dashboard-analytics" class="page-layout blank">
+
+    <div class="main-widget">
+
+        <div class="position-relative p-24 blue-600"
+             fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <span class="h2"><!-- APP TITLE -->
+                    <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                        
+                        <button mat-icon-button  [routerLink]="'/reports/graphicreport'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                        <span class="logo-text h1">
+                            Graphic Report                </span>
+        
+                          
+
+                    </div>
+                    <!-- / APP TITLE --></span>
+                <span class="h5 secondary-text">Dashbord of {{CarMatricule}} betwween 
+                    {{startdate}} and {{enddate}}</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                
+            </div>
+        </div>
+
+        <div class="position-relative h-50 pb-16 blue-600">
+        </div>
+
+    </div>
+
+    <div class="content">
+
+        <div class="left mr-lg-70">
+
+
+            <!-- Widget 5 -->
+           
+
+            <div class="fuse-card auto-width">
+
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="h2 pr-16">Fuel Chart</div>
+                
+                    <div>
+                       
+                    </div>
+                </div>
+                <div id = "chart" class="position-relative h-450 pb-16">
+                    <ngx-charts-line-chart
+                       [view]="view"
+                      [scheme]="colorScheme"
+                      [results]="single"
+                      [gradient]="gradient"
+                        [xAxis]="showXAxis"
+                        [yAxis]="showYAxis"
+                    [legend]="showLegend"
+                  [legendPosition]="legendPosition"
+                    [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="xAxisLabel"
+                 [yAxisLabel]="yAxisLabel">
+            </ngx-charts-line-chart>
+                </div>
+
+            </div>
+           
+
+       
+
+          
+
+
+               
+
+           
+
+    </div>
+    <div class="content">
+
+     
+
+
+            <!-- Widget 5 -->
+           
+
+            <div class="fuse-card auto-width">
+
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="h2 pr-16">RPM Chart</div>
+                
+                    <div>
+                       
+                    </div>
+                </div>
+                <div id = "chart" class="position-relative h-450 pb-16">
+                    <ngx-charts-line-chart
+                       [view]="view"
+                      [scheme]="colorScheme"
+                      [results]="single2"
+                      [gradient]="gradient"
+                        [xAxis]="showXAxis"
+                        [yAxis]="showYAxis"
+                    [legend]="showLegend"
+                  [legendPosition]="legendPosition"
+                    [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="xAxisLabel"
+                 [yAxisLabel]="yAxisLabel">
+            </ngx-charts-line-chart>
+                </div>
+
+            </div>
+           
+
+      
+    </div>
+       
+            <div class="content">
+
+       
+
+
+            <!-- Widget 5 -->
+           
+
+            <div class="fuse-card auto-width">
+
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="h2 pr-16">Speed Chart</div>
+                
+                    <div>
+                       
+                    </div>
+                </div>
+                <div id = "chart" class="position-relative h-450 pb-16">
+                    <ngx-charts-line-chart
+                       [view]="view"
+                      [scheme]="colorScheme"
+                      [results]="single3"
+                      [gradient]="gradient"
+                        [xAxis]="showXAxis"
+                        [yAxis]="showYAxis"
+                    [legend]="showLegend"
+                  [legendPosition]="legendPosition"
+                    [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="xAxisLabel"
+                 [yAxisLabel]="yAxisLabel">
+            </ngx-charts-line-chart>
+                </div>
+
+            </div>
+           
+
+            </div>
+            <div class="content">
+       
+      
+
+            <!-- Widget 5 -->
+           
+
+            <div class="fuse-card auto-width">
+
+                <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="h2 pr-16">Temperature Chart</div>
+                
+                    <div>
+                      
+                    </div>
+                </div>
+                <div id = "chart" class="position-relative h-450 pb-16">
+                    <ngx-charts-line-chart
+                       [view]="view"
+                      [scheme]="colorScheme"
+                      [results]="single4"
+                      [gradient]="gradient"
+                        [xAxis]="showXAxis"
+                        [yAxis]="showYAxis"
+                    [legend]="showLegend"
+                  [legendPosition]="legendPosition"
+                    [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="xAxisLabel"
+                 [yAxisLabel]="yAxisLabel">
+            </ngx-charts-line-chart>
+                </div>
+
+            </div>
+           
+
+       
+        
+            </div>
+        
+ 
+    </div>
+       
+
+   
+
+        
+

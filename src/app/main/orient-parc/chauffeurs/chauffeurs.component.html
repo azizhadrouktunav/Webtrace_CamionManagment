@@ -1,0 +1,101 @@
+<div class="orient-page orient-page--wide">
+  <div class="orient-page-header">
+    <div class="orient-page-header__text">
+      <h1 class="orient-page-header__title">Gestion des chauffeurs</h1>
+      <p class="orient-page-header__subtitle">Chauffeurs, cartes SmartLock et informations personnelles.</p>
+    </div>
+    <div class="orient-page-header__actions">
+      <button mat-stroked-button type="button" (click)="exportPdf()" [disabled]="!dataSource.data.length">PDF</button>
+      <button mat-stroked-button type="button" (click)="exportExcel()" [disabled]="!dataSource.data.length">Excel</button>
+      <button mat-raised-button type="button" class="orient-btn-icon-end" (click)="startAdd()">
+        Ajouter un chauffeur <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="orient-table-card">
+    <mat-card-content class="orient-table-scroll">
+      <table mat-table [dataSource]="dataSource" class="orient-table">
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef>Nom</th>
+          <td mat-cell *matCellDef="let row">{{ row.lastName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef>Prénom</th>
+          <td mat-cell *matCellDef="let row">{{ row.firstName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let row">{{ row.email || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="personnelCode">
+          <th mat-header-cell *matHeaderCellDef>Code personnel</th>
+          <td mat-cell *matCellDef="let row">{{ row.personnelCode }}</td>
+        </ng-container>
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>N° de téléphone</th>
+          <td mat-cell *matCellDef="let row">{{ row.phone || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="smartLockCloseCard">
+          <th mat-header-cell *matHeaderCellDef>N° carte fermeture SmartLock</th>
+          <td mat-cell *matCellDef="let row">{{ row.smartLockCloseCard || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="smartLockOpenCard">
+          <th mat-header-cell *matHeaderCellDef>N° carte ouverture SmartLock</th>
+          <td mat-cell *matCellDef="let row">{{ row.smartLockOpenCard || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="birthDate">
+          <th mat-header-cell *matHeaderCellDef>Date de naissance</th>
+          <td mat-cell *matCellDef="let row">{{ row.birthDate ? fmtDate(row.birthDate) : '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="birthPlace">
+          <th mat-header-cell *matHeaderCellDef>Lieu de naissance</th>
+          <td mat-cell *matCellDef="let row">{{ row.birthPlace || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef>Adresse</th>
+          <td mat-cell *matCellDef="let row">{{ row.address || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef>Département</th>
+          <td mat-cell *matCellDef="let row">{{ row.department }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cin">
+          <th mat-header-cell *matHeaderCellDef>N° de CIN</th>
+          <td mat-cell *matCellDef="let row">{{ row.cin || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="licenceCategory">
+          <th mat-header-cell *matHeaderCellDef>Genre du permis</th>
+          <td mat-cell *matCellDef="let row">{{ row.licenceCategory || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="licenceNumber">
+          <th mat-header-cell *matHeaderCellDef>N° du permis</th>
+          <td mat-cell *matCellDef="let row">{{ row.licenceNumber || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button type="button" [matMenuTriggerFor]="driverMenu" aria-label="Actions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #driverMenu="matMenu">
+              <button mat-menu-item type="button" (click)="startEdit(row)">
+                Modifier <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-menu-item type="button" (click)="remove(row)">
+                Supprimer <mat-icon>delete</mat-icon>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+      <mat-paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25]"
+        showFirstLastButtons>
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

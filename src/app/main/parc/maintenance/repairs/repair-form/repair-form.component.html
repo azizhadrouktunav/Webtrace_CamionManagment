@@ -1,0 +1,142 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{'PARC.Add' | translate}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0 mat-dialog-content" fusePerfectScrollbar>
+
+        <form name="repairForm" [formGroup]="repairForm" class="event-form w-100-p" fxLayout="column" fxFlex>
+            <mat-form-field appearance="outline" class="w-100-p" *ngIf="show">
+                <mat-label>{{'PARC.MaintenanceType' | translate}}</mat-label>
+                <input
+                        [(ngModel)] = "type"
+                        matInput
+                        #typeInput
+                        type="text"
+                        aria-label="MaintenanceTypeStr"
+                        formControlName="MaintenanceTypeStr"
+                        required
+                        [matAutocomplete]="auto"/>
+                <button *ngIf="showAddButton && typeInput.value" matSuffix mat-button mat-icon-button (click)="addOption()"><mat-icon matTooltip='Add "{{typeInput.value}}"'>add</mat-icon></button>
+                <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" autoActiveFirstOption  (optionSelected)="optionSelected($event,$event.option )">
+                    <mat-option *ngFor="let type of filteredOptions | async" [value]="type">
+                        {{type | translate}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'PARC.DateCompletion' | translate}}</mat-label>
+                <input matInput [matDatepicker]="DateCompletionGMT" name="DateCompletionGMT" formControlName="DateCompletionGMT">
+                <mat-datepicker-toggle matSuffix [for]="DateCompletionGMT"></mat-datepicker-toggle>
+                <mat-datepicker #DateCompletionGMT></mat-datepicker>
+            </mat-form-field>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'PARC.EngineHoursCompletion' | translate}}</mat-label>
+                    <input matInput type="number"
+                           name="EngineHoursCompletion"
+                           formControlName="EngineHoursCompletion"/>
+                   
+                    <mat-error *ngIf="repairForm.controls['EngineHoursCompletion'].invalid">{{ getErrorMessage('EngineHoursCompletion') }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pl-sm-8" fxFlex="50">
+                    <mat-label>{{'PARC.MileageCompletion' | translate}}</mat-label>
+                    <input matInput
+                           class="secondary-color-input border-radius-4"
+                           name="MileageCompletion"
+                           formControlName="MileageCompletion"
+                           type="number"
+                          />
+                    <mat-error *ngIf="repairForm.controls['MileageCompletion'].invalid">{{ getErrorMessage('MileageCompletion') }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column"  class="pl-sm-8" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" fxFlex="50">
+                    <mat-label>{{'PARC.Cost' | translate}}</mat-label>
+                    <input matInput type="number"
+                           name="Cost"
+                           formControlName="Cost"/>
+                        <mat-error *ngIf="repairForm.controls['Cost'].invalid">{{ getErrorMessage('Cost') }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline"  class="pl-sm-8" fxFlex="50">
+                    <mat-label>{{'PARC.PaidCost' | translate}}</mat-label>
+                    <input matInput type="number"
+                           name="PaidCost"
+                           formControlName="PaidCost"/>
+                           <mat-error *ngIf="repairForm.controls['PaidCost'].invalid">{{ getErrorMessage('PaidCost')}}</mat-error>
+                </mat-form-field>
+
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'PARC.PaymentDate' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="basicDatePicker" name="PaidDateLocal" formControlName="PaidDateLocal">
+                    <mat-datepicker-toggle matSuffix [for]="basicDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #basicDatePicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="50">
+                    <mat-label>{{'PARC.InvoiceReference' | translate}}</mat-label>
+                    <input matInput 
+                           name="InvoiceReference"
+                           formControlName="InvoiceReference"/>
+                </mat-form-field>
+
+            </div>
+
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'PARC.Supplier' | translate}}</mat-label>
+                <input matInput
+                          formControlName="Supplier"
+                          mat-maxlength="250"
+                          max-rows="4"/>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100-p">
+                <mat-label>{{'PARC.Description' | translate}}</mat-label>
+                <textarea matInput
+                          formControlName="Description"
+                          mat-maxlength="250"
+                          max-rows="4">
+                </textarea>
+            </mat-form-field>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16 mat-dialog-actions" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <!-- <button *ngIf="(action ==='edit') || (action ==='editMaintenance')"
+                mat-button color="primary"
+                class="mr-8 mat-raised-button mat-button-base mat-warn Submit_btn"
+                (click)="matDialogRef.close(['delete',repairForm])"
+                aria-label="Delete"
+                matTooltip="Delete">
+            {{'PARC.Delete' | translate}}
+        </button> -->
+
+        <button *ngIf="(action !== 'edit') && (action !== 'editMaintenance')"
+                mat-button color="primary"
+                class="save-button mat-raised-button mat-button-base mat-accent Submit_btn"
+                (click)="matDialogRef.close(repairForm)"
+                [disabled]="repairForm.invalid"
+                aria-label="ADD">
+            {{'PARC.Add' | translate}}
+        </button>
+
+        <button *ngIf="(action === 'edit') || (action === 'editMaintenance')"
+                mat-button color="primary"
+                class="save-button mat-raised-button mat-button-base mat-accent Submit_btn"
+                (click)="matDialogRef.close(['save', repairForm])"
+                [disabled]="repairForm.invalid"
+                aria-label="SAVE">
+            {{'PARC.Save' | translate}}
+        </button>
+
+    </div>
+</div>

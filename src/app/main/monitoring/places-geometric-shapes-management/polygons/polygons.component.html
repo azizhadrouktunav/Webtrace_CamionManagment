@@ -1,0 +1,64 @@
+<div id="polygons" class="page-layout simple fullwidth">
+
+    <!-- HEADER -->
+    <div class="p-24 h-20 fuse-white-bg" fxLayout="row" fxLayoutAlign="start center">
+  
+           <!-- SEARCH -->
+           <div class="search-wrapper mx-32 mx-md-0">
+            <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="primary--fg">search</mat-icon>
+                <input #filter placeholder="{{'Common.searchPolygon' | translate }}">
+            </div>
+        </div>
+        <!-- / SEARCH -->
+    </div> 
+    <!-- / HEADER -->
+  
+    <!-- CONTENT -->
+    <div class="content">
+         <mat-table class="table-polygon" [dataSource]="dataSource" matSort
+                    [@animateStagger]="{value:'50'}"
+                    fusePerfectScrollbar>
+             <!-- Name Column -->
+       <ng-container matColumnDef= "name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> {{'Common.Name' | translate }} </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <p class="text-truncate">{{ element.Value?.Name || element.name }}</p>
+            </mat-cell>
+       </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <button *ngIf="!isMock" mat-icon-button color="primary" (click) = "editPolygon(element)"><mat-icon>edit</mat-icon></button>
+                <button *ngIf="!isMock" mat-icon-button color="accent" (click) = "showPolygon(element)"><mat-icon class="blue-fg">public</mat-icon></button>
+                <button mat-icon-button color="warn" (click)="deletePolygon(element)"><mat-icon>delete_outline</mat-icon></button>
+          </mat-cell>
+      </ng-container>
+  
+      <mat-header-row class="table-header-row" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row class="table-row" *matRowDef="let element; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  
+  <mat-toolbar class="fuse-white-bg">
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="start center">
+  
+      <mat-icon (click)='exportpdf()' class="pdf red-fg" matTooltip="Export as PDF">picture_as_pdf
+      </mat-icon>
+      <button mat-icon-button (click)="exportExcel()" class="excel" matTooltip="Export as CSV">
+        <img src="assets/icons/excel.png" class="h-24 w-24" />
+      </button>
+      <mat-paginator #paginator
+                    [length]="dataSource?.filteredData?.length"
+                    [pageIndex]="0"
+                    [pageSize]="25"
+                    [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>
+    </mat-toolbar-row>
+  </mat-toolbar>
+    </div>
+    <!-- / CONTENT -->
+  
+  </div>
+  

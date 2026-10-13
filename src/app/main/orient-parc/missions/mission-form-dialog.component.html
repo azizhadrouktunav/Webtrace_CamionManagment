@@ -1,0 +1,263 @@
+<div class="orient-mission-dlg">
+  <header class="orient-mission-dlg__header">
+    <div>
+      <h2 class="orient-mission-dlg__title">{{ dialogTitle }}</h2>
+    </div>
+    <button mat-icon-button type="button" (click)="cancel()" aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="orient-mission-dlg__body">
+    <ol class="orient-wizard" aria-label="Étapes">
+      <li *ngFor="let s of steps; let i = index" class="orient-wizard__item">
+        <button
+          type="button"
+          class="orient-wizard__btn"
+          [disabled]="!canGoToStep(i)"
+          [attr.aria-current]="step === i ? 'step' : null"
+          (click)="goToStep(i)"
+        >
+          <span
+            class="orient-wizard__badge"
+            [class.orient-wizard__badge--current]="step === i"
+            [class.orient-wizard__badge--done]="i < step"
+          >
+            <mat-icon *ngIf="i < step" class="orient-wizard__check">check</mat-icon>
+            <ng-container *ngIf="i >= step">{{ i + 1 }}</ng-container>
+          </span>
+          <span class="orient-wizard__text">
+            <span class="orient-wizard__label" [class.orient-wizard__label--active]="step === i">{{ s.title }}</span>
+            <span class="orient-wizard__hint">{{ s.hint }}</span>
+          </span>
+        </button>
+        <span class="orient-wizard__bar" [class.orient-wizard__bar--on]="i <= step" aria-hidden="true"></span>
+      </li>
+    </ol>
+
+    <!-- Step 0: Mission -->
+    <div class="orient-mission-grid" *ngIf="step === 0">
+      <mat-form-field appearance="outline" class="orient-mission-grid__full">
+        <mat-label>Nom de la mission</mat-label>
+        <input matInput [(ngModel)]="formName" placeholder="Ex. Chargement cale 2" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="orient-mission-grid__full">
+        <mat-label>Nom du navire</mat-label>
+        <mat-select [(ngModel)]="formShipId" placeholder="Choisir un navire">
+          <mat-option *ngFor="let s of ships" [value]="s.id">{{ s.name }} · {{ s.imo }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Date de la mission</mat-label>
+        <input matInput type="date" [(ngModel)]="formDate" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Heure de début</mat-label>
+        <input matInput type="time" [(ngModel)]="formStart" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="orient-mission-grid__full">
+        <mat-label>Poste</mat-label>
+        <mat-select [ngModel]="formShift" (ngModelChange)="selectShift($event)" placeholder="Choisir un poste">
+          <mat-option *ngFor="let s of availableShifts" [value]="s.id">{{ s.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Zone de stockage d’origine</mat-label>
+        <mat-select [(ngModel)]="formStockZoneId" placeholder="Choisir une zone">
+          <mat-option *ngFor="let z of stockZones" [value]="z.id">{{ z.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Port de destination</mat-label>
+        <mat-select [(ngModel)]="formPortId" placeholder="Choisir un port">
+          <mat-option *ngFor="let p of ports" [value]="p.id">{{ p.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Step 1: Resources -->
+    <div *ngIf="step === 1">
+      <p class="orient-mission-help">
+        Ajoutez les camions et les chauffeurs qui travailleront sur cette mission. Ils restent libres de tout couplage :
+        le responsable de parc gère l’organisation sur le terrain.
+      </p>
+      <div class="orient-resources">
+        <section class="orient-resources__col" aria-label="Camions">
+          <div class="orient-resources__head">
+            <h3>Camions</h3>
+            <span>{{ formTruckIds.length }} ajouté(s)</span>
+          </div>
+          <mat-form-field appearance="outline" class="orient-resources__add">
+            <mat-label>+ Ajouter des camions</mat-label>
+            <mat-select multiple [(ngModel)]="truckAddIds" (closed)="addTrucks()" panelClass="orient-pick-panel" [disabled]="!availableTrucks.length">
+              <mat-select-trigger>{{ selectionLabel(truckAddIds.length) }}</mat-select-trigger>
+              <mat-option *ngFor="let t of availableTrucks" [value]="t.id">
+                <span class="orient-pick-option">
+                  <span class="orient-pick-option__title">{{ truckOptionTitle(t) }}</span>
+                  <span class="orient-pick-option__sub">{{ truckOptionSub(t) }}</span>
+                </span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <p class="orient-resources__empty" *ngIf="!formTruckIds.length">Aucun camion ajouté</p>
+          <ul class="orient-resources__list" *ngIf="formTruckIds.length">
+            <li *ngFor="let id of formTruckIds">
+              <span class="orient-resources__icon"><mat-icon>local_shipping</mat-icon></span>
+              <span class="orient-resources__meta">
+                <span class="orient-resources__primary">{{ truckLabel(id) }}</span>
+                <span class="orient-resources__secondary" *ngIf="truckSecondary(id)">{{ truckSecondary(id) }}</span>
+              </span>
+              <button mat-icon-button type="button" (click)="removeTruck(id)" [attr.aria-label]="'Retirer ' + truckLabel(id)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </li>
+          </ul>
+        </section>
+
+        <section class="orient-resources__col" aria-label="Chauffeurs">
+          <div class="orient-resources__head">
+            <h3>Chauffeurs</h3>
+            <span>{{ formDriverIds.length }} ajouté(s)</span>
+          </div>
+          <mat-form-field appearance="outline" class="orient-resources__add">
+            <mat-label>+ Ajouter des chauffeurs</mat-label>
+            <mat-select multiple [(ngModel)]="driverAddIds" (closed)="addDrivers()" panelClass="orient-pick-panel" [disabled]="!availableDrivers.length">
+              <mat-select-trigger>{{ selectionLabel(driverAddIds.length) }}</mat-select-trigger>
+              <mat-option *ngFor="let d of availableDrivers" [value]="d.id">
+                <span class="orient-pick-option">
+                  <span class="orient-pick-option__title">{{ driverOptionTitle(d) }}</span>
+                  <span class="orient-pick-option__sub">{{ driverOptionSub(d) }}</span>
+                </span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <p class="orient-resources__empty" *ngIf="!formDriverIds.length">Aucun chauffeur ajouté</p>
+          <ul class="orient-resources__list" *ngIf="formDriverIds.length">
+            <li *ngFor="let id of formDriverIds">
+              <span class="orient-resources__icon"><mat-icon>person</mat-icon></span>
+              <span class="orient-resources__meta">
+                <span class="orient-resources__primary">{{ driverLabel(id) }}</span>
+                <span class="orient-resources__secondary" *ngIf="driverSecondary(id)">{{ driverSecondary(id) }}</span>
+              </span>
+              <button mat-icon-button type="button" (click)="removeDriver(id)" [attr.aria-label]="'Retirer ' + driverLabel(id)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <!-- Step 2: Cycle -->
+    <div *ngIf="step === 2">
+      <fieldset class="orient-cycle">
+        <div class="orient-cycle__head">
+          <span>Temps de cycle attendu (estimation)</span>
+          <button
+            mat-icon-button
+            type="button"
+            (click)="openDefaults()"
+            aria-label="Paramètres par défaut"
+          >
+            <mat-icon>settings</mat-icon>
+          </button>
+        </div>
+        <div class="orient-cycle__grid">
+          <mat-form-field appearance="outline" *ngFor="let s of stages">
+            <mat-label>{{ s.label }}</mat-label>
+            <input
+              matInput
+              type="number"
+              min="1"
+              [ngModel]="formCycle[s.key]"
+              (ngModelChange)="setCycle(s.key, $event)"
+            />
+            <span matSuffix class="orient-cycle__unit">min</span>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Aléas (optionnel)</mat-label>
+            <input
+              matInput
+              type="number"
+              min="0"
+              [ngModel]="formContingency"
+              (ngModelChange)="setContingency($event)"
+            />
+            <span matSuffix class="orient-cycle__unit">min</span>
+          </mat-form-field>
+        </div>
+        <div class="orient-cycle__total">
+          <span>Cycle total estimé</span>
+          <strong>{{ cycleEstimate }} min</strong>
+        </div>
+      </fieldset>
+
+      <div class="orient-defaults" *ngIf="defaultsOpen">
+        <div class="orient-defaults__head">Paramètres par défaut</div>
+        <p>Ces temps préremplissent les prochaines missions.</p>
+        <div class="orient-cycle__grid">
+          <mat-form-field appearance="outline" *ngFor="let s of stages">
+            <mat-label>{{ s.label }}</mat-label>
+            <input
+              matInput
+              type="number"
+              min="1"
+              [ngModel]="draftCycle[s.key]"
+              (ngModelChange)="setDraftCycle(s.key, $event)"
+            />
+            <span matSuffix class="orient-cycle__unit">min</span>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Aléas (optionnel)</mat-label>
+            <input
+              matInput
+              type="number"
+              min="0"
+              [ngModel]="draftContingency"
+              (ngModelChange)="setDraftContingency($event)"
+            />
+            <span matSuffix class="orient-cycle__unit">min</span>
+          </mat-form-field>
+        </div>
+        <div class="orient-defaults__actions">
+          <button mat-button type="button" (click)="closeDefaults()">Annuler</button>
+          <button mat-raised-button color="primary" type="button" [disabled]="!defaultsValid()" (click)="saveDefaults()">
+            Enregistrer
+          </button>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline" class="orient-mission-grid__full">
+        <mat-label>Notes</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          [(ngModel)]="formNotes"
+          placeholder="Consignes de chargement, cales, priorités…"
+        ></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <footer class="orient-mission-dlg__footer">
+    <button mat-button type="button" *ngIf="step === 0" (click)="cancel()">Annuler</button>
+    <button mat-button type="button" *ngIf="step > 0" (click)="prev()">
+      <mat-icon>chevron_left</mat-icon> Précédent
+    </button>
+    <span class="orient-mission-dlg__spacer"></span>
+    <button mat-raised-button color="primary" type="button" *ngIf="!isLast" [disabled]="!stepValid(step)" (click)="next()">
+      Suivant <mat-icon>chevron_right</mat-icon>
+    </button>
+    <ng-container *ngIf="isLast">
+      <button mat-raised-button color="primary" type="button" [disabled]="!canSave" (click)="finalize(false)">
+        {{ isEdit ? 'Enregistrer' : 'Enregistrer comme planifiée' }}
+      </button>
+    </ng-container>
+  </footer>
+</div>

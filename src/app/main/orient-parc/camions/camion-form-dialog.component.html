@@ -1,0 +1,87 @@
+<div class="orient-form-dlg">
+  <header class="orient-form-dlg__header">
+    <div>
+      <h2 class="orient-form-dlg__title">{{ dialogTitle }}</h2>
+      <p class="orient-form-dlg__subtitle" *ngIf="base">{{ base.id }}</p>
+    </div>
+    <button mat-icon-button type="button" (click)="cancel()" aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="orient-form-dlg__body">
+    <div class="orient-form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Nom Complet (immatriculation)</mat-label>
+        <input matInput [(ngModel)]="formPlate" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput [(ngModel)]="formName" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nom de Département</mat-label>
+        <input matInput [(ngModel)]="formDepartment" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nom de Chauffeur</mat-label>
+        <mat-select [(ngModel)]="formDriverId">
+          <mat-option [value]="null">—</mat-option>
+          <mat-option *ngFor="let d of drivers" [value]="d.id">
+            {{ d.firstName }} {{ d.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Marque</mat-label>
+        <input matInput [(ngModel)]="formBrand" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Modèle</mat-label>
+        <input matInput [(ngModel)]="formModel" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Année</mat-label>
+        <input matInput type="number" [(ngModel)]="formYear" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Type d'énergie</mat-label>
+        <mat-select [(ngModel)]="formFuelType">
+          <mat-option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Kilométrage</mat-label>
+        <input matInput type="number" [(ngModel)]="formMileage" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Capacité</mat-label>
+        <input matInput type="number" [(ngModel)]="formFuelCapacity" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Numéro de puce</mat-label>
+        <input matInput [(ngModel)]="formSimCardNumber" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Équipement</mat-label>
+        <input matInput [(ngModel)]="formEquipmentSerial" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="orient-form-full">
+        <mat-label>Type</mat-label>
+        <mat-select [(ngModel)]="formType">
+          <mat-option *ngFor="let t of truckTypes" [value]="t">{{ t }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="orient-form-full">
+        <mat-label>Icône (URL)</mat-label>
+        <input matInput [(ngModel)]="formIconUrl" />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <footer class="orient-form-dlg__footer">
+    <span class="orient-form-dlg__spacer"></span>
+    <button mat-button type="button" (click)="cancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="button" (click)="save()">Enregistrer</button>
+  </footer>
+</div>

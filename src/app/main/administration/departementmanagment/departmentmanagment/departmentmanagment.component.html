@@ -1,0 +1,149 @@
+<meta http-equiv="Cache-control" content="public">
+
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="space-around center" fxLayout.gt-sm="row"
+        fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>supervisor_account</mat-icon>
+                <span class="h1">
+                  {{'NAV.pageTitleDep' | translate}} 
+
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+              <div class="search">
+                  <input id="searchBtn" #filter placeholder="Filtrer les données"   (input)="filterChanged($event.target.value)" required>
+                  <label for="searchBtn">
+                      <mat-icon class="grey-700-fg">search</mat-icon>
+                  </label>
+              </div>
+          </div>
+            <!-- / SEARCH -->
+
+            
+           
+          <!-- ADD BUTTON -->
+          <button mat-fab color="warn" class="add-button" (click)="adddepartment()"
+                aria-label="Add account" [hidden]="disabled">
+                <mat-icon>add</mat-icon>
+            </button>
+            <!-- / ADD BUTTON -->
+            
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+           <!--  <div style="margin-top: 30px;"class="h2 pr-16">Department List</div>
+
+            <cdk-tree [dataSource]="dataSource" [treeControl]="treeControl" fusePerfectScrollbar>
+                This is the tree node template for leaf nodes -->
+<!--                 <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
+ -->                  <!-- use a disabled button to provide padding for tree leaf -->
+                 <!--  <button mat-icon-button disabled></button>
+                  {{node.name}}
+                </cdk-nested-tree-node> -->
+                <!-- This is the tree node template for expandable nodes -->
+                <!-- <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild" class="example-tree-node">
+                  <button mat-icon-button [attr.aria-label]="'Toggle ' + node.name" cdkTreeNodeToggle>
+                    <mat-icon class="mat-icon-rtl-mirror">
+                      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </mat-icon>
+                  </button>
+                  {{node.name}}
+                  <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+                    <ng-container cdkTreeNodeOutlet></ng-container>
+                  </div>
+                </cdk-nested-tree-node>
+              </cdk-tree> -->
+              <mat-table   #table [dataSource]="dataSource" matSort
+             fusePerfectScrollbar>
+
+              <ng-container matColumnDef="name">
+                  <mat-header-cell *matHeaderCellDef >{{'NAV.department' | translate}} 
+
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let data">
+                   
+                    <button mat-icon-button 
+                    [style.visibility]="!data.expandable ? 'hidden' : ''"
+                    [style.marginLeft.px]="data.level * 32"
+                    (click)="treeControl.toggle(data)">
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(data) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+      
+            <h6>{{data.Name}}  </h6>   
+
+              </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="car">
+                  <mat-header-cell *matHeaderCellDef >
+                      <p class="text-truncate"> {{'NAV.car' | translate}} 
+                      </p>
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let data">
+                    <cdk-virtual-scroll-viewport itemSize="20" class="example-viewport">
+                      <div *cdkVirtualFor="let d of data.car" class="example-item">
+                        <button mat-icon-button color="accent" >
+                              <mat-icon>directions_car</mat-icon>
+                          
+                      </button>                        {{d}}</div>
+                    </cdk-virtual-scroll-viewport>
+                  
+                     </mat-cell>
+
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>
+
+                </mat-header-cell>
+
+                <mat-cell *matCellDef="let item; let i=index;">
+                    <button mat-icon-button color="accent" (click)="editdepartment(item)">
+                        <div class="tooltip">
+                            <mat-icon>create</mat-icon><span class="tooltiptxt">{{'NAV.Edit' | translate}}</span>
+                        </div>
+                    </button>
+
+                   
+
+                    <button mat-icon-button color="warn" (click)="deleteDepartement(item)">
+                        <div class="tot">
+                            <mat-icon aria-label="Delete">delete</mat-icon><span class="tottxt">{{'NAV.Remove' | translate}}</span>
+                        </div>
+                    </button>
+                </mat-cell>
+            </ng-container>
+              
+              <mat-header-row *matHeaderRowDef="tableColumns; sticky:true"></mat-header-row>
+
+              <mat-row [ngClass]="{'make-gold': product.ShowReminder == true}"
+                  *matRowDef="let product; columns: tableColumns;" class="product" matRipple>
+              </mat-row>
+
+          </mat-table>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

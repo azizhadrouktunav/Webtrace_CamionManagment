@@ -1,0 +1,449 @@
+<mat-expansion-panel><!--*ngIf="Geofencingvisibility == true"-->
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{'Geofence.title' | translate }}
+      </mat-panel-title>
+      <mat-panel-description>
+        
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <form [formGroup]="GeofencingSection">
+        <mat-card class="example-card margin-top">
+            <mat-card-header>
+                 
+                <mat-card-title>
+                    <mat-icon class="HeaderImage">timeline</mat-icon>  
+                    {{'Geofence.FirstTrajectory' | translate }}
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div>
+                    <mat-checkbox formControlName="activateInOutWayOneAlarm" class="margin-top" (change)="changeInOutWayStatus($event)">
+                        {{'Geofence.GeofenceAround' | translate }}
+                    </mat-checkbox>
+                    <div formGroupName="pathOneParams">
+                        <div class="space-between">
+                            <mat-form-field appearance="outline" style="width: 20%;">
+                                <mat-label>m</mat-label>
+                                <input matInput formControlName="distanceThreasholdWayOne" type="number">
+                                <mat-error>{{'PleaseInsertValue' | translate }}</mat-error>
+                            </mat-form-field> 
+                            <mat-form-field appearance="outline" style="width: 20%;">
+                                <mat-label>{{'Geofence.MTrajectory' | translate }}</mat-label>
+                                <mat-select formControlName="areaWayOne">
+                                    <mat-option *ngFor="let ac of pathsList" [value]="ac.Id">{{ac.Name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{'PleaseInsertOption' | translate }}</mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" style="width: 20%;">
+                                <mat-label>{{'Geofence.Each' | translate }}</mat-label>
+                                <mat-select formControlName="alarmDaysWayOne" [ngModel]="selectedMeltiWayOneValue" multiple>
+                                    <mat-option *ngFor="let day of WeekdaysList" [value]="day.Id">{{day.day | translate }}</mat-option>
+                                </mat-select>
+                                <mat-error>Error</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <!--------------------------------------------------------------------------------->
+                            <p class="margintop">{{'Geofence.Select_time_Interval' | translate }}</p>
+                            <div class="space-around">
+                                <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                    <mat-label>{{'From' | translate }}</mat-label>
+                                    <input matInput [ngxMatDatetimePicker]="pickerMinWayOne" placeholder="Choose a date"
+                                        formControlName="alarmTimeIntevalMinWayOne">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerMinWayOne"></mat-datepicker-toggle>
+                                    <ngx-mat-datetime-picker #pickerMinWayOne></ngx-mat-datetime-picker>
+                                </mat-form-field>
+                                <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                    <mat-label>{{'Ends' | translate }}</mat-label>
+                                    <input matInput [ngxMatDatetimePicker]="pickerMaxWayOne" placeholder="Choose a date"
+                                        formControlName="alarmTimeIntevalMaxWayOne">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerMaxWayOne"></mat-datepicker-toggle>
+                                    <ngx-mat-datetime-picker #pickerMaxWayOne></ngx-mat-datetime-picker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div>
+                            <!--------------------------------------------------------------------------------->
+                            <p class="margintop">{{'Geofence.whenMovingTo' | translate }}</p>
+                            <div class="centring">
+                                <mat-form-field appearance="outline" style="width: 60%;">
+                                        <mat-select formControlName="placementWayOne">
+                                            <mat-option *ngFor="let ac of inOutStateList" [value]="ac.Id">{{ac.state | translate }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>Error</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+          </mat-card>
+        <!------------------------------------------------------------------------------------------------------->
+        <mat-card class="example-card margin-top">
+            <mat-card-header>
+                <mat-card-title>
+                    <mat-icon class="HeaderImage">timeline</mat-icon> 
+                    {{'Geofence.SecondTrajectory' | translate }}
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div>
+                    <mat-checkbox formControlName="activateInOutWayTwoAlarm" class="margin-top" (change)="changeInOutWayTwoStatus($event)">
+                        {{'Geofence.SecondTrajectory' | translate }}:
+                    </mat-checkbox>
+                    <div formGroupName="pathTwoParams">
+                        <div class="space-between">
+                            <mat-form-field appearance="outline" style="width: 20%;">
+                                <mat-label>m</mat-label>
+                                <input matInput formControlName="distanceThreasholdWayTwo" type="number">
+                            </mat-form-field> 
+                            <mat-form-field appearance="outline" style="width: 20%;" >
+                                <mat-label>{{'Geofence.MTrajectory' | translate }}</mat-label>
+                                <mat-select formControlName="areaWayTwo">
+                                    <mat-option *ngFor="let ac of pathsList" [value]="ac.Id">{{ac.Name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>Error</mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" style="width: 20%;">
+                                <mat-label>{{'Geofence.Each' | translate }}</mat-label>
+                                <mat-select formControlName="alarmDaysWayTwo" [ngModel]="selectedMeltiWayTwoValue" multiple>
+                                    <mat-option *ngFor="let day of WeekdaysList" [value]="day.Id">{{day.day | translate }}</mat-option>
+                                </mat-select>
+                                <mat-error>Error</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <!--------------------------------------------------------------------------------->
+                            <p class="margintop">{{'Geofence.Select_time_Interval' | translate }}</p>
+                            <div class="space-around">
+                                <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                    <mat-label>{{'From' | translate }}</mat-label>
+                                    <input matInput [ngxMatDatetimePicker]="pickerMinWayTwo" placeholder="Choose a date"
+                                        formControlName="alarmTimeIntevalMinWayTwo">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerMinWayTwo"></mat-datepicker-toggle>
+                                    <ngx-mat-datetime-picker #pickerMinWayTwo></ngx-mat-datetime-picker>
+                                </mat-form-field>
+                                <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                    <mat-label>{{'Ends' | translate }}</mat-label>
+                                    <input matInput [ngxMatDatetimePicker]="pickerMaxWayTwo" placeholder="Choose a date"
+                                        formControlName="alarmTimeIntevalMaxWayTwo">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerMaxWayTwo"></mat-datepicker-toggle>
+                                    <ngx-mat-datetime-picker #pickerMaxWayTwo></ngx-mat-datetime-picker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div>
+                            <!--------------------------------------------------------------------------------->
+                            <p>{{'Geofence.whenMovingTo' | translate }}</p>
+                            <div class="centring">
+                                <mat-form-field appearance="outline" style="width: 60%;">
+                                        <mat-select formControlName="placementWayTwo">
+                                            <mat-option *ngFor="let ac of inOutStateList" [value]="ac.Id">{{ac.state | translate}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>Error</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+          </mat-card>
+    <mat-card class="example-card margin-top">
+        <mat-card-header>
+            <mat-card-title><mat-icon class="HeaderImage">account_balance</mat-icon>{{'Geofence.Country' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <div style="display: flex; justify-content: space-between;">
+                    <mat-checkbox formControlName="activateInOutCityAlarm" class="margin-top" (change)="changeInOutCityStatus($event)">
+                        {{'Geofence.GeofenceAround' | translate }}
+                    </mat-checkbox>
+                </div>
+                
+                <div formGroupName="cityParams">
+                    <div class="space-between">
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>m</mat-label>
+                            <input matInput formControlName="distanceThreasholdCity" type="number">
+                        </mat-form-field> 
+                        <mat-form-field appearance="outline" style="width: 20%;" *ngIf="countryList.length">
+                            <mat-label>{{'Geofence.MTrajectory' | translate }}</mat-label>
+                            <mat-select formControlName="areaWayCity">
+                                <mat-option *ngFor="let cL of countryList" [value]="cL.Id">{{cL.Name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Error</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>{{'Geofence.Each' | translate }}</mat-label>
+                            <mat-select formControlName="alarmDayCity" [ngModel]="selectedMeltiCountryValue" multiple>
+                                <mat-option *ngFor="let day of WeekdaysList" [value]="day.Id">{{day.day | translate}}</mat-option>
+                            </mat-select>
+                            <mat-error>Error</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <!--------------------------------------------------------------------------------->
+                        <p class="margintop">{{'Geofence.Select_time_Interval' | translate }}</p>
+                        <div class="space-around">
+                            <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                <mat-label>{{'From' | translate }}</mat-label>
+                                <input matInput [ngxMatDatetimePicker]="pickerMinCity" placeholder="Choose a date"
+                                    formControlName="alarmTimeIntevalMinCity">
+                                <mat-datepicker-toggle matSuffix [for]="pickerMinCity"></mat-datepicker-toggle>
+                                <ngx-mat-datetime-picker #pickerMinCity></ngx-mat-datetime-picker>
+                            </mat-form-field>
+                            <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                <mat-label>{{'Ends' | translate }}</mat-label>
+                                <input matInput [ngxMatDatetimePicker]="pickerMaxCity" placeholder="Choose a date"
+                                    formControlName="alarmTimeIntevalMaxCity">
+                                <mat-datepicker-toggle matSuffix [for]="pickerMaxCity"></mat-datepicker-toggle>
+                                <ngx-mat-datetime-picker #pickerMaxCity></ngx-mat-datetime-picker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div>
+                        <mat-checkbox formControlName="enableArming" class="margin-top" [disabled]="isDisabled"  >
+                            {{'Geofence.force_stop' | translate }}
+                        </mat-checkbox>
+                    </div>
+                    <div>
+                        <!--------------------------------------------------------------------------------->
+                        <p>{{'Geofence.whenMovingTo' | translate }}</p>
+                        <div class="centring">
+                            <mat-form-field appearance="outline" style="width: 60%;">
+                                    <mat-select formControlName="placementCity" (selectionChange)="InOutChange($event.value)">
+                                        <mat-option *ngFor="let ac of inOutStateList" [value]="ac.Id">{{ac.state | translate }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>Error</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card margin-top">
+        <mat-card-header>
+            <mat-card-title><mat-icon class="HeaderImage">location_searching</mat-icon> {{'Geofence.Polygon' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <mat-checkbox formControlName="activateInOutPolygonAlarm" class="margin-top" (change)="changeInOutPolygon($event)">
+                    {{'Geofence.GeofenceAround' | translate }}
+                </mat-checkbox>
+                <div formGroupName="polygonParams">
+                    <div class="space-between">
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>m</mat-label>
+                            <input matInput formControlName="distanceThreasholdPolygon" type="number">
+                        </mat-form-field> 
+                        <mat-form-field appearance="outline" style="width: 20%;" *ngIf="polygonList.length">
+                            <mat-label>{{'Geofence.MTrajectory' | translate }}</mat-label>
+                            <mat-select formControlName="areaWayPolygon" [ngModel]="selectedPolygon">
+                                <mat-option *ngFor="let pL of polygonList" [value]="pL.Id">{{pL.Name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Error</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>{{'Geofence.Each' | translate }}</mat-label>
+                            <mat-select formControlName="alarmDayPolygon" [ngModel]="selectedMeltiPolygonValue" multiple>
+                                <mat-option *ngFor="let day of WeekdaysList" [value]="day.Id">{{day.day | translate}}</mat-option>
+                            </mat-select>
+                            <mat-error>Error</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <!--------------------------------------------------------------------------------->
+                        <p class="margintop">{{'Geofence.Select_time_Interval' | translate }}</p>
+                        <div class="space-around">
+                          
+                            <ngx-mat-timepicker formControlName="alarmTimeIntevalMinPolygon"></ngx-mat-timepicker>
+                            
+                            <ngx-mat-timepicker formControlName="alarmTimeIntevalMaxPolygon"></ngx-mat-timepicker>
+                          
+                              <!-- <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                               
+                              
+                              <input matInput [ngxMatDatetimePicker]="pickerMinPolygon" placeholder="Choose a date"
+                                    formControlName="alarmTimeIntevalMinPolygon">
+                                <mat-datepicker-toggle matSuffix [for]="pickerMinPolygon"></mat-datepicker-toggle>
+                                <ngx-mat-datetime-picker #pickerMinPolygon></ngx-mat-datetime-picker>
+                            </mat-form-field>
+                            <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                <mat-label>{{'Ends' | translate }}</mat-label>
+                                <input matInput [ngxMatDatetimePicker]="pickerMaxPolygon" placeholder="Choose a date"
+                                    formControlName="alarmTimeIntevalMaxPolygon">
+                                <mat-datepicker-toggle matSuffix [for]="pickerMaxPolygon"></mat-datepicker-toggle>
+                                <ngx-mat-datetime-picker #pickerMaxPolygon></ngx-mat-datetime-picker>
+                            </mat-form-field>-->
+                        </div>
+                    </div>
+                    <div>
+                        <!--------------------------------------------------------------------------------->
+                        <p>{{'Geofence.whenMovingTo' | translate }}</p>
+                        <div class="centring">
+                            <mat-form-field appearance="outline" style="width: 60%;">
+                                    <mat-select formControlName="placementPolygon">
+                                        <mat-option *ngFor="let ac of inOutStateList" [value]="ac.Id">{{ac.state | translate }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>Error</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card margin-top">
+        <mat-card-header>
+            <mat-card-title><mat-icon class="HeaderImage">location_on</mat-icon> {{'Geofence.FirstPlace' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <mat-checkbox formControlName="activateInOutlocationOneAlarm" class="margin-top" (change)="changeInOutLocationOne($event)">
+                    {{'Geofence.GeofenceAround' | translate }}
+                </mat-checkbox>
+                <div formGroupName="locationOneParams">
+                    <div class="space-between">
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>m</mat-label>
+                            <input matInput formControlName="distanceThreasholdlocationOne" type="number">
+                        </mat-form-field> 
+                        <mat-form-field appearance="outline" style="width: 20%;" *ngIf="polygonList.length">
+                            <mat-label>{{'Geofence.MTrajectory' | translate }}</mat-label>
+                            <mat-select formControlName="areaWaylocationOne" [ngModel]="selectedLocationOne">
+                                <mat-option *ngFor="let pL of placesList" [value]="pL.Id">{{pL.NamePlace}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Error</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>{{'Geofence.Each' | translate }}</mat-label>
+                            <mat-select formControlName="alarmDaylocationOne" [ngModel]="selectedMeltiLocationOneValue" multiple>
+                                <mat-option *ngFor="let day of WeekdaysList" [value]="day.Id">{{day.day | translate }}</mat-option>
+                            </mat-select>
+                            <mat-error>Error</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <!--------------------------------------------------------------------------------->
+                        <p class="margintop">{{'Geofence.Select_time_Interval' | translate }}</p>
+                        <div class="space-around">
+                            <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                <mat-label>{{'From' | translate }}</mat-label>
+                                <input matInput [ngxMatDatetimePicker]="pickerMinLocationOne" placeholder="Choose a date"
+                                    formControlName="alarmTimeIntevalMinlocationOne">
+                                <mat-datepicker-toggle matSuffix [for]="pickerMinLocationOne"></mat-datepicker-toggle>
+                                <ngx-mat-datetime-picker #pickerMinLocationOne></ngx-mat-datetime-picker>
+                            </mat-form-field>
+                            <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                <mat-label>{{'Ends' | translate }}</mat-label>
+                                <input matInput [ngxMatDatetimePicker]="pickerMaxLocationOne" placeholder="Choose a date"
+                                    formControlName="alarmTimeIntevalMaxlocationOne">
+                                <mat-datepicker-toggle matSuffix [for]="pickerMaxLocationOne"></mat-datepicker-toggle>
+                                <ngx-mat-datetime-picker #pickerMaxLocationOne></ngx-mat-datetime-picker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div>
+                        <!--------------------------------------------------------------------------------->
+                        <p>{{'Geofence.whenMovingTo' | translate }}</p>
+                        <div class="centring">
+                            <mat-form-field appearance="outline" style="width: 60%;">
+                                    <mat-select formControlName="placementlocationOne">
+                                        <mat-option *ngFor="let ac of inOutStateList" [value]="ac.Id">{{ac.state | translate }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>Error</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="example-card margin-top">
+        <mat-card-header>
+            <mat-card-title><mat-icon class="HeaderImage">location_on</mat-icon>{{'Geofence.SecondPlace' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <mat-checkbox formControlName="activateInOutlocationTwoAlarm" class="margin-top" (change)="changeLocationTwoStatus($event)">
+                    {{'Geofence.GeofenceAround' | translate }} 
+                </mat-checkbox>
+                <div formGroupName="locationTwoParams">
+                    <div class="space-between">
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>m</mat-label>
+                            <input matInput formControlName="distanceThreasholdlocationTwo" type="number">
+                        </mat-form-field> 
+                        <mat-form-field appearance="outline" style="width: 20%;" *ngIf="placesList.length">
+                            <mat-label>{{'Geofence.MTrajectory'| translate }}</mat-label>
+                            <mat-select formControlName="areaWaylocationTwo">
+                                <mat-option *ngFor="let pL of placesList" [value]="pL.Id">{{pL.NamePlace}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Error</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>{{'Geofence.Each'| translate }}</mat-label>
+                            <mat-select formControlName="alarmDaylocationTwo" [ngModel]="selectedMeltiLocationTwoValue" multiple>
+                                <mat-option *ngFor="let day of WeekdaysList" [value]="day.Id">{{day.day | translate }}</mat-option>
+                            </mat-select>
+                            <mat-error>Error</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <!--------------------------------------------------------------------------------->
+                        <p class="margintop">{{'Geofence.Select_time_Interval' | translate }}</p>
+                        <div class="space-around">
+                            <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                <mat-label>{{'From' | translate }}</mat-label>
+                                <input matInput [ngxMatDatetimePicker]="pickerMinLocationTwo" placeholder="Choose a date"
+                                    formControlName="alarmTimeIntevalMinlocationTwo">
+                                <mat-datepicker-toggle matSuffix [for]="pickerMinLocationTwo"></mat-datepicker-toggle>
+                                <ngx-mat-datetime-picker #pickerMinLocationTwo></ngx-mat-datetime-picker>
+                            </mat-form-field>
+                            <mat-form-field class="pr-sm-8" appearance="outline" [style.width.%]="33" fxFlex="40">
+                                <mat-label>{{'Ends' | translate }}</mat-label>
+                                <input matInput [ngxMatDatetimePicker]="pickerMaxLocationTwo" placeholder="Choose a date"
+                                    formControlName="alarmTimeIntevalMaxlocationTwo">
+                                <mat-datepicker-toggle matSuffix [for]="pickerMaxLocationTwo"></mat-datepicker-toggle>
+                                <ngx-mat-datetime-picker #pickerMaxLocationTwo></ngx-mat-datetime-picker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div>
+                        <!--------------------------------------------------------------------------------->
+                        <p>{{'Geofence.whenMovingTo' | translate }}</p>
+                        <div class="centring">
+                            <mat-form-field appearance="outline" style="width: 60%;">
+                                    <mat-select formControlName="placementlocationTwo">
+                                        <mat-option *ngFor="let ac of inOutStateList" [value]="ac.Id">{{ac.state | translate }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error>Error</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+      </mat-card>
+    </form>
+    
+<mat-action-row>
+    <button type="button" mat-button color="warn" (click)="GeofencingDefault()">{{'AlertConfiguration.ConductSection.DefaultParams' | translate}}</button>
+    <button type="button" mat-button color="#26bcfb" (click)="GeofencingSabmit(GeofencingSection)" >{{'AlertConfiguration.ConductSection.SendParms' | translate}}</button>
+</mat-action-row>
+</mat-expansion-panel>

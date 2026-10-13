@@ -1,0 +1,98 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate}}</span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+  
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" fusePerfectScrollbar>
+        <form [formGroup]="paymentForm"  (ngSubmit)="onSubmit()">
+
+             <mat-form-field  appearance="outline" class="w-100-p">
+                        <mat-label>{{'PARC.Invoicereference' | translate}}</mat-label>
+                        <input matInput formControlName="InvoiceRef" >  
+                      </mat-form-field>
+            <div fxLayout="row">
+            
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+                 
+                    <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'PARC.Invoicefrom' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker1" formControlName="InvoiceFromGMT" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker1" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+              
+                      <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'PARC.Invoiceto' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="InvoiceToGMT" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+             </div>
+            </div>
+            <div fxLayout="row">
+            
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+                 
+                    <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'PARC.Cost' | translate}}</mat-label>
+                        <input matInput
+                        type="number"
+                        placeholder="pick a number" formControlName="Cost" required> 
+                      </mat-form-field>
+              
+                      <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                         <mat-label>{{'PARC.Payed' | translate}}</mat-label>
+                        <input matInput
+                        type="number"
+                        placeholder="pick a number" formControlName="PaidCost" required> 
+                      </mat-form-field>
+             </div>
+            </div>
+            <div fxLayout="row">
+            
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" >
+                 
+                    <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'PARC.PayDate' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker3" formControlName="PaidDateGMT" required >
+                        <mat-datepicker-toggle matSuffix [for]="picker3" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker3></mat-datepicker>
+                      </mat-form-field>
+              
+                      <mat-form-field  appearance="outline" class="pl-sm-8" fxFlex="50">
+                        <mat-label>{{'PARC.Invoicedate' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker4" formControlName="DateInvoiceGMT" required >
+                        <mat-datepicker-toggle matSuffix [for]="picker4" ></mat-datepicker-toggle>
+                        <mat-datepicker #picker4></mat-datepicker>
+                      </mat-form-field>
+             </div>
+            </div>
+            <mat-form-field  appearance="outline" class="w-100-p">
+                <mat-label>{{'PARC.Mileage' | translate}}</mat-label>
+                <input matInput
+                type="number"
+                placeholder="pick a number" formControlName="OdometerOutKm" >               </mat-form-field>
+              
+                  
+              
+           
+                   
+        </form>
+       
+    </div>
+    <div mat-dialog-actions class="m-0 p-16 mat-dialog-actions" fxLayout="row" fxLayoutAlign="end center">
+  
+      <button mat-raised-button  color="accent" (click)="onSubmit()" type="submit" class="button" [disabled]="!paymentForm.valid">{{'PARC.Save' | translate}}</button>
+
+
+   </div>
+  </div>
+   
+  
+  

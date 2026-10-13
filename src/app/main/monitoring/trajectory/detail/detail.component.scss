@@ -1,0 +1,13 @@
+.cellclass{
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+    overflow-x: scroll;
+    scrollbar-width: auto;
+    > img {
+        margin: 0px 20px;
+    }
+}

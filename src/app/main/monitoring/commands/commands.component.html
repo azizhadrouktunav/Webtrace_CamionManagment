@@ -1,0 +1,70 @@
+ <!-- CONTENT CARD -->
+ <div class="content-card">
+
+    <mat-table [dataSource]="dataSource" matSort fusePerfectScrollbar  >
+        <!-- Start Column -->
+        <ng-container matColumnDef="sendDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'sendDate' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                <span>
+                    {{element.DateCommandString}}
+                </span>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="vehicle">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'Common.Vehicle' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                <span>
+                    {{element.Fleet}}
+                </span>
+            </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="commandType">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'Common.TypeCommand' | translate }}</mat-header-cell>
+            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                <span>
+                    {{element.CommandDescription}}
+                </span>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.State' | translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                <span>
+                    {{element.StatusCommandString}}
+                </span>
+            </mat-cell>
+        </ng-container>
+       
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row
+            [ngStyle]="{'background-color':row.StatusCommandString == 'Succès' ? '#add205' : 'transparent' }"
+                *matRowDef="let row; columns: displayedColumns;" matRipple>
+            </mat-row>
+            <mat-toolbar  style="min-height: 46px !important; height: 46px !important;" class="fuse-white-bg">
+
+            <mat-toolbar-row fxLayout="row" fxLayoutAlign="start center">
+
+       
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </mat-table>
+    <mat-toolbar class="fuse-white-bg">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="start center">
+      
+         
+            <mat-paginator #paginator
+            [length]="dataSource.data.length"
+            [pageIndex]="0"
+            [pageSize]="10"
+            [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+        </mat-toolbar-row>
+      </mat-toolbar>
+   
+    <!-- <div  style="text-align: center;" *ngIf="dataSource.length === 0">
+        <span  class="mat-subheading-2" >{{'no_data_found' | translate }}</span>
+    </div>  -->
+</div>
+<!-- / CONTENT CARD -->

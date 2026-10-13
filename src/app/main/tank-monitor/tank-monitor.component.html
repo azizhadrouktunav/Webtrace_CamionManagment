@@ -1,0 +1,154 @@
+<div id="monitor-tanks" class="page-layout simple right-sidebar inner-scroll">
+
+
+
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+
+        <!-- HEADER -->
+        <nav class="nav-bar accent">
+        </nav>
+
+
+        <!-- CONTENT -->
+        <div class="container">
+            <div class="content p-24">
+
+                <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+        fullScreenBackdrop: 'true',
+       
+        primaryColour: '#0068f0', 
+        secondaryColour: '#0068f0', 
+        tertiaryColour: '#0068f0' }">
+                </ngx-loading>
+
+                <div *ngIf="!loading" style="width:100%">
+
+                    <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxFlex="100">
+
+                        <div class="fuse-card m-8" *ngFor="let tank of tanks;trackBy:trackByTankId;let index = index;"
+                            fxFlex="30">
+                            <div class="p-12" fxLayout="row" fxLayoutAlign="space-between center">
+                                <button mat-icon-button class="red-800-fg" matTooltip="{{tank.alertMessage}}" *ngIf="tank.isAlert"><mat-icon>warning</mat-icon></button>
+
+                                <div class="pr-16">
+                                    <div class="h1 ">{{ tank.Name }}</div>
+                                </div>
+                                <div>
+                                    <button mat-icon-button [matMenuTriggerFor]="card22Menu" aria-label="more">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+
+                                    <mat-menu #card22Menu="matMenu">
+                                        <button mat-menu-item
+                                            [routerLink]="'/tank-monitoring/monitor/'+tank.Id+'/'+tank.Equipment">
+                                            <mat-icon>history</mat-icon>
+                                            <span>{{'history' | translate }}</span>
+                                        </button>
+                                        <!-- <button mat-menu-item>
+                                    <mat-icon>notifications_off</mat-icon>
+                                    <span>Disable alerts</span>
+                                </button> -->
+                                    </mat-menu>
+                                </div>
+
+                            </div>
+                            <div class="p-16 h-200" fxLayout="row" fxLayoutAlign="center center">
+                                <!-- <ngx-gauge 
+                                    [type]="gaugeType" 
+                                    [value]="tank.FuelLevel"
+                                    [label] = "label"
+                                    [append]="gaugeAppendText"
+                                    [size] ="size" 
+                                    [thick] = "thick"
+                                    [thresholds]="thresholdConfig">
+                        </ngx-gauge>   -->
+                                <lib-ngx-liquid-gauge [value]="tank.FuelLevelG" [minValue]="0" [maxValue]="tank.FuelContainerCapacityG"
+                                    [circleThickness]="0.05" [circleFillGap]="0.05" [circleColor]="'#178BCA'"
+                                    [waveHeight]="0.05" [waveCount]="1" [waveRiseTime]="1000" [waveAnimateTime]="1000"
+                                    [waveRise]="true" [waveHeightScaling]="true" [waveAnimate]="true"
+                                    [waveColor]="tank.color" [waveOffset]="0" [textVertPosition]=".5" [textSize]="1"
+                                    [valueCountUp]="true" [displayPercent]="tank.isPercent" [textColor]="'#045681'"
+                                    [waveTextColor]="'#A4DBf8'">
+                                </lib-ngx-liquid-gauge>
+
+                                <ejs-lineargauge  width='100px' height='200px' (load)='load($event)' #gauge 
+                                    [container]='Container' [axes]='tank.Axes' >
+                                </ejs-lineargauge>
+                            </div>
+                            <div class="card-divider mb-0"></div>
+
+                            <div class="py-16">
+
+
+                                <div class="px-24" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div fxLayout="row" fxLayoutAlign="left">
+                                        <mat-icon>place</mat-icon>
+
+                                        <strong class="h5  ">
+
+                                            {{tank.Place}}
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="card-divider mb-0"></div>
+
+                                <mat-grid-list cols="2" rowHeight="4:1">
+                                    <mat-grid-tile> <span class="h4">
+                                            {{'LastSending' | translate }}</span></mat-grid-tile>
+                                    <mat-grid-tile><strong>
+                                            {{tank.LastSending | date:'yyyy-MM-dd HH:mm:ss' }}
+                                        </strong> </mat-grid-tile>
+                                    <mat-grid-tile> <span class="h4"> {{'Temperature' | translate}}</span>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile> <strong>
+                                            {{tank.Temperature}}
+                                        </strong>
+                                        <strong class="hint-text text-super ml-8">°</strong>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile> <span class="h4"> {{'WaterDetection' | translate}}</span>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <img max-height="20px" max-weight="20px"
+                                                src="assets/images/icon_no_water.png" alt="Water is absent"
+                                                *ngIf="!tank.PresenceOfWater">
+                                            <img max-height="20px" max-weight="20px" src="assets/images/icon_water.png"
+                                                alt="Water is present" *ngIf="tank.PresenceOfWater">
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile> <span class="h4">
+                                            {{'FuelLevelInL' | translate }}</span></mat-grid-tile>
+                                    <mat-grid-tile><strong>
+                                            {{tank.FuelLevelInL }}
+                                        </strong> </mat-grid-tile>
+                                    <mat-grid-tile> <span class="h4">
+                                            {{'CapacitéR' | translate }}</span></mat-grid-tile>
+                                    <mat-grid-tile><strong>
+                                            {{tank.FuelContainerCapacityInL }}
+                                        </strong> </mat-grid-tile>
+                                    <mat-grid-tile> <span class="h4">
+                                            {{'Equipement' | translate }}</span></mat-grid-tile>
+                                    <mat-grid-tile><strong>
+                                            {{tank.Equipment }}
+                                        </strong> </mat-grid-tile>
+                                    <mat-grid-tile> <span class="h4">
+                                            {{'Content' | translate }}</span></mat-grid-tile>
+                                    <mat-grid-tile><strong>
+                                            {{tank.FuelType | translate }}
+                                        </strong> </mat-grid-tile>
+
+                                </mat-grid-list>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-tanks" *ngIf="tanks.length === 0 && !loading">
+                    {{'NoTanksFound' | translate }}
+                </div>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,187 @@
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+     
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/parc/app-gestion_des_vehicules'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <mat-icon>link</mat-icon>
+                <span class="h1">
+                    {{'NAV.Car_log_Name' | translate}}{{CarTitle}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <mat-table [dataSource]="dataSource" matSort class="products-table" [@animateStagger]="{value:'50'}"
+                fusePerfectScrollbar>
+
+                <!-- Category Column -->
+                <ng-container matColumnDef="Date">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sor   t-header fxShow.gt-md>{{'NAV.Vehicule_op_date' | translate}}
+                        <div *ngIf="Display_clander; else notShow">
+                            <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                                <mat-icon>calendar_today</mat-icon>
+                            </button>
+                            <mat-menu #appMenu="matMenu">
+                                <mat-calendar #calendar 
+                                    (selectedChange)="update_by_date($event,calendar)" 
+                                    [dateClass]="isSelected">
+                                </mat-calendar>
+                            </mat-menu>
+                        </div>
+                        <ng-template #notShow class="anneler_calander">
+                            <mat-icon color="warn" style="width: 10px; height: 10px;" (click)="revive_calander()">event_busy</mat-icon>
+                        </ng-template>
+
+                    </mat-header-cell>
+                    
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
+                        <p class="category text-truncate">
+                            {{element.OperationDateLocal | localizedDate}}
+                        </p>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef> <b><font color=red>Total: </font></b></mat-footer-cell>
+                </ng-container>
+
+                <!-- Type Column -->
+                <ng-container matColumnDef="Type_op">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{'NAV.Vehicule_op_type' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-xs>
+                        <p class="price text-truncate" align="center">
+                            {{'NAV.' +element.Type | translate}}
+                        </p>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>   </mat-footer-cell>
+                </ng-container>
+
+                <!-- Quantity Column -->
+                <ng-container matColumnDef="km">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.KM' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.OperationMileage}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>   </mat-footer-cell>
+                </ng-container>
+                
+                
+               <ng-container matColumnDef="Cout">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Cost_car' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm >
+                        <span align="center">
+                            {{element.OperationCost}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>  <b>{{getTotalCost() |currency:"TND":"symbol"}} </b>   </mat-footer-cell>
+                </ng-container>
+               
+                <ng-container matColumnDef="Chauffeur">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Driver' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.DriverName}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>   </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="dep">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Departemant' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.DepartmentName}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>   </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="comp">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.comptepar' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.AccountName}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>   </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="Desc">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Description' | translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.Description}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>   </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="comm">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Commentaire' | translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>
+                            {{element.Comment}}
+                        </span>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>   </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" fxHide fxShow.gt-sm>
+                        <button mat-icon-button (click)="editOperation(row)">
+                            <div class="tooltip">
+                                <mat-icon>create</mat-icon><span class="tooltiptxt">Éditer</span>
+                            </div>
+                        </button>
+                        <button mat-icon-button color="warn" class="sup" (click)="deleteOperation(row)">
+                            <div class="tot">
+                                <mat-icon>delete_outline</mat-icon><span class="tottxt">Supp</span>
+                            </div>
+                        </button>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef>   </mat-footer-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="Scolling_wigh"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" class="product" matRipple class="Scolling_wigh"></mat-row>
+                <mat-row *matFooterRowDef="displayedColumns; sticky: true"></mat-row>
+            </mat-table>
+            <mat-toolbar style="background-color: white;width:calc(100% - 65px);" >
+
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                    <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                    </mat-icon>
+                    <img (click)="exportExcel()" src="assets/icons/excel.png" class="excel" title="Export as excel file">
+                </div>
+                <span class="spacer"></span>
+                <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="5"
+                    [pageSizeOptions]="[1, 5, 10]">
+                </mat-paginator>
+
+            </mat-toolbar>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

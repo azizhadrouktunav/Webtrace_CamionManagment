@@ -1,0 +1,557 @@
+<div id="report" class="page-layout simple right-sidebar inner-scroll">
+
+    
+
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+
+        <!-- HEADER -->
+        <div class="header accent p-24 pb-0" fxLayout="column" fxLayoutAlign="space-between">
+
+            <div fxLayout="row" fxLayoutAlign="space-between start">
+
+                <span class="mat-display-1 my-0 my-sm-24 welcome-message"
+                    [@animate]="{value:'*',params:{x:'50px'}}">{{'NAV.Dashboard' | translate}}
+                </span>
+
+                <!-- <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md
+                        (click)="toggleSidebar('project-dashboard-right-sidebar-1')">
+                    <mat-icon>menu</mat-icon>
+                </button> -->
+                <div *ngIf="isMobileResolution"><button   mat-raised-button style="width:150px;height: 40px;margin: auto;" type="button"
+                    class="button" (click)="generateDashboard()" ><span style="font-size: 11px ;">Générer le rapport</span></button></div>
+                    <div *ngIf="!isMobileResolution">
+                <form *ngIf="!isMobileResolution" novalidate [formGroup]="form">
+                    <mat-form-field appearance="outline" class="pr-4" fxFlex="30">
+                        <mat-label>Véhicule</mat-label>
+                        <input type="text" aria-label="Select Vehicles" matInput [matAutocomplete]="autoGroup" formControlName="Car" >
+                        <mat-icon matSuffix class="secondary-text">directions_car</mat-icon>
+                    <mat-autocomplete [panelWidth]="'auto'" #autoGroup="matAutocomplete" [displayWith]="displayCar">
+                        <mat-optgroup *ngFor="let group of CarGroupOptions | async" >
+                          <div>
+                            <mat-checkbox [checked]="group.selected" (change)="toggleParent($event, group)" 
+                              (click)="$event.stopPropagation()" >
+                                {{group.department}}
+                            </mat-checkbox>
+                            <button mat-button (click)="expandCars(group)">
+                              <mat-icon>keyboard_arrow_down</mat-icon>
+                            </button>
+                            </div>  
+                            <mat-option *ngFor="let name of group.car" [value]="name"
+                               [ngClass]="isExpandCategory[group.department] ? 'list-show' : 'list-hide'">
+                               <mat-checkbox [checked]="group.checked ? true : name.checked" (change)="toggleSelection($event, name, group)" 
+                        (click)="$event.stopPropagation()">
+                          {{name.FullName}}
+                      </mat-checkbox>
+                            </mat-option>
+                      </mat-optgroup>
+                    </mat-autocomplete>
+                    </mat-form-field>
+                    <!--<mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" [displayWith]="displayCar">
+
+                         <mat-option *ngFor="let obj of filteredOptions | async" [value]="obj">
+                            <div (click)="optionClicked($event, obj)">
+                                <mat-checkbox [checked]="obj.selected" (change)="toggleSelection(obj)"
+                                    (click)="$event.stopPropagation()">
+                                    {{obj.FullName}}
+                                </mat-checkbox>
+                            </div>
+                        </mat-option> 
+                         <mat-optgroup *ngFor="let group of listcargroup" >
+                            <div>
+                              <mat-checkbox [checked]="group.selected" (change)="toggleParent($event, group)" 
+                                (click)="$event.stopPropagation()">
+                                  {{group.department}}
+                              </mat-checkbox>
+                              <button mat-button (click)="expandCars(group)">
+                                <mat-icon>keyboard_arrow_down</mat-icon>
+                              </button>
+                              </div>  
+                              <mat-option *ngFor="let name of group.car" [value]="name"
+                                 [ngClass]="isExpandCategory[group.department] ? 'list-show' : 'list-hide'">
+                                 <mat-checkbox [checked]="group.checked" (change)="toggleSelection($event, name, group)" 
+                          (click)="$event.stopPropagation()">
+                                  {{name.FullName}}
+                              </mat-checkbox>
+                              </mat-option>
+                        </mat-optgroup> 
+                    </mat-autocomplete>-->
+
+                    <mat-form-field [style.width.px]=200 appearance="outline" [fxFlex]="noshrink" class="mr-12">
+                        <mat-label>{{'NAV.StartDate' | translate}}</mat-label>
+
+                        <input   matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" [min]="minDate"
+                            [max]="maxDate" formControlName="StartDateGMT" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                        </mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                            [touchUi]="touchUi" [color]="color">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" [fxFlex]="noshrink" class="mr-12">
+                        <mat-label>{{'NAV.EndDate' | translate}} </mat-label>
+
+                        <input matInput [ngxMatDatetimePicker]="picker1" placeholder="Choose a date" [min]="minDate"
+                            [max]="maxDate" formControlName="EndDateGMT" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker1">
+                        </mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker1 [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                            [touchUi]="touchUi" [color]="color">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                    <button mat-raised-button style="width:150px;height: 40px;margin: auto;" type="button"
+                        class="button" [disabled]="!form.valid"
+                        (click)="updateDashboard()">{{'NAV.Generate' | translate}}</button>
+
+
+                </form>
+                    </div>
+            </div>
+
+            <!--  <div fxLayout="row">
+
+                <div class="selected-project">{{selectedProject.name}}</div>
+
+                <button mat-icon-button class="project-selector" [matMenuTriggerFor]="projectsMenu"
+                        aria-label="Select project">
+                    <mat-icon>more_horiz</mat-icon>
+                </button>
+
+                <mat-menu #projectsMenu="matMenu">
+                    <button mat-menu-item *ngFor="let project of projects" (click)="selectedProject = project">
+                        <span>{{project.name}}</span>
+                    </button>
+                </mat-menu>
+            </div>  -->
+        </div>
+        <!-- / HEADER -->
+        <div class="container">
+        <!-- CONTENT -->
+        <div class="content">
+
+            <!--             <mat-tab-group dynamicHeight>
+ -->
+            <!--                 <mat-tab label="Home">
+ -->
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                [@animateStagger]="{value:'50'}">
+
+
+
+                <!-- WIDGET 2 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-xs="50" fxFlex.gt-md="25">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">{{'NAV.InCirculation' | translate}}</div>
+
+                            <button mat-icon-button class="fuse-widget-flip-button" (click)="openBottomSheet(3)" aria-label="more">
+                                <mat-icon>drive_eta
+                                </mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="green-fg font-size-72 line-height-72">
+                                {{circulationCarCount}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500"> {{'NAV.car' | translate}}
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- / Front -->
+
+
+                </fuse-widget>
+                <!-- / WIDGET 2 -->
+
+                <!-- WIDGET 3 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-xs="50" fxFlex.gt-md="25">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">{{'NAV.InStop' | translate}} </div>
+
+                            <button mat-icon-button class="fuse-widget-flip-button" (click)="openBottomSheet(4)" aria-label="more">
+                                <mat-icon>drive_eta </mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="red-fg font-size-72 line-height-72">
+                                {{stopCarCount}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500">{{'NAV.car' | translate}}
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- / Front -->
+
+
+
+                </fuse-widget>
+                <!-- / WIDGET 3 -->
+                <!-- WIDGET 1 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-xs="50" fxFlex.gt-md="25">
+
+                    <!-- Front fuseWidgetToggle-->
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">{{'NAV.Documenttopay' | translate}}</div>
+
+                            <button mat-icon-button class="fuse-widget-flip-button" (click)="openBottomSheet(1)" aria-label="more">
+                                <mat-icon>library_books</mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="blue-grey-fg font-size-72 line-height-72">
+                                {{document}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500"> {{'NAV.Document' | translate}}
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- / Front -->
+
+                    <!-- Back -->
+                    <div class="fuse-widget-back p-16 pt-32 mat-elevation-z2">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                            aria-label="Flip widget">
+                            <mat-icon class="s-16">close</mat-icon>
+                        </button>
+
+                        <div class="scrollable">
+                            <mat-list>
+
+                                <mat-list-item *ngFor="let doc of docomentListReminder">
+
+                                    <mat-icon mat-list-icon>note</mat-icon>
+                                    <div mat-line>{{doc.Car}}</div>
+                                    <div mat-line> {{doc.DocumentTypeString}} </div>
+
+                                </mat-list-item>
+                            </mat-list>
+
+
+                        </div>
+                    </div>
+                    <!-- / Back -->
+
+                </fuse-widget>
+                <!-- / WIDGET 1 -->
+                <!-- WIDGET 4 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-xs="50" fxFlex.gt-md="25">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3"> {{'NAV.AchievedMaintenance' | translate}}</div>
+
+                            <button mat-icon-button class="fuse-widget-flip-button" (click)="openBottomSheet(2)" aria-label="more">
+                                <mat-icon>build
+                                </mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div class="ight-blue-fg font-size-72 line-height-72">
+                                {{maintenance}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500"> {{'NAV.Maintenance' | translate}}
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- / Front -->
+
+                    <!-- Back -->
+                    <div class="fuse-widget-back p-16 pt-32 mat-elevation-z2">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                            aria-label="Flip widget">
+                            <mat-icon class="s-16">close</mat-icon>
+                        </button>
+
+                        <div class="scrollable">
+                            <mat-list>
+
+                                <mat-list-item *ngFor="let acc of accidentListReminder">
+
+                                    <mat-icon mat-list-icon>note</mat-icon>
+                                    <div mat-line>{{acc.Car}}</div>
+                                    <div mat-line> {{acc.AccidentStatusEnumString}} </div>
+
+                                </mat-list-item>
+                            </mat-list>
+
+
+                        </div>
+                    </div>
+                    <!-- / Back -->
+
+                </fuse-widget>
+                <!-- / WIDGET 4 -->
+                <!-- WIDGET 6 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-sm="50">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">{{'NAV.Distribution' | translate}}</div>
+
+                        </div>
+
+                        <div class="h-400">
+                            <ngx-charts-pie-chart *fuseIfOnDom [scheme]="widget6.scheme" [results]="single"
+                                [legend]="widget6.showLegend" [explodeSlices]="widget6.explodeSlices"
+                                [labels]="widget6.labels" [doughnut]="widget6.doughnut" [gradient]="widget6.gradient"
+                                (select)="widget6.onSelect($event)">
+                            </ngx-charts-pie-chart>
+
+
+                        </div>
+
+                        <div class="py-8 mh-16 border-top" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                            <div class="py-8 border-right" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
+                                fxFlex.gt-sm="50">
+                                <span class="mat-display-1 mb-0">
+                                    {{connected}}
+                                </span>
+                                <span class="h4">{{'NAV.connected' | translate}}</span>
+                            </div>
+
+                            <div class="py-8" fxLayout="column" fxLayoutAlign="center center" fxFlex="100"
+                                fxFlex.gt-sm="50">
+                                <span class="mat-display-1 mb-0">
+                                    {{notconnected}}
+                                </span>
+                                <span class="h4">{{'NAV.disconnected' | translate}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+                <!-- / WIDGET 6 -->
+
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row"  fxFlex="100"  fxFlex.gt-sm="50"
+                    class="widget widget5">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 border-bottom" fxLayout="row wrap" fxLayoutAlign="space-between center">
+
+                            <div fxFlex class="py-16 h3">{{'NAV.Usagerate' | translate}}</div>
+
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                            <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+
+                                <canvas *ngIf="chartReady" baseChart class="chart" [datasets]="barChartData"
+                                    [labels]="labels" [colors]="lineChartColors" [options]="optionsUsage"
+                                    [chartType]="barChartType"></canvas>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+                <!-- WIDGET 5 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100"  fxFlex.gt-sm="50"
+                    class="widget widget5">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 border-bottom" fxLayout="row wrap" fxLayoutAlign="space-between center">
+
+                            <div fxFlex class="py-16 h3"> {{'NAV.Consommation' | translate}}</div>
+
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                            <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+
+                                <canvas *ngIf="chartReady" baseChart class="chart" [datasets]="datasets"
+                                    [labels]="labels" [colors]="lineChartColors" [options]="options"
+                                    [chartType]="'line'"></canvas>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+                <!-- / WIDGET 5 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100"  fxFlex.gt-sm="50"
+                    class="widget widget5">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 border-bottom" fxLayout="row wrap" fxLayoutAlign="space-between center">
+
+                            <div fxFlex class="py-16 h3">{{'NAV.Usagerateh' | translate}}</div>
+
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                            <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+
+                                <canvas *ngIf="chartReady" baseChart class="chart" [datasets]="hbarChartData"
+                                    [labels]="labels" [colors]="lineChartColors" [options]="options"
+                                    [chartType]="barChartType"></canvas>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+                <!-- WIDGET 7 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-sm="50">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">{{'NAV.SpeedMax' | translate}} </div>
+
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+
+                            <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+
+                                <canvas *ngIf="chartReady" baseChart class="chart" [datasets]="speedbarChartData"
+                                    [labels]="labels" [options]="options" [chartType]="barChartType"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+                <!-- / WIDGET 7 -->
+                <!-- WIDGET 7 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-sm="50">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">{{'NAV.Variation in fuel consumption' | translate}} </div>
+
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                            <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+
+                                <canvas *ngIf="chartReady" baseChart class="chart" [datasets]="FuelbarChartData"
+                                    [labels]="labels" [options]="optionsUsage" [chartType]="barChartType"></canvas>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+                <!-- WIDGET 7 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-sm="50">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">{{'NAV.Enginerate' | translate}} </div>
+
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                            <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+
+                                <canvas *ngIf="chartReady" baseChart class="chart" [datasets]="RPMbarChartData"
+                                    [labels]="labels" [options]="options" [chartType]="barChartType"  [colors]="lineChartColors"   ></canvas>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+                <!-- / WIDGET 7 -->
+                <!-- WIDGET 7 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column" fxFlex="100"
+                    fxFlex.gt-sm="50">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+                        <div class="px-16 py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h3">{{'NAV.DrivingQualityPerTrackingObj' | translate}} </div>
+
+                        </div>
+
+                        <div class="h-420 my-16" fxLayout="row" fxFlex="100" fxFlex.gt-sm="100">
+
+                            <canvas *ngIf="chartReady" baseChart class="chart" [datasets]="stopbarChartData"
+                                [colors]="lineChartColors" [labels]="labels" [options]="options"
+                                [chartType]="barChartType"></canvas>
+                        </div>
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+            </div>
+            <!-- / WIDGET GROUP -->
+
+
+        </div>
+        <!-- / CONTENT -->
+        </div>
+    </div>
+    <!-- / CENTER -->
+
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+    fullScreenBackdrop: 'true',
+   
+    primaryColour: '#e2f000', 
+    secondaryColour: '#e2f000', 
+    tertiaryColour: '#e2f000' }"></ngx-loading>
+    <!-- [template]="customLoadingTemplate"-->
+</div>

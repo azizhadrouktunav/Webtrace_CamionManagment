@@ -1,0 +1,226 @@
+<fuse-sidebar class="sidebar main-sidebar" name="file-manager-main-sidebar" position="left">
+    <!-- SIDEBAR HEADER -->
+    <div class="header p-24" fxLayout="column" fxLayoutAlign="space-between">
+
+        <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon secondary-text s-36 mr-16">folder</mat-icon>
+            <span class="logo-text h1">{{'NAV.FileManager' | translate}}</span>
+        </div>
+
+    </div>
+    <!-- / SIDEBAR HEADER -->
+
+    <!-- SIDEBAR CONTENT -->
+    <div class="content py-16" fusePerfectScrollbar>
+
+        <div class="nav material2">
+
+            <div class="nav-item" aria-label="inbox">
+                <a class="nav-link" matRipple>
+                    <mat-icon class="nav-link-icon">traffic</mat-icon>
+                    <span class="title">{{'NAV.Files' | translate}}</span>
+                </a>
+            </div>
+            <ul>
+                <li *ngFor="let file of files">
+                    <a [href]="file.url" download>{{file.name}}</a>
+                </li>
+            </ul>
+
+
+
+
+        </div>
+
+    </div>
+    <!-- / SIDEBAR CONTENT -->
+
+</fuse-sidebar>
+
+<div id="products" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- SIDEBAR -->
+
+    <!-- / SIDEBAR -->
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <!-- <mat-icon class="logo-icon s-32 mr-16">
+                    shopping_basket
+                </mat-icon> -->
+                <!-- APP TITLE -->
+                <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                                
+                    <mat-icon>traffic</mat-icon>
+                    <span class="h1">
+                        {{'NAV.ACCIDENT' | translate}}
+                    </span>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" (keyup)="applyfilter()" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- <div id="selectCar" class="select">
+                <mat-form-field>
+                    <mat-select [(ngModel)]="selectedOption" (ngModelChange)="updatetable()">
+                        <mat-option *ngFor="let trackingObject of trackingObjects; trackBy: trackByFn"
+                            value={{trackingObject.Key}}>{{trackingObject.FullName}}</mat-option>
+                    </mat-select>
+                    <mat-icon color="white">commute</mat-icon>(optionSelected)="selected($event.option)"
+                </mat-form-field>
+            </div> -->
+            <form [formGroup]="vehicules" id="selectCar" class="select"  fxLayout="row" style="margin-top: 85px; margin-right: 10px;"> 
+                <input
+                            matInput
+                            #typeInput
+                            type="text"
+                            formControlName="cars"
+                            class="autoCompleteInput"
+                            [matAutocomplete]="auto"/>
+                            <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" (optionSelected)="selected($event.option)" [displayWith]="displayFn">
+                                <mat-option *ngFor="let trackingObject of filteredOptions | async" [value]="trackingObject.Key" >
+                                    {{trackingObject.FullName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-icon style="font-size: xx-large;" color="white">commute</mat-icon>
+            </form>
+            <button mat-fab color="warn" class="add-button" (click)="openaccidentdetailDialog()"
+                aria-label="Add accidentdetail" [hidden]="disabled">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table  class="products-table" #table [dataSource]="dataSource" matSort
+                fusePerfectScrollbar>
+
+                <!--  Column -->
+                <ng-container matColumnDef="StatusString">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Status' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let policy" fxHide fxShow.gt-sm>
+                      <button mat-icon-button class="sidebar-toggle"
+                            [ngClass]="{'hidden':  policy.Attachment == null}"
+                            (click)="toggleSidebar('file-manager-main-sidebar',policy)">
+                            <mat-icon> vertical_align_bottom</mat-icon>
+                        </button> 
+                        <p >{{policy.AccidentStatusEnumString}}</p>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="AccidentTypeString">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.AccidentType' | translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let policy" fxHide fxShow.gt-sm>
+
+                        <p >{{policy.AccidentTypeEnumString}}</p>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="AccidentDateGMT" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.AccidentDateGMT' | translate}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let policy" fxHide fxShow.gt-sm>
+
+                        <p >{{policy.AccidentDateGMTString}}</p>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="AccidentLocationFullName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.AccidentLocationFullName' | translate}} 
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let policy" fxHide fxShow.gt-sm>
+
+                        <p >{{policy.AccidentLocationFullName}}</p>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="Dammage">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>{{'NAV.Dammage' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let policy" fxHide fxShow.gt-sm>
+
+                        <p >{{policy.Dammage}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- actions -->
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>
+
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let policy; let i=index;">
+                        <a><button mat-icon-button (click)="navigate(policy)">
+                                <div class="tot2">
+                                    <mat-icon aria-label="Delete">open_in_new</mat-icon><span
+                                        class="tottxt2">{{'NAV.Explorer' | translate}}</span>
+                                </div>
+                            </button></a>
+
+                        <button mat-icon-button (click)="editaccidentdetails(policy)">
+                            <div class="tooltip">
+                                <mat-icon>create</mat-icon><span class="tooltiptxt">{{'NAV.Edit' | translate}}</span>
+                            </div>
+                        </button>
+
+                        <a><button mat-icon-button (click)="navigatemaintenaces(policy)">
+                                <div class="tot2">
+                                    <mat-icon aria-label="Delete">build</mat-icon><span
+                                        class="tottxt2">{{'NAV.Entretiens' | translate}}</span>
+                                </div>
+                            </button></a>
+
+                        <button mat-icon-button color="warn" (click)="deleteItem(policy)" [disabled]="isDisabledDelete">
+                            <div class="tot">
+                                <mat-icon aria-label="Delete">delete</mat-icon><span
+                                    class="tottxt">{{'NAV.Remove' | translate}}</span>
+                            </div>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="tableColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let product; columns: tableColumns;" class="product" matRipple>
+                </mat-row>
+
+            </mat-table>
+            <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+                <h4>No results</h4>
+            </div>
+
+
+            <mat-toolbar style="background-color: white;width:calc(100% - 65px);" [hidden]="disabled">
+
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                    <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                    </mat-icon>
+                    <img (click)="exportExcel()" src="assets/icons/excel.png" class="excel"
+                        title="Export as excel file">
+                </div>
+                <span class="spacer"></span>
+                <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="5"
+                    [pageSizeOptions]="[1, 5, 10]">
+                </mat-paginator>
+
+            </mat-toolbar>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -1,0 +1,396 @@
+
+        <div id="report" class="page-layout simple right-sidebar inner-scroll">
+
+    
+
+            <!-- CENTER -->
+            <div class="center" fxFlex>
+        
+                <!-- HEADER -->
+                <div class="header accent p-24" >
+        
+                   
+                    <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>settings</mat-icon>
+                        <span class="h1">
+                            {{'NAV.Configurablereport' | translate}} 
+
+                        </span>
+                    </div>
+                   
+                    
+                        
+        
+                
+        
+                   
+        
+                </div>
+    <!-- CENTER -->
+    <div class="container">
+
+
+            <!-- CONTENT CARD -->
+            <div class="widget-group" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom [@animateStagger]="{value:'50'}">
+
+                <!-- WIDGET 11 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="row" fxFlex="100">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+
+
+                        <form novalidate [formGroup]="form" class="page-layout simple fullwidth" fxLayout="column"
+                            style="overflow: scroll; height:100%">
+
+                            <div fxLayout="column" fxLayout.gt-sm="row">
+
+
+                                <mat-form-field floatLabel="always" class="mainSelect mr-12" [fxFlex]="noshrink"
+                                    appearance="outline">
+                                    <mat-label>  {{'NAV.ReportBy' | translate}} </mat-label>
+                                    <mat-select formControlName="type" required>
+                                        <mat-option (click)="onChangeType('1')" [value]="1">
+                                            {{'NAV.TrackingObject' | translate}}
+                                        </mat-option>
+                                        <mat-option (click)="onChangeType('2')" [value]="2">
+                                            {{'NAV.Driver' | translate}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+
+                                <!-- <mat-form-field appearance="outline" [fxFlex]="noshrink" class="mr-12">
+                                    <mat-label> {{nametype | translate}}</mat-label>
+
+                                    <input type="text" matInput [matAutocomplete]="auto" formControlName="Car" required>
+                                </mat-form-field>
+
+                                <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" [displayWith]="displayCar">
+                                    <app-select-check-all [model]="form.get('Car')" [values]="trackingObjects">
+                                    </app-select-check-all>
+                                    <mat-option *ngFor="let obj of filteredOptions | async" [value]="obj">
+                                        <div (click)="optionClicked($event, obj)">
+                                            <mat-checkbox [checked]="obj.selected" (change)="toggleSelection(obj)"
+                                                (click)="$event.stopPropagation()">
+                                                {{obj.value}}
+                                            </mat-checkbox>
+                                        </div>
+                                    </mat-option>
+                                </mat-autocomplete> -->
+                                <mat-form-field appearance="outline" class="pr-4" fxFlex="50" (click)="OnInputSelect()">
+                                    <mat-label>{{NameObject}}</mat-label>
+                                    <!-- {{'NAV.TrackingObject' | translate}}-->
+                                    <input type="text" aria-label="Select Vehicles" matInput [matAutocomplete]="autoGroup" formControlName="Car" (focus)="OnInputSelect()" (blur)="OnInputDisSelect()">
+                                  
+                                      <mat-autocomplete [panelWidth]="'auto'" #autoGroup="matAutocomplete" [displayWith]="displayVehicle">
+                                        <mat-optgroup *ngFor="let group of CarGroupOptions | async" >
+                                          <div>
+                                            <mat-checkbox [checked]="group.selected" (change)="toggleParent($event, group)" 
+                                              (click)="$event.stopPropagation()" >
+                                                {{group.department}}
+                                            </mat-checkbox>
+                                            <button mat-button (click)="expandDocumentTypes(group)">
+                                              <mat-icon>keyboard_arrow_down</mat-icon>
+                                            </button>
+                                            </div>  
+                                            <mat-option *ngFor="let name of group.car" [value]="name"
+                                               [ngClass]="isExpandCategory[group.department] ? 'list-show' : 'list-hide'">
+                                               <mat-checkbox [checked]="group.checked ? true : name.checked" (change)="toggleSelection2($event, name, group)" 
+                                        (click)="$event.stopPropagation()">
+                                          {{name.value}}
+                                      </mat-checkbox>
+                                            </mat-option>
+                                      </mat-optgroup>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+                                <mat-form-field appearance="outline" [fxFlex]="noshrink" class="mr-12">
+                                    <mat-label>{{'NAV.StartDate' | translate}} </mat-label>
+
+                                    <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date"
+                                        [min]="minDate" [max]="maxDate" formControlName="StartDateGMT" required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker">
+                                    </mat-datepicker-toggle>
+                                    <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners"
+                                        [showSeconds]="showSeconds" [stepHour]="stepHour" [stepMinute]="stepMinute"
+                                        [stepSecond]="stepSecond" [touchUi]="touchUi" [color]="color">
+                                    </ngx-mat-datetime-picker>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" [fxFlex]="noshrink" class="mr-12">
+                                    <mat-label>{{'NAV.EndDate' | translate}} </mat-label>
+
+                                    <input matInput [ngxMatDatetimePicker]="picker1" placeholder="Choose a date"
+                                        [min]="minDate" [max]="maxDate" formControlName="EndDateGMT" required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker1">
+                                    </mat-datepicker-toggle>
+                                    <ngx-mat-datetime-picker #picker1 [showSpinners]="showSpinners"
+                                        [showSeconds]="showSeconds" [stepHour]="stepHour" [stepMinute]="stepMinute"
+                                        [stepSecond]="stepSecond" [touchUi]="touchUi" [color]="color">
+                                    </ngx-mat-datetime-picker>
+                                </mat-form-field>
+
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+
+                                <div class="CustomSelect purple">
+                                    <div class="ChartTypeSelect">
+                                        <mat-select [style.width.px]=18 [(value)]="selected1" [ngClass]="selected1"
+                                            class="img" disableOptionCentering panelClass="ChartTypeInput"
+                                            formControlName="chart1">
+                                            <mat-option [value]="'line'">
+                                                <div class="img line" title="Courbe"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'chartMark'">
+                                                <div class="img chartMark" title="Courbe avec marque"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'column'">
+                                                <div class="img column" title="Barres"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'area'">
+                                                <div class="img area" title="Graphique en aires"></div>
+                                            </mat-option>
+                                        </mat-select>
+                                    </div>
+                                    <div class="mainSelect">
+                                        <mat-select formControlName="input1" id="input1">
+                                            <mat-option value="-1">Aucun</mat-option>
+                                            <mat-option value="Distance">{{'NAV.Distance' | translate}}</mat-option>
+                                            <mat-option value="StopNumber">{{'NAV.StopNumber' | translate}}
+                                            </mat-option>
+                                            <mat-option value="OverSpeedNumber">{{'NAV.OverSpeedNumber' | translate}}
+                                            </mat-option>
+                                            <mat-option value="SpeedMax">{{'NAV.SpeedMax' | translate}}</mat-option>
+                                            <mat-option value="SpeedAvg">{{'NAV.SpeedAvg' | translate}}</mat-option>
+                                            <mat-option value="MinutesOfOverspeed">
+                                                {{'NAV.MinutesOfOverspeed' | translate}}</mat-option>
+                                            <mat-option value="RealSumFuelConsumption">
+                                                {{'NAV.RealSumFuelConsumption' | translate}}
+                                            </mat-option>
+                                            <mat-option value="RealAvgFuelConsumption">
+                                                {{'NAV.RealAvgFuelConsumption' | translate}}
+                                            </mat-option>
+                                            <mat-option value="CurrentScore">{{'NAV.CurrentScore' | translate}}
+                                            </mat-option>
+
+                                        </mat-select>
+                                    </div>
+                                </div>
+                                <div class="CustomSelect yellow">
+                                    <div class="ChartTypeSelect">
+                                        <mat-select [style.width.px]=18 [(value)]="selected2" [ngClass]="selected2"
+                                            class="img" disableOptionCentering panelClass="ChartTypeInput"
+                                            formControlName="chart2">
+                                            <mat-option [value]="'line'">
+                                                <div class="img line" title="Courbe"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'chartMark'">
+                                                <div class="img chartMark" title="Courbe avec marque"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'column'">
+                                                <div class="img column" title="Barres"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'area'">
+                                                <div class="img area" title="Graphique en aires"></div>
+                                            </mat-option>
+                                        </mat-select>
+                                    </div>
+                                    <div class="mainSelect">
+                                        <mat-select formControlName="input2">
+                                            <mat-option value="-1">Aucun</mat-option>
+                                            <mat-option value="Distance">{{'NAV.Distance' | translate}}</mat-option>
+                                            <mat-option value="StopNumber">{{'NAV.StopNumber' | translate}}
+                                            </mat-option>
+                                            <mat-option value="OverSpeedNumber">{{'NAV.OverSpeedNumber' | translate}}
+                                            </mat-option>
+                                            <mat-option value="SpeedMax">{{'NAV.SpeedMax' | translate}}</mat-option>
+                                            <mat-option value="SpeedAvg">{{'NAV.SpeedAvg' | translate}}</mat-option>
+                                            <mat-option value="MinutesOfOverspeed">
+                                                {{'NAV.MinutesOfOverspeed' | translate}}</mat-option>
+                                            <mat-option value="RealSumFuelConsumption">
+                                                {{'NAV.RealSumFuelConsumption' | translate}}
+                                            </mat-option>
+                                            <mat-option value="RealAvgFuelConsumption">
+                                                {{'NAV.RealAvgFuelConsumption' | translate}}
+                                            </mat-option>
+                                            <mat-option value="CurrentScore">{{'NAV.CurrentScore' | translate}}
+                                            </mat-option>
+
+
+                                        </mat-select>
+                                    </div>
+                                </div>
+                                <div class="CustomSelect blue">
+                                    <div class="ChartTypeSelect">
+                                        <mat-select [style.width.px]=18 [(value)]="selected3" [ngClass]="selected3"
+                                            class="img" disableOptionCentering panelClass="ChartTypeInput"
+                                            formControlName="chart3">
+                                            <mat-option [value]="'line'">
+                                                <div class="img line" title="Courbe"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'chartMark'">
+                                                <div class="img chartMark" title="Courbe avec marque"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'column'">
+                                                <div class="img column" title="Barres"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'area'">
+                                                <div class="img area" title="Graphique en aires"></div>
+                                            </mat-option>
+                                        </mat-select>
+                                    </div>
+                                    <div class="mainSelect">
+                                        <mat-select formControlName="input3">
+                                            <mat-option value="-1">Aucun</mat-option>
+                                            <mat-option value="Distance">{{'NAV.Distance' | translate}}</mat-option>
+                                            <mat-option value="StopNumber">{{'NAV.StopNumber' | translate}}
+                                            </mat-option>
+                                            <mat-option value="OverSpeedNumber">{{'NAV.OverSpeedNumber' | translate}}
+                                            </mat-option>
+                                            <mat-option value="SpeedMax">{{'NAV.SpeedMax' | translate}}</mat-option>
+                                            <mat-option value="SpeedAvg">{{'NAV.SpeedAvg' | translate}}</mat-option>
+                                            <mat-option value="MinutesOfOverspeed">
+                                                {{'NAV.MinutesOfOverspeed' | translate}}</mat-option>
+                                            <mat-option value="RealSumFuelConsumption">
+                                                {{'NAV.RealSumFuelConsumption' | translate}}
+                                            </mat-option>
+                                            <mat-option value="RealAvgFuelConsumption">
+                                                {{'NAV.RealAvgFuelConsumption' | translate}}
+                                            </mat-option>
+                                            <mat-option value="CurrentScore">{{'NAV.CurrentScore' | translate}}
+                                            </mat-option>
+
+
+                                        </mat-select>
+                                    </div>
+                                </div>
+                                <div class="CustomSelect green">
+                                    <div class="ChartTypeSelect">
+                                        <mat-select [style.width.px]=18 [(value)]="selected4" [ngClass]="selected4"
+                                            class="img" disableOptionCentering panelClass="ChartTypeInput"
+                                            formControlName="chart4">
+                                            <mat-option [value]="'line'">
+                                                <div class="img line" title="Courbe"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'chartMark'">
+                                                <div class="img chartMark" title="Courbe avec marque"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'column'">
+                                                <div class="img column" title="Barres"></div>
+                                            </mat-option>
+                                            <mat-option [value]="'area'">
+                                                <div class="img area" title="Graphique en aires"></div>
+                                            </mat-option>
+                                        </mat-select>
+                                    </div>
+                                    <div class="mainSelect">
+                                        <mat-select formControlName="input4">
+                                            <mat-option value="-1">Aucun</mat-option>
+                                            <mat-option value="Distance">{{'NAV.Distance' | translate}}</mat-option>
+                                            <mat-option value="StopNumber">{{'NAV.StopNumber' | translate}}
+                                            </mat-option>
+                                            <mat-option value="OverSpeedNumber">{{'NAV.OverSpeedNumber' | translate}}
+                                            </mat-option>
+                                            <mat-option value="SpeedMax">{{'NAV.SpeedMax' | translate}}</mat-option>
+                                            <mat-option value="SpeedAvg">{{'NAV.SpeedAvg' | translate}}</mat-option>
+                                            <mat-option value="MinutesOfOverspeed">
+                                                {{'NAV.MinutesOfOverspeed' | translate}}</mat-option>
+                                            <mat-option value="RealSumFuelConsumption">
+                                                {{'NAV.RealSumFuelConsumption' | translate}}
+                                            </mat-option>
+                                            <mat-option value="RealAvgFuelConsumption">
+                                                {{'NAV.RealAvgFuelConsumption' | translate}}
+                                            </mat-option>
+                                            <mat-option value="CurrentScore">{{'NAV.CurrentScore' | translate}}
+                                            </mat-option>
+
+
+                                        </mat-select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div style="width: 100%; text-align: center;padding: 20px;">
+                                <button mat-raised-button color="accent" style="width:100px;height: 20;margin: auto;"
+                                    type="button" class="button" [disabled]="!form.valid"
+                                    (click)="GetParam()">{{'NAV.Generate' | translate}}
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+                <!-- / WIDGET 11 -->
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100"
+                    class="widget widget5">
+
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+
+
+                       <!--  <div class="p-24 mb-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h2">Rapport par véhicule</div>
+                        </div> -->
+                        <div fxLayout="row wrap" fxLayoutAlign="start start">
+                            <mat-progress-bar mode="determinate" [value]="progressbarValue" ></mat-progress-bar>
+
+                            <div id="chartdiv" style="width: 100%; height: 400px">
+                                <apx-chart *ngIf="chartReady" [colors]="chartOptions.colors" [series]="series"
+                                    [chart]="chartOptions.chart" [yaxis]="yaxis" [xaxis]="chartOptions.xaxis"
+                                    [labels]="labels" [stroke]="chartOptions.stroke"
+                                    [plotOptions]="chartOptions.plotOptions" [markers]="markers"
+                                    [fill]="chartOptions.fill" [tooltip]="chartOptions.tooltip"></apx-chart>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- / Front -->
+
+                </fuse-widget>
+
+                <!-- <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="row" fxFlex="100"
+                    class="widget widget5">
+
+                    Front 
+                    <div class="fuse-widget-front">
+
+
+                        <div class="p-24 mb-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="h2">Rapport par date</div>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+
+                            <div id="chartdiv2" style="width: 100%; height: 400px">
+                                <apx-chart *ngIf="chartReady" [colors]="chartOptions2.colors" [series]="chartOptions2.series2"
+                                    [chart]="chartOptions2.chart" [yaxis]="chartOptions2.yaxis"
+                                    [xaxis]="chartOptions2.xaxis" [labels]="chartOptions2.labels"
+                                    [stroke]="chartOptions2.stroke" [plotOptions]="chartOptions2.plotOptions"
+                                    [markers]="chartOptions2.markers" [fill]="chartOptions2.fill"
+                                    [tooltip]="chartOptions2.tooltip"></apx-chart>
+                            </div>
+
+                        </div>
+                    </div>
+                     Front 
+
+                </fuse-widget> -->
+            </div>
+
+        
+    
+            <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px',
+            fullScreenBackdrop: 'true',
+           
+            primaryColour: '#e2f000', 
+            secondaryColour: '#e2f000', 
+            tertiaryColour: '#e2f000' }" ></ngx-loading>
+
+</div>

@@ -1,0 +1,170 @@
+<div id="suppliers" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+             <!-- APP TITLE -->
+             <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>shopping_cart</mat-icon>
+                <span class="h1">
+                    {{'PARC.Supplier' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+             <!-- SEARCH -->
+             <div class="search-wrapper mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" required>
+                    <label for="searchBtn">
+                        <mat-icon class="primary-500-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-fab color="warn" class="add-button" (click)="add()">
+                <mat-icon>add</mat-icon>
+          </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <mat-table class="suppliers-table"
+                       #table [dataSource]="dataSource"
+                       matSort
+                       [@animateStagger]="{value:'50'}"
+                       fusePerfectScrollbar
+                       style="height: 100%;">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="supplier">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PARC.Supplier' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                       <p class="status text-truncate h6 p-4"  *ngIf="supplier.IsConstructer === true" [ngClass]="{'orange-500': supplier.IsConstructer === true, 'purple-500': supplier.IsConstructer === false}">{{'PARC.Constructor' | translate}}</p>
+                       <p class="status text-truncate h6 p-4" *ngIf="supplier.IsConstructer === false" [ngClass]="{'orange-500': supplier.IsConstructer === true, 'purple-500': supplier.IsConstructer === false}">{{'PARC.Supplier' | translate}}</p>
+                    </mat-cell>
+                </ng-container>
+              
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Name' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                        <p class="text-truncate">{{supplier.Name}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="description">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PARC.Description' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                        <p class="text-truncate">{{supplier.Description}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="address">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Address' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                        <p class="text-truncate">{{supplier.Address}}</p>
+                    </mat-cell>
+                </ng-container>
+                 <!-- Name Column -->
+                 <ng-container matColumnDef="phone">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'Phone' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                        <p class="text-truncate">{{supplier.Phone}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'email' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                        <p class="text-truncate">{{supplier.Mail}}</p>
+                    </mat-cell>
+                </ng-container>
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="responsible_name1">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'responsible_1' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                        <p class="text-truncate">{{supplier.Responsible1Name}}</p>
+                    </mat-cell>
+                </ng-container>
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="responsible_name2">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'responsible_2' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                        <p class="text-truncate">{{supplier.Responsible2Name}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="webSite">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'website' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                        <p class="text-truncate">{{supplier.WebSite}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="date_entered">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{'EntryDate' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier">
+                        <p class="text-truncate">{{supplier.SaveDate | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Price Column -->
+                <ng-container matColumnDef="maximum_budget">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{'maximum_budget' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let supplier" fxHide fxShow.gt-xs>
+                        <p class="price text-truncate">
+                            {{supplier.MaxBudget }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                 <!-- other columns -->
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm></mat-header-cell>
+                    <mat-cell *matCellDef="let supplier" fxHide fxShow.gt-sm>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <button mat-button-toggle mat-icon-button color="accent" (click) = "edit('edit',supplier)"><mat-icon>edit</mat-icon></button>
+                        <button mat-button-toggle mat-icon-button color="warn"(click)="delete(supplier)" [disabled]="isDisabledDelete" ><mat-icon>delete</mat-icon></button>
+                    </div>
+                    </mat-cell>
+                </ng-container>
+             <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let supplier; columns: displayedColumns;"
+                         class="supplier"
+                         matRipple
+                       >
+                </mat-row>
+
+            </mat-table>
+
+            <mat-toolbar style="background-color: white;width:calc(100% - 65px);">
+
+                <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                    <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                    </mat-icon>
+                    <img  src="assets/icons/excel.png" class="excel" title="Export as excel file" (click)="downloadExcel()">
+                </div>
+                <span class="spacer"></span>
+                <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                    [pageSizeOptions]="[1, 5, 10]">
+                </mat-paginator>
+
+            </mat-toolbar>
+            
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

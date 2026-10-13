@@ -1,0 +1,425 @@
+
+  @import "src/@fuse/scss/fuse";
+
+
+
+  #products {
+
+    .example-detail-row{
+      display: grid;
+      td{
+        background: white;
+        z-index: 50;
+      }
+    }
+    .example-expanded-row + .example-detail-row{
+        td{
+          height: 80px;
+        }
+      
+    }
+  }
+
+  .products-table {
+      flex: 1 1 auto;
+      border-bottom: 1px solid rgba(0, 0, 0, .12);
+      overflow: scroll;
+
+
+      .mat-header-row {
+        
+          top: 0px;
+          position: sticky;
+          z-index: 100;
+          min-height: 64px;
+      }
+
+      .product {
+          position: relative;
+          cursor: pointer;
+          height: 84px;
+      }
+
+      .mat-cell {
+          min-width: 0;
+          display: flex;
+          align-items: center;
+      }
+
+      .mat-column-id {
+          flex: 0 1 84px;
+      }
+
+      .mat-column-image {
+          flex: 0 1 84px;
+
+          .product-image {
+              width: 52px;
+              height: 52px;
+              border: 1px solid rgba(0, 0, 0, .12);
+          }
+      }
+
+      .mat-column-category {
+          flex: 0 1 240px;
+      }
+
+      .mat-column-price {
+          flex: 0 1 160px;
+      }
+
+      .mat-column-quantity {
+          flex: 0 1 160px;
+      }
+
+      .mat-column-active {
+          flex: 0 1 80px;
+      }
+
+      .quantity-indicator {
+          display: inline-block;
+          vertical-align: middle;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          margin-right: 8px;
+
+          & + span {
+              display: inline-block;
+              vertical-align: middle;
+          }
+      }
+
+      .active-icon {
+          border-radius: 50%;
+      }
+  }
+
+  .tooltip{
+    position: relative;
+    display: inline-block;
+    
+  }
+  .tooltip .tooltiptxt{
+    visibility: hidden; 
+    width: 44px;
+    background-color: #1d1b1b;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+  }
+  .tooltip:hover .tooltiptxt{
+    visibility: visible;
+  }
+  .tot{
+    position: relative;
+    display: inline-block;
+    
+  }
+ .tottxt{
+    visibility: hidden;
+    width: 52px;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+  }
+ .tot:hover .tottxt{
+    visibility: visible;
+  }
+  .row_effect:hover{
+    background-color: #c8c8c8;
+  }
+  .Scolling_wigh{
+    width: 200%;
+    overflow: scroll;
+  }
+  .check_box_header{
+    margin-left: 5px;
+  margin-right: 0;
+  margin-bottom: 3px;
+  }
+  .example-spacer {
+      flex: 1 1 auto;
+    }
+
+    .active-icon {
+      border-radius: 50%;
+  }
+  .tooltip{
+    position: relative;
+    display: inline-block;
+    
+  }
+  .tooltip .tooltiptxt{
+    visibility: hidden; 
+    width: 44px;
+    background-color: #1d1b1b;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+  }
+  .tooltip:hover .tooltiptxt{
+    visibility: visible;
+  }
+  .tot{
+    position: relative;
+    display: inline-block;
+    
+  }
+ .tottxt{
+    visibility: hidden;
+    width: 74px;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+  }
+  .tot2{
+    position: relative;
+    display: inline-block;
+    
+  }
+ .tottxt2{
+    visibility: hidden;
+    width: 74px;
+    background-color: #039be5;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+  }
+ .tot:hover .tottxt{
+    visibility: visible;
+  }
+  .tot2:hover .tottxt2{
+    visibility: visible;
+  }
+  .row_effect:hover{
+    background-color: #c8c8c8;
+  }
+
+  .mat-toolbar.mat-white {
+    background:white;
+    margin-top: 5px;
+    
+  }
+
+  .make-gold {
+    background-color: #ffe5e5
+    //#AFff5f49
+}
+
+.hidden {
+  display: none !important;
+}
+[hidden] {
+  display: none !important;
+}
+mat-page {
+ 
+  margin-top: 100px;
+}
+
+        .sample-button-row button,
+        .sample-button-row a {
+          margin-right: 30px;
+        }
+        .group {
+          margin-bottom: 20px;
+          font-size: 50px;
+        }
+        .group {
+          margin-bottom: 20px;
+          font-size: 50px;
+        }
+        .sample-button-row {
+          margin-top: 20px;
+        }
+        .full-width-table {
+          width: 100%;
+        }
+        
+        .add-document-button {
+          position: absolute;
+          top: 100px;
+          left: 10px;
+         
+         
+        }
+               
+        
+              .example-spacer {
+                flex: 1 1 auto;
+              }
+        
+              .active-icon {
+                border-radius: 50%;
+            }
+            .tooltip{
+              position: relative;
+              display: inline-block;
+              
+            }
+            .tooltip .tooltiptxt{
+              visibility: hidden; 
+              width: 44px;
+              background-color: #1d1b1b;
+              color: white;
+              text-align: center;
+              border-radius: 6px;
+              padding: 5px 0;
+              position: absolute;
+              z-index: 1;
+              bottom: -1%;
+              left: -24%;
+              margin-left: -60x;
+            }
+            .tooltip:hover .tooltiptxt{
+              visibility: visible;
+            }
+            .tot{
+              position: relative;
+              display: inline-block;
+              
+            }
+           .tottxt{
+              visibility: hidden;
+              width: 74px;
+              background-color: #f44336;
+              color: white;
+              text-align: center;
+              border-radius: 6px;
+              padding: 5px 0;
+              position: absolute;
+              z-index: 1;
+              bottom: 12%;
+              left: -12%;
+              margin-left: -60x;
+            }
+            .tot2{
+              position: relative;
+              display: inline-block;
+              
+            }
+           .tottxt2{
+              visibility: hidden;
+              width: 74px;
+              background-color: #039be5;
+              color: white;
+              text-align: center;
+              border-radius: 6px;
+              padding: 5px 0;
+              position: absolute;
+              z-index: 1;
+              bottom: 12%;
+              left: -12%;
+              margin-left: -60x;
+            }
+           .tot:hover .tottxt{
+              visibility: visible;
+            }
+            .tot2:hover .tottxt2{
+              visibility: visible;
+            }
+            .row_effect:hover{
+              background-color: #c8c8c8;
+            }
+        
+            .mat-toolbar.mat-white {
+              background:white;
+              margin-top: 5px;
+        
+            }
+        
+            .make-gold {
+              background-color: #ffe5e5
+              //#AFff5f49
+          }
+        
+          .hidden {
+            display: none !important;
+          }
+          [hidden] {
+            display: none !important;
+          }
+          mat-page {
+           
+            margin-top: 100px;
+          }
+        
+          table {
+            width: 100%;
+             flex: 1 1 auto;
+      border-bottom: 1px solid rgba(0, 0, 0, .12);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+          }
+          
+          tr.example-detail-row {
+            height: 0;
+          }
+          
+          tr.example-element-row:not(.example-expanded-row):hover {
+            background: whitesmoke;
+          }
+          
+          tr.example-element-row:not(.example-expanded-row):active {
+            background: #efefef;
+          }
+          
+          .example-element-row td {
+            border-bottom-width: 0;
+          }
+          
+          .example-element-detail {
+            overflow: hidden;
+            display: flex;
+          }
+          .example-element-row {
+            height: 80px !important;
+          }
+         
+          
+          .example-element-description {
+            padding: 16px;
+          }
+          
+          .example-element-description-attribution {
+            
+            font-weight: bold;
+          }
+
+mat-row {
+  cursor: pointer;
+} 
+

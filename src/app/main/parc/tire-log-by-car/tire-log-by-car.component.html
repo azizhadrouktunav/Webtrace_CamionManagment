@@ -1,0 +1,135 @@
+<div id="product" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/parc/tire-management'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <img src="assets/icons/flags/tireLog.png" width="70" height="30">
+
+                <span class="logo-text h1">
+                    {{'PARC.ShowJournalByCar' | translate }} 
+                   
+                </span>
+
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Filtrer les données" [(ngModel)]="searchkey" required>
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+           
+
+         <!--   <button mat-fab
+                    color="warn"
+                    class="add-button"
+                    (click)="openAddTireDialog()"
+                    aria-label="Add document">
+                <mat-icon>add</mat-icon>
+            </button>-->
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+
+                <mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort>
+                    <ng-container matColumnDef="OperationDateLocal">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.OperationDateLocal | date: 'dd/MM/yyyy'}}</mat-cell>
+                        <mat-footer-cell *matFooterCellDef> <b>Total</b>  </mat-footer-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="OperationTypeName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.OperationTypeName| translate}}</mat-cell>
+                        <mat-footer-cell *matFooterCellDef>   </mat-footer-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="OperationCost">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'PARC.Cost' | translate}}</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.OperationCost}}</mat-cell>
+                        <mat-footer-cell *matFooterCellDef> <b>{{getTotalCost() | currency:"TND":"symbol"}} </b></mat-footer-cell>
+
+                    </ng-container>
+                    <ng-container matColumnDef="OperationMileage">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>OperationMileage </mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.OperationMileage}}</mat-cell>
+                        <mat-footer-cell *matFooterCellDef>    </mat-footer-cell>
+
+                    </ng-container>
+                  
+                    <!-- actions -->
+                   <!-- <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef>
+
+                        </mat-header-cell>
+
+                        <mat-cell *matCellDef="let row; let i=index;">
+
+
+                            <button mat-icon-button (click)="startEdit(row)">
+                                <div class="tooltip">
+                                    <mat-icon>create</mat-icon><span class="tooltiptxt">Éditer</span>
+                                </div>
+                            </button>
+
+                            <button mat-icon-button color="warn">
+                                <div class="tot">
+                                    <mat-icon aria-label="Delete">delete</mat-icon><span class="tottxt">Supprimer</span>
+                                </div>
+                            </button>
+                        </mat-cell>
+                        <mat-footer-cell *matFooterCellDef>  </mat-footer-cell>
+                    </ng-container>
+                    -->
+
+
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="row_effect"></mat-row>
+                    <mat-row *matFooterRowDef="displayedColumns; sticky: true"></mat-row>
+                </mat-table>
+                
+                <mat-toolbar style="background-color: white;width:calc(100% - 65px);" >
+
+                    <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                        <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                        </mat-icon>
+                        <img (click)="exporter.exportTable('xlsx', {fileName:'Document Log'})" src="assets/icons/excel.png" class="excel" title="Export as excel file">
+                    </div>
+                    <span class="spacer"></span>
+                    <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="5"
+                        [pageSizeOptions]="[1, 5, 10]">
+                    </mat-paginator>
+    
+                </mat-toolbar>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
+

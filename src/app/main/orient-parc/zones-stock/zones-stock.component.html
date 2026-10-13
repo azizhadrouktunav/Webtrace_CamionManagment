@@ -1,0 +1,43 @@
+<h2 class="orient-section-title">Zones de stock</h2>
+
+<mat-card class="orient-table-card">
+  <mat-card-content>
+    <table mat-table [dataSource]="items" class="orient-table">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nom</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef>Actif</th>
+        <td mat-cell *matCellDef="let row">
+          <span [class]="chipClass(row.active ? 'ok' : 'neutral')">
+            {{ row.active ? 'Actif' : 'Inactif' }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button type="button" (click)="view(row)" matTooltip="Visualiser" aria-label="Visualiser">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columns"
+        [class.orient-table-row--selected]="selected && selected.id === row.id"
+        (click)="view(row)"
+      ></tr>
+    </table>
+    <p class="orient-empty" *ngIf="!items.length">Aucune zone de stock.</p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="orient-form-card" *ngIf="selected">
+  <mat-card-title>{{ selected.name }} · {{ selected.id }}</mat-card-title>
+  <mat-card-content>
+    <app-orient-geo-map [coords]="mapCoords" mode="polygon" [readOnly]="true"></app-orient-geo-map>
+  </mat-card-content>
+</mat-card>

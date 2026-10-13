@@ -1,0 +1,347 @@
+fuse-sidebar.unfolded+.container .NormalContent .DragingLimits {
+    top: 65px;
+    left: 280px;
+
+    .Window {
+        max-width: calc(50% - 280px) !important;
+    }
+}
+
+// fuse-sidebar.ng-star-inserted+.container .DragingLimits {
+//     top: 65px;
+//     left: 0;
+//     .Window{
+//         min-width: 100vw;
+//     }
+// }
+
+.dialog-content-wrapper {
+    height: 80vh;
+    //min-width: 30vw;
+    max-height: 80vh;
+    overflow: hidden;
+
+    .mat-dialog-content {
+        overflow: scroll;
+        height: calc(100% - 130px);
+        max-height: 100% !important;
+    }
+
+}
+
+#outletContainer {
+    pointer-events: none;
+}
+
+.MainContainer {
+    height: calc(100% - 30px);
+    max-height: 100%;
+
+    .header {
+
+        .WindowTitle {
+
+            mat-icon {
+                font-size: 45px;
+                width: 45px;
+                height: 45px;
+                margin: 0px 25px;
+            }
+
+            span.h1 {
+                border-bottom: solid 2px;
+            }
+        }
+
+        .search-wrapper {
+            border-radius: 28px;
+            overflow: hidden;
+            direction: rtl;
+            @include mat-elevation(1);
+            position: absolute;
+            right: 30px;
+
+            mat-icon {
+                cursor: pointer;
+                vertical-align: middle;
+                margin: 0px -4px;
+            }
+
+            .search {
+                transition: width .65s;
+                height: 48px;
+                line-height: 48px;
+                padding: 0 18px;
+                background-color: white;
+
+                input:focus, input:valid {
+
+                    width: 450px;
+                    padding: 0 16px;
+                }
+
+                input {
+                    width: 0;
+                    transition: width .65s;
+                    direction: ltr;
+                    width: 0;
+                    height: 48px;
+                    min-height: 48px;
+                    max-height: 48px;
+                    padding: 0;
+                    border: none;
+                    outline: none;
+                }
+            }
+        }
+
+        div.select {
+            mat-form-field {
+
+                width: 300px;
+                position: absolute;
+                top: 80px;
+                right: 40px;
+
+                .mat-form-field-wrapper {
+                    width: 300px;
+                }
+            }
+
+            .mat-select-value {
+                direction: rtl;
+            }
+
+        }
+
+        .add-button {
+            position: absolute;
+            top: 100px;
+            left: 10px;
+            z-index: 200;
+        }
+
+    }
+
+    >.center {
+        height: 100%;
+
+        >.content-card {
+            height: 100%;
+
+            mat-table,
+            .mat-table {
+                max-height: calc(100% - 70px);
+                height: 100%;
+            }
+
+            .mat-tab-body-wrapper {
+                height: 100%;
+            }
+
+            mat-header-cell,
+            mat-cell {
+                min-width: 120px;
+            }
+
+            mat-heaer-cell {
+                background: rgb(58, 161, 243);
+                color: white;
+            }
+
+            mat-header-cell,
+            mat-cell {
+                &.Date-Cell {
+                    min-width: 180px;
+                }
+            }
+
+            mat-toolbar {
+                z-index: 10;
+                position: absolute;
+                bottom: 0;
+
+                .spacer {
+                    -webkit-box-flex: 1;
+                    flex: 1 1 auto;
+                }
+            }
+
+            .mat-header-row {
+                position: sticky;
+                top: 0;
+                background: white;
+                z-index: 5;
+            }
+
+            .mat-paginator {
+                background-color: white;
+            }
+
+            .pdf {
+                color: red;
+                font-size: 30px;
+                cursor: pointer;
+            }
+
+            .excel {
+                height: 30px;
+                cursor: pointer;
+            }
+
+
+        }
+    }
+}
+
+.cal-event.ng-star-inserted {
+    background: #1e90ff !important;
+}
+
+.mat-expansion-panel-content {
+    border: 5px solid;
+    border-color: white#039be5;
+   //background: #e1f1ff;
+}
+
+.notransition .leaflet-marker-icon,
+.notransition .leaflet-marker-icon * {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+}
+
+
+
+.date-wrapper, .dateTime-wrapper {
+    border-radius: 28px;
+    overflow: hidden;
+    direction: rtl;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    position: absolute;
+    padding: 0 18px;
+    height: 48px;
+    right: 90px;
+    background: white;
+    width: 52px;
+    transition: width .65s;
+
+    >button {
+        position: absolute;
+        top: 4px;
+        left: 6px;
+    }
+
+    &:focus-within,
+    &:hover {
+        .dateForm {
+            display: block;
+        }
+    }
+
+    .dateForm {
+        display: none;
+        top: -5px;
+        left: 40px;
+        position: absolute;
+        padding: 0 !important;
+        width: max-content;
+
+        button.submit {
+            cursor: pointer;
+            bottom: -9px;
+            box-shadow: 0 0 4px 0px black;
+        }
+
+        .mat-form-field-label-wrapper {
+            display: none;
+        }
+
+        .mat-form-field {
+            padding: 0 0 0 15px;
+            color: black;
+        }
+    }
+
+}
+
+.dateTime-wrapper {
+    width: 469px;       // i need :valid-winthin to wrok with this :(
+    .dateForm .mat-form-field-infix {
+        width: 145px;
+    }
+
+    &:focus-within,
+    &:hover {
+        width: 469px;
+    }
+}
+
+.date-wrapper {
+    width: 350px;       // i need :valid-winthin to wrok with this :(
+    .dateForm .mat-form-field-infix {
+        width: 85px;
+    }
+
+    &:focus-within,
+    &:hover {
+        width: 350px;
+    }
+}
+
+
+
+
+
+
+#ReportFlexCards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .fuse-card {
+        margin: 10px;
+        width: 100%;
+        max-width: 30%;
+    }
+}
+.exportIcon {
+    width: 45px;
+    display: -webkit-box;
+    display: flex;
+    right: 100px;
+    position: absolute;
+
+img {
+    background: white;
+    padding: 6px;
+    border-radius: 50px;
+    margin: 0 5px;
+    cursor: pointer;
+    box-shadow: 0 0 15px -5px black;
+}
+}
+
+
+.md-drppicker.drops-down-auto.ltr{
+    width: max-content;
+    color: black;
+}
+
+
+.autoCompleteInput {
+    border-bottom: solid 2px white !important;
+}
+
+.autoCompleteInput~.mat-icon {
+    cursor: pointer;
+    position: relative;
+    &::after{
+        content: '';
+        position: absolute;
+        border: 7px solid transparent;
+        border-top-color: white;
+        top: 5px;
+        left: -15px;
+    }
+}

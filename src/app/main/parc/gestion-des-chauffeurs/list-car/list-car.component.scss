@@ -1,0 +1,45 @@
+@import "src/@fuse/scss/fuse";
+.tooltip{
+    position: relative;
+    display: inline-block;
+    
+  }
+  .tooltip .tooltiptxt{
+    visibility: hidden; 
+    width: 44px;
+    background-color: #1d1b1b;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -1%;
+    left: -24%;
+    margin-left: -60x;
+  }
+  .tooltip:hover .tooltiptxt{
+    visibility: visible;
+  }
+  .tot{
+    position: relative;
+    display: inline-block;
+    
+  }
+ .tottxt{
+    visibility: hidden;
+    width: 52px;
+    background-color: #f44336;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 12%;
+    left: -12%;
+    margin-left: -60x;
+  }
+ .tot:hover .tottxt{
+    visibility: visible;
+  }

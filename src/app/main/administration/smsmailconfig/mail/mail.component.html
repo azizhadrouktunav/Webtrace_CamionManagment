@@ -1,0 +1,96 @@
+<!-- main app container -->
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title"> {{dialogTitle}}</span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+  
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="myForm" >
+            <div fxLayout="row">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{'NAV.emailaddress' | translate}} </mat-label>
+                    <input matInput formControlName="email"
+                     [ngClass]="{ 'is-invalid': submitted && f.email.errors }"  />
+                    <!--  <mat-error  *ngIf="submitted && f.email.errors.required">
+                        email is required
+                    </mat-error>
+                    <mat-error *ngIf="submitted && f.email.errors.email">
+                        Email must be a valid email address     
+                                   </mat-error>   --> 
+                </mat-form-field>
+                   
+                  <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50"> 
+                    <mat-label>{{'NAV.Name' | translate}} </mat-label>
+
+                    <input matInput  formControlName="Name">
+                   <!--  <mat-error  *ngIf="submitted && f.Name.errors.required">
+                        Name is required
+                    </mat-error> -->
+                  </mat-form-field>
+
+                    <!-- <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{ 'NAV.DateDebut' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="DateDebut">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field> -->
+
+                
+
+                    <!-- <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{ 'NAV.DateFin' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="DateFin"> -->
+                    <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker> -->
+                    <!-- </mat-form-field> -->
+                   
+                    <!-- <mat-form-field appearance="outline" [fxFlex]="50" class="pr-sm-8">
+                        <mat-label>{{'DateDebut' | translate}} </mat-label>
+                    
+                        <input matInput [ngxMatDatetimePicker]="dateDebutPicker" placeholder="Choose a date" 
+                         formControlName="DateDebut" required>
+                        <mat-datepicker-toggle matSuffix [for]="dateDebutPicker">
+                        </mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #dateDebutPicker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                            [touchUi]="touchUi" [color]="color">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+
+                   <mat-form-field appearance="outline" [fxFlex]="50" class="pr-sm-8">
+                    <mat-label>{{'DateFin' | translate}} </mat-label>
+
+                    <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" 
+                     formControlName="DateFin" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                    </mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                        [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                        [touchUi]="touchUi" [color]="color">
+                    </ngx-mat-datetime-picker>
+                </mat-form-field>  -->
+                
+            </div>
+            
+                  
+              
+           
+                   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+  
+                   <button mat-raised-button  type="submit" class="button" [disabled]="!myForm.valid"  (click)="onSubmit()" > {{'NAV.Save' | translate}}</button>
+
+            
+                </div>
+        </form>
+       
+    </div>
+    
+  </div>
+   
+  
+  

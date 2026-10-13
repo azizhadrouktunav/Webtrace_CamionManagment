@@ -1,0 +1,397 @@
+<dx-data-grid id="MonitoringTable" [dataSource]="trackingObjects" [remoteOperations]="true" [columnAutoWidth]="true"
+    [masterDetail]="{ enabled: false, template: 'detail'}" [showColumnLines]="false" [showRowLines]="false"
+    [showBorders]="true" [rowAlternationEnabled]="true" [allowColumnResizing]="true" [columnMinWidth]="100"
+    [allowColumnReordering]="true" (onExporting)="exportGrid($event)" (onRowDblClick)="dbClick($event.key)" 
+    >
+    <dxo-export [enabled]="true"></dxo-export>
+
+
+    <dxo-grouping [contextMenuEnabled]="true" expandMode="rowClick"></dxo-grouping>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-paging [pageSize]="50"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[50,100,200,500]"></dxo-pager>
+     <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+    <dxo-column-chooser [enabled]="true" mode="select"></dxo-column-chooser>
+    <dxo-state-storing [enabled]="true" type="custom" [customSave]="saveGridState" [customLoad]="StateGridLoad">
+    </dxo-state-storing>
+    <dxi-column [fixed]="!isMobileResolution" [dataField]="'name'" [caption]="'Vehicle' | translate" dataType="string"
+        cellTemplate="CarName"></dxi-column>
+    <dxi-column [dataField]="" [showInColumnChooser]="false" [caption]="" cellTemplate="alertsTemplate" [width]="130">
+    </dxi-column>
+
+    <dxi-column [dataField]="'positionAddress'" [caption]="'LocationFullName' | translate " dataType="string">
+    </dxi-column>
+    <dxi-column [dataField]="'date'" [caption]="'Date' | translate" dataType="date" format="shortDateShortTime">
+    </dxi-column>
+    <dxi-column [dataField]="'horodatage'" [caption]="'Horodatage' | translate" dataType="string"
+        cellTemplate="horodatage"></dxi-column>
+    <dxi-column [dataField]="'speed'" [caption]="'Speed' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'Mileage'" [caption]="'Mileage' | translate" dataType="number"></dxi-column>
+    <dxi-column [dataField]="'engineHours'" [caption]="'EngineHours' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'LastAlert'" [caption]="'LastAlert' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'Contact'" [caption]="'NAV.StateContact' | translate " dataType="string"
+        cellTemplate="contactState"></dxi-column>
+    <dxi-column [dataField]="'engine'" [caption]="'Engine' | translate" dataType="string" cellTemplate="EngineState"
+        [width]="130"></dxi-column>
+
+    <dxi-column [dataField]="'FuelLevel'" [caption]="'NAV.GazFuelLevelPercent' | translate" dataType="string">
+    </dxi-column>
+     <dxi-column [dataField]="'Temperature'" [caption]="'Temperature' | translate" dataType="number"
+        cellTemplate="Temperature"></dxi-column> 
+    <dxi-column [dataField]="'EngineTemperature'" [caption]="'EngineTemperature' | translate" dataType="string">
+    </dxi-column>
+    <dxi-column [dataField]="'driver'" [caption]="'NAV.driver' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'Department'" [caption]="'Beneficiary.Department' | translate" dataType="string"
+        [groupIndex]="0"></dxi-column>
+    <dxi-column [dataField]="'Equipment'" [caption]="'NAV.Equipment' | translate" dataType="number"></dxi-column>
+
+    <dxi-column [dataField]="'SimCardNumber'" [caption]="'NAV.chipNumber' | translate" dataType="string"></dxi-column>
+
+    <dxi-column [dataField]="'ChassisNumber'" [caption]="'NAV.Nchassis' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'BatteryLevel'" [caption]="'NAV.BatteryLevel' | translate" dataType="number"></dxi-column>
+    <dxi-column [dataField]="'HumidityLevel'" [caption]="'NAV.HumidityLevel' | translate" dataType="number">
+    </dxi-column>
+    <dxi-column [dataField]="'Dashboard'" [caption]="'Dashboard'" dataType="Object" cellTemplate="detail" [showInColumnChooser]="false" [width]="800">
+    </dxi-column>
+
+    <dxi-column [dataField]="'ElockBattery'" [caption]="'NAV.ElockBattery' | translate" dataType="number"></dxi-column>
+    <dxi-column [dataField]="'LockStatus'" [caption]="'NAV.LockStatus' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'SealStatus'" [caption]="'NAV.SealStatus' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'TearDownStatus'" [caption]="'NAV.TearDownStatus' | translate" dataType="string">
+    </dxi-column>
+    <dxi-column [dataField]="'TotalFuel'" [caption]="'NAV.TotalFuel' | translate" dataType="number"></dxi-column>
+
+    <dxi-column [dataField]="'Latitude'" [caption]="'NAV.Latitude' | translate" dataType="number"></dxi-column>
+    <dxi-column [dataField]="'Longitude'" [caption]="'NAV.Longitude' | translate" dataType="number"></dxi-column>
+    <dxi-column [dataField]="'CardId'" [caption]="'NAV.CardId' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'waterdetected1'" [caption]="'NAV.waterdetected1' | translate" dataType="string">
+    </dxi-column>
+    <dxi-column [dataField]="'SNSonde1'" [caption]="'NAV.SN' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'VolumeSonde1'" [caption]="'NAV.Volume' | translate" dataType="string"></dxi-column>
+    <dxi-column [dataField]="'TemperatureSonde1'" [caption]="'NAV.TemperatureSonde' | translate" dataType="string">
+    </dxi-column>
+    <dxi-column [dataField]="'BatteryLevelSonde1'" [caption]="'NAV.BatterySonde' | translate" dataType="string">
+    </dxi-column>
+    <dxi-column [dataField]="'StatusConnectedSonde1'" [caption]="'NAV.StatusConnectedSonde' | translate"
+        dataType="string"></dxi-column>
+        <dxi-column [dataField]="'AdBlueLevel'" [caption]="'NAV.AdBlueLevel' | translate" dataType="number"></dxi-column>
+        <dxi-column [dataField]="'AxleWeight1st'" [caption]="'NAV.AxleWeight1st' | translate" dataType="number"></dxi-column>
+        <dxi-column [dataField]="'AxleWeight'" [caption]="'NAV.AxleWeight' | translate" dataType="number"></dxi-column>
+        <dxi-column [dataField]="'AxleWeight3rd'" [caption]="'NAV.AxleWeight3rd' | translate" dataType="number"></dxi-column>
+        <dxi-column [dataField]="'AxleWeight4th'" [caption]="'NAV.AxleWeight4th' | translate" dataType="number"></dxi-column>
+        <dxi-column [dataField]="'RapidBrackings'" [caption]="'NAV.RapidBrackings' | translate" dataType="number"></dxi-column>
+        <dxi-column [dataField]="'RapidAccelerations'" [caption]="'NAV.RapidAccelerations' | translate" dataType="number"></dxi-column>
+    <dxi-column [dataField]="'SpecialityName'" [caption]="'NAV.Speciality' | translate" dataType="string"></dxi-column>
+
+
+    <dxi-column [caption]="" [showInColumnChooser]="false" [allowSearch]="true" [allowGrouping]="true"
+        [allowFiltering]="true" dataField="" [width]="40" cellTemplate="cellTemplate" class="ActionsBtns"></dxi-column>
+
+
+    <div *dxTemplate="let cell of 'horodatage'" class="horodatage"
+        [ngClass]="cell.key.horodatageValue<(12*60*60)?'GreenTime':'redTime'">
+        <mat-icon>access_alarms</mat-icon>
+        {{ cell.key.horodatage }}
+    </div>
+
+    <div *dxTemplate="let cell of 'EngineState'" class="EngineState"
+        [ngClass]="cell.key.engine?'greenEngine':'redEngine'">
+        <mat-icon>directions_car</mat-icon>
+    </div>
+
+    <div *dxTemplate="let cell of 'CarName'" class="CarName"
+        [ngClass]="cell.key.data.CurrentEquipmentElement?.IsAssignedToClient?(cell.key.data.Connected?'greenName':'redName'):'grayName'">
+        {{ cell.key.name }}
+    </div>
+
+    <div *dxTemplate="let cell of 'contactState'" class="contactState"
+        [ngClass]="cell.key.Contact?'greenContact':'redContact'">
+        <mat-icon>power_settings_new</mat-icon>
+    </div>
+
+    <div *dxTemplate="let cell of 'alertsTemplate'">
+        <div class="MonitoringAlertsList">
+            <div class="AlertItem" [ngClass]="{'visibleAlert': cell.key.hasMaintenance}">
+                <img src="./assets/icons/FlatIcons/png/settings.png"
+                    matTooltip="{{'tooltip.MaintenanceReminder'| translate}}"
+                    (click)="Entretien(cell,11, 'tooltip.MaintenanceReminder','settings.png')">
+            </div>
+            <!-- <div class="AlertItem" [ngClass]="{'visibleAlert': cell.key.data.BorrowedRentalCarContractJSONToDo}">
+                <img src="./assets/icons/FlatIcons/png/car-key.png" matTooltip="Véhicule emprunté et/ou loué" (click)="Entretien(cell,22, 'car-key.png')">
+            </div> -->
+            <div class="AlertItem" [ngClass]="{'visibleAlert': cell.key.data.CarDocumentReminderJSONToDo}"
+                (click)="Entretien(cell,33,'tooltip.DocumentReminder','checklist.png')">
+                <img src="./assets/icons/FlatIcons/png/checklist.png"
+                    matTooltip="{{'tooltip.DocumentReminder'| translate}}">
+            </div>
+            <div class="AlertItem" [ngClass]="{'visibleAlert': cell.key.data.AccidentDetailsReminderJSONToDo}"
+                (click)="Entretien(cell,44,'tooltip.AccidentReminder', 'fender-bender.png')">
+                <img src="./assets/icons/FlatIcons/png/fender-bender.png"
+                    matTooltip="{{'tooltip.AccidentReminder' | translate}}">
+            </div>
+            <!-- <div class="AlertItem" [ngClass]="{'visibleAlert': cell.key.data.CurrentDriverElement?.CardCouponReminderJSONToDo}" (click)="Entretien(cell,55, 'gas-pump.png')">
+                <img src="./assets/icons/FlatIcons/png/gas-pump.png" matTooltip="Carte à recharger ou bon à fournir">
+            </div> -->
+            <div class="AlertItem" [ngClass]="{'visibleAlert': cell.key.data.BorrowedRentalCarContractJSONToDo}"
+                (click)="Entretien(cell,66, 'tooltip.PaymentOfRentOrBorrow',  'payment-method.png')">
+                <img src="./assets/icons/FlatIcons/png/payment-method.png"
+                    matTooltip="{{'tooltip.PaymentOfRentOrBorrow' | translate}}">
+            </div>
+            <div class="AlertItem" [ngClass]="{'visibleAlert': cell.key.data.BorrowedRentalCarContractExpiredJSONToDo}"
+                (click)="Entretien(cell,77, 'tooltip.ExpiredContractRentBorrow' , 'time.png')">
+                <img src="./assets/icons/FlatIcons/png/time.png"
+                    matTooltip="{{'tooltip.ExpiredContractRentBorrow' | translate}}">
+            </div>
+        </div>
+    </div>
+    <div *dxTemplate="let car of 'cellTemplate'">
+        <button mat-icon-button [matMenuTriggerFor]="menu" (menuOpened)="isOpened($event, car.key)"
+            aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu" class="MonitoringTableCarMenu">
+            <button [disabled]="!isDisabledBtn" class="hover-class" mat-menu-item (click)="showOnMap(car.key)">
+                <fa-icon [icon]="['fas', 'search-location']"></fa-icon><span>{{'tracking.showMap' | translate}}</span>
+            </button>
+            <button class="hover-class" [disabled]="!isDisabledBtn" mat-menu-item (click)="drawTrajectory(car.key)">
+                <fa-icon [icon]="['fas', 'route']"></fa-icon><span>{{'tracking.ShowTrajectory' | translate }}</span>
+            </button>
+            <button class="hover-class" [disabled]="!isDisabledBtn" mat-menu-item (click)="openStops(car.key)">
+                <fa-icon [icon]="['fas', 'ban']"></fa-icon><span>{{'tracking.showStopCirculation' | translate}}</span>
+            </button>
+            <button class="hover-class" [disabled]="!isDisabledBtn" mat-menu-item (click)="openFullReport(car.key)">
+                <fa-icon [icon]="['fas', 'clipboard-list']"></fa-icon><span>{{'tracking.ShowGeneralReport' |
+                    translate}}</span>
+            </button>
+            <button class="hover-class" [disabled]="!isDisabledBtn" mat-menu-item (click)="overSpeedAlert(car.key)">
+                <fa-icon [icon]="['fas', 'shipping-fast']"></fa-icon><span>{{'tracking.showOverSpeed' | translate
+                    }}</span>
+            </button>
+            <button class="hover-class" [disabled]="!isDisabledBtn" mat-menu-item
+                *ngIf="car.key.data.CurrentEquipmentElement?.HardwareSupportCurrentPosition"
+                (click)="getCurrentPosition(car.key)">
+                <fa-icon [icon]="['fas', 'crosshairs']"></fa-icon><span>{{'tracking.GetCurrentPosition' |
+                    translate}}</span>
+            </button>
+            <button class="hover-class" [disabled]="!isDisabledBtn || !isAdmin" mat-menu-item
+                *ngIf="car.key.data.CurrentEquipmentElement?.HardwareSupportForcedAAD || car.key.data.CurrentEquipmentElement?.HardwareSupportOutputArming"
+                (click)="forcedStop(car.key)">
+                <fa-icon [icon]="['fas', 'hand-paper']"></fa-icon><span>{{'tracking.Arming' | translate }}</span>
+            </button>
+            <button class="hover-class" [disabled]="!isDisabledBtn || !isAdmin" mat-menu-item (click)="alertSettings(car.key)">
+                <fa-icon [icon]="['fas', 'tools']"></fa-icon><span>{{'tracking.AlertsParams' | translate }}</span>
+            </button>
+        </mat-menu>
+    </div>
+    <div *dxTemplate="let car of 'detail'">
+        <div class="MonitoringAlertsList">
+            <div class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.Hood">
+                <img src="./assets/icons/FlatIcons/png/capot.png" matTooltip="Capot">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.Trunk">
+                <img src="./assets/icons/FlatIcons/png/trunk.png" matTooltip="Coffre">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.FuelLow">
+                <img src="./assets/icons/FlatIcons/png/gas-pump.png" matTooltip="Carburant bas">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.DriverSeatbelt">
+                <img src="./assets/icons/FlatIcons/png/seatbelt.png" matTooltip="Ceinture de sécurité conducteur">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.AirConditioning">
+                <img src="./assets/icons/FlatIcons/png/fan.png" matTooltip="Climatisation">
+            </div>
+
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.CentralLock">
+                <img src="./assets/icons/FlatIcons/png/door-lock.png" matTooltip="Fermeture centrale">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.RuningLight">
+                <img src="./assets/icons/FlatIcons/png/carlight.png" matTooltip="Feux de position">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.RearFogLight">
+                <img src="./assets/icons/FlatIcons/png/fog-lamp.png" matTooltip="Feu brouillard arriére">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.FrontFogLight">
+                <img src="./assets/icons/FlatIcons/png/fogleft-lamp.png" matTooltip="Feu brouillard avant">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.LowBeams">
+                <img src="./assets/icons/FlatIcons/png/car-light.png" matTooltip="Feux de croisement">
+            </div>
+
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.HighBeams">
+                <img src="./assets/icons/FlatIcons/png/high-beam.png" matTooltip="Feux de route">
+
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.HazardLight">
+                <img src="./assets/icons/FlatIcons/png/turn-signal.png" matTooltip="Feux clignotants">
+
+            </div>
+
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.Handbrake">
+                <img src="./assets/icons/FlatIcons/png/frein.png" matTooltip="Frein à main">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.ReverseGear">
+                <img src="./assets/icons/FlatIcons/png/gearshift.png" matTooltip="Marche arriére">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.CruiseControl">
+                <img src="./assets/icons/FlatIcons/png/page-speed.png" matTooltip="Regulateur de vitesse">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.BrakePedal">
+                <img src="./assets/icons/FlatIcons/png/pedal.png" matTooltip="Frein à pied">
+            </div>
+
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.ClutchPedal">
+                <img src="./assets/icons/FlatIcons/png/clutch.png" matTooltip="Pédale embrayage">
+            </div>
+
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.Doors">
+                <img src="./assets/icons/FlatIcons/png/car-door.png" matTooltip="Portes">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.PassengerDoor">
+                <img src="./assets/icons/FlatIcons/png/doorleft.png" matTooltip="Porte passager">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.DriverDoor">
+                <img src="./assets/icons/FlatIcons/png/doorright.png" matTooltip="Porte du conducteur">
+            </div>
+
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.RearLeftDoor">
+                <img src="./assets/icons/FlatIcons/png/doorleft.png" matTooltip="Porte arriére gauche">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.RearRightDoor">
+                <img src="./assets/icons/FlatIcons/png/doorright.png" matTooltip="Porte arriére droite">
+            </div>
+
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.Webcast">
+                <img src="./assets/icons/FlatIcons/png/heating.png"
+                    matTooltip="Un système de chauffage de stationnemen">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.BrakeFluidLowIndicator">
+                <img src="./assets/icons/FlatIcons/png/brake.png" matTooltip="Indicateur de liquide de frein">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.CoolantLevelLowIndicator">
+                <img src="./assets/icons/FlatIcons/png/coolant.png"
+                    matTooltip="Indicateur de niveau de liquide de refroidissement bas">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.BatteryIndicator">
+                <img src="./assets/icons/FlatIcons/png/battery.png" matTooltip="Indicateur de batterie">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.BrakeFailureIndicator">
+                <img src="./assets/icons/FlatIcons/png/brake.png"
+                    matTooltip="Indicateur de panne du système de freinage">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.OilPressureIndicator">
+                <img src="./assets/icons/FlatIcons/png/pressure-gauge.png"
+                    matTooltip="Indicateur de pression huile">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.EngineHotIndicator">
+                <img src="./assets/icons/FlatIcons/png/temperature.png"
+                    matTooltip="Indicateur de moteur chaud">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.ABSFailureIndicator">
+                <img src="./assets/icons/FlatIcons/png/abs.png"
+                    matTooltip="Indicateur de panne ABS">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.CheckEngine">
+                <img src="./assets/icons/FlatIcons/png/car-engine.png"
+                    matTooltip="ICheck Engine">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.AirBagIndicator">
+                <img src="./assets/icons/FlatIcons/png/airbag.png"
+                    matTooltip="Indicateur airbags">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.ServiceCallIndicator">
+                <img src="./assets/icons/FlatIcons/png/call.png"
+                    matTooltip="Indicateur appel de service">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.OilLevelLowIndicator">
+                <img src="./assets/icons/FlatIcons/png/engine-oil.png"
+                    matTooltip="Indicateur de niveau huile bas">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.BatteryCharging">
+                <img src="./assets/icons/FlatIcons/png/batterycharging.png"
+                    matTooltip="Recharge de batterie pour voitures électriques">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.FuelSource">
+                <img src="./assets/icons/FlatIcons/png/fuel.png"
+                    matTooltip="Source de carburant">
+            </div>
+            <div  class="DashItem"
+                *ngIf="car.key.data.CurrentEquipmentElement.LastRefreshJSON?.PTO">
+                <img src="./assets/icons/FlatIcons/png/pto.png"
+                    matTooltip="Power take-off">
+            </div>
+        </div>
+
+    </div>
+
+    <div *dxTemplate="let cell of 'Temperature'" (click)="display(cell)">
+        {{ cell.key.data.Temperature }}
+    </div>
+</dx-data-grid>
+<div class="StatsFilters">
+    <div class="item connected" style="color: green;" (click)="SortTrackingUsing('connected')"
+        [ngClass]="{'active': SortedType=='connected','disabled':ConnectedCarsCount == 0}">
+        <div class="ItemValue">{{ConnectedCarsCount}}</div>
+        <fa-icon [icon]="['fas', 'car-alt']"></fa-icon>
+    </div>
+    <div class="item disConnected" style="color: red;" (click)="SortTrackingUsing('disConnected')"
+        [ngClass]="{'active': SortedType=='disConnected','disabled':DisconnectedCarsCount == 0}">
+        <div class="ItemValue">{{DisconnectedCarsCount}}</div>
+        <fa-icon [icon]="['fas', 'car-alt']"></fa-icon>
+    </div>
+    <div class="item unequiped" style="color: gray;" (click)="SortTrackingUsing('unequiped')"
+        [ngClass]="{'active': SortedType=='unequiped','disabled':NoEquipmentCarsCount == 0}">
+        <div class="ItemValue">{{NoEquipmentCarsCount}}</div>
+        <fa-icon [icon]="['fas', 'car-alt']"></fa-icon>
+    </div>
+
+</div>
+<div *ngIf="trackingObjects.length == 0 && isLoading" class="isLoading">
+    <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<!-- <div id="RefreshControl">
+    <button mat-mini-fab color="primary"><fa-icon [icon]="['fas', 'sync-alt']"></fa-icon></button>
+    <button mat-mini-fab color="primary">{{ RefreshCounter }}</button>
+</div> -->

@@ -1,0 +1,161 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle | translate}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+
+        <form name="cardCouponForm" [formGroup]="cardCouponForm" class="event-form w-100-p" fxLayout="column" fxFlex>
+                <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                    <div class="radioInputs">
+                        <mat-label>{{'Type' | translate}}</mat-label>
+                        <mat-radio-group formControlName="IsCard" (change) ="changeType($event)">
+                         <mat-radio-button class="example-margin" [value]=true>{{ 'Card' | translate}}</mat-radio-button>
+                         <mat-radio-button class="example-margin" [value]=false>{{ 'Coupon' | translate}}</mat-radio-button>
+                        </mat-radio-group> 
+                    </div>
+                </div>
+                    <!-- to reference -->
+                    <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="action === 'new'">
+                        <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                            <mat-label>{{ 'NumberAndOrCharacter' | translate}}</mat-label>
+                            <input matInput
+                                   name="ref"
+                                   formControlName="ref"
+                                   required
+                                  />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                            <mat-label>{{ 'StartNumber' | translate}}</mat-label>
+                            <input matInput
+                                   name="To"
+                                   formControlName="to"
+                                   required
+                                   type="number"
+                                  />
+                        </mat-form-field>
+                    </div>
+                    <!-- up to reference-->
+                    <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="action === 'new'">
+                        <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                            <mat-label>{{'NumberAndOrCharacter' | translate}}</mat-label>
+                            <input matInput
+                                   name="ref"
+                                   [value]="reference"
+                                   disabled
+                                />
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                            <mat-label>{{ 'EndNumber' | translate}}</mat-label>
+                            <input matInput
+                                   name="From"
+                                   formControlName="from"
+                                   type="number"
+                                   required
+                                  />
+                        <mat-error *ngIf="cardCouponForm.get('from').hasError('lowerThan') &&cardCouponForm.get('from').touched">
+                               {{'StartNumberMoreThanEndNumber' | translate}} 
+                        </mat-error>
+                        </mat-form-field>
+                    </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50" *ngIf="action !== 'new'">
+                    <mat-label>{{ 'N' | translate}}</mat-label>
+                    <input matInput
+                           name="title"
+                           formControlName="CardCouponRef_"
+                           required
+                         />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{ 'ValidateDate' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="DateCardCouponLocal">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+            <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                <mat-label>{{'Maintenance.Supplier' | translate}}</mat-label>
+                <mat-select formControlName="SupplierFuel">
+                    <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                      {{supplier.name | translate}}
+                    </mat-option>
+                  </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                <mat-label>{{ 'Department' | translate}}</mat-label>
+                <mat-select formControlName="Department" >
+                    <mat-option *ngFor="let department of departments" [value]="department.Id">
+                      {{department.FullName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+             <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-label>{{label}}</mat-label> 
+             <mat-radio-group formControlName="IsCardCouponWorkByMoney">
+                  <mat-radio-button class="example-margin" [value]= false [checked]="!cardCoupon.IsCardCouponWorkByMoney">{{ 'ByQuantityL' | translate}}</mat-radio-button>
+                  <mat-radio-button class="example-margin" [value]= true [checked]="cardCoupon.IsCardCouponWorkByMoney">{{ 'ByTotalPrice' | translate}}</mat-radio-button>
+             </mat-radio-group> 
+        </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{ 'LittrePrice' | translate}}</mat-label>
+                    <input matInput
+                           name="Price of a liter"
+                           formControlName="PricePerL"
+                           type="number"
+                           min="1"
+                     />
+                     <mat-error *ngIf="cardCouponForm.controls['PricePerL'].invalid">{{ getErrorMessage('PricePerL') }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                    <mat-label>{{labelQteOrAmount}}</mat-label>
+                    <input matInput
+                           formControlName="QuantityLOrTotalPrice"
+                           type="number"
+                           min='1'
+                    />
+                    <mat-error *ngIf="cardCouponForm.controls['QuantityLOrTotalPrice'].invalid">{{ getErrorMessage('QuantityLOrTotalPrice') }}</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+       <!--  <button *ngIf="action ==='edit'"
+                mat-button color="primary"
+                class="mr-8"
+                (click)="matDialogRef.close(['delete',cardCouponForm])"
+                aria-label="Delete"
+                matTooltip="Delete">
+            {{'Delete' | translate}}
+        </button> -->
+
+        <button *ngIf="action !== 'edit'"
+                mat-button color="primary"
+                class="save-button"
+                (click)="matDialogRef.close(cardCouponForm)"
+                [disabled]="cardCouponForm.invalid"
+                aria-label="ADD">
+            {{'Add' | translate}}
+        </button>
+
+        <button *ngIf="action === 'edit'"
+                mat-button color="primary"
+                class="save-button"
+                (click)="matDialogRef.close(['save', cardCouponForm])"
+                [disabled]="cardCouponForm.invalid"
+                aria-label="SAVE">
+            {{'Save' | translate}}
+        </button>
+
+    </div>
+</div>

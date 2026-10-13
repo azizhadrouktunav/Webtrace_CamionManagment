@@ -1,0 +1,94 @@
+<div class="orient-form-dlg">
+  <header class="orient-form-dlg__header">
+    <div>
+      <h2 class="orient-form-dlg__title">{{ dialogTitle }}</h2>
+      <p class="orient-form-dlg__subtitle" *ngIf="base">{{ base.id }}</p>
+    </div>
+    <button mat-icon-button type="button" (click)="cancel()" aria-label="Fermer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="orient-form-dlg__body">
+    <p class="orient-form-dlg__error" *ngIf="error">{{ error }}</p>
+    <div class="orient-form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Nom *</mat-label>
+        <input matInput [(ngModel)]="formLastName" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Prénom *</mat-label>
+        <input matInput [(ngModel)]="formFirstName" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="formEmail" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Code personnel *</mat-label>
+        <input matInput [(ngModel)]="formPersonnelCode" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>N° de téléphone</mat-label>
+        <input matInput [(ngModel)]="formPhone" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>N° de carte fermeture SmartLock</mat-label>
+        <input matInput [(ngModel)]="formSmartLockCloseCard" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>N° de carte ouverture SmartLock</mat-label>
+        <input matInput [(ngModel)]="formSmartLockOpenCard" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Date de naissance</mat-label>
+        <input matInput type="date" [(ngModel)]="formBirthDate" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Lieu de naissance</mat-label>
+        <input matInput [(ngModel)]="formBirthPlace" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="orient-form-full">
+        <mat-label>Adresse</mat-label>
+        <input matInput [(ngModel)]="formAddress" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Département *</mat-label>
+        <input matInput [(ngModel)]="formDepartment" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>N° de CIN</mat-label>
+        <input matInput [(ngModel)]="formCin" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Genre du permis de conduire</mat-label>
+        <mat-select [(ngModel)]="formLicenceCategory">
+          <mat-option *ngFor="let c of licenceCategories" [value]="c">{{ c }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>N° du permis de conduire</mat-label>
+        <input matInput [(ngModel)]="formLicenceNumber" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Statut</mat-label>
+        <mat-select [(ngModel)]="formStatus">
+          <mat-option *ngFor="let s of statusOptions" [value]="s">{{ driverStatusMeta[s].label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Camion</mat-label>
+        <mat-select [(ngModel)]="formTruckId">
+          <mat-option [value]="null">—</mat-option>
+          <mat-option *ngFor="let t of trucks" [value]="t.id">{{ t.plate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <footer class="orient-form-dlg__footer">
+    <span class="orient-form-dlg__spacer"></span>
+    <button mat-button type="button" (click)="cancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="button" (click)="save()">Enregistrer</button>
+  </footer>
+</div>

@@ -1,0 +1,34 @@
+<mat-expansion-panel >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{'AlertConfiguration.GeneralSection.GeneralTitle' | translate}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form [formGroup]="GeneralSection">
+        <div fxLayout="column" fxFlex>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" class="space-between">
+                <mat-checkbox formControlName="Doorstate" *ngIf="defaultParams?.HardwareSupportDoorAlarm == true">{{'AlertConfiguration.GeneralSection.DoorState' | translate}}</mat-checkbox><!--  -->
+                <mat-checkbox formControlName="Contactstate"> {{'AlertConfiguration.GeneralSection.ContactOnOff' | translate}}</mat-checkbox>
+                <mat-checkbox formControlName="DepressedSOS" *ngIf="defaultParams?.HardwareSupportSOSAlarm == true">{{'AlertConfiguration.GeneralSection.SosBtn' | translate}}</mat-checkbox><!--  -->
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" class="space-around">
+                <mat-checkbox formControlName="Towing" *ngIf="defaultParams?.HardwareSupportTowingAlarm == true">{{'AlertConfiguration.GeneralSection.Towing' | translate}}</mat-checkbox><!--  -->
+                <mat-checkbox formControlName="Batterydisconnected" *ngIf="defaultParams?.HardwareSupportExtBattRmvAlarm == true">{{'AlertConfiguration.GeneralSection.BatteryDisconnected' | translate}}</mat-checkbox><!--   --> 
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" class="space-between" *ngIf="defaultParams?.HardSoftSupportRPMOutOfRangeAlarm == true"><!--  -->
+                <mat-checkbox formControlName="RPMSelector" style="margin-top: 27px;" (change)="changeEngineSpeedAlertStatus($event)">{{'AlertConfiguration.GeneralSection.RPMLabel' | translate}}</mat-checkbox>   
+                <mat-form-field appearance="outline" class="pr-sm-8" style="width: 40%;" disabled="disbale">
+                    <mat-label>{{'AlertConfiguration.GeneralSection.RPMValue' | translate}}</mat-label>
+                    <input matInput formControlName="EngineSpeed" type="number">
+                </mat-form-field>  
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-checkbox formControlName="ActivationOfRemoteShutdown" fxFlex="100">{{'AlertConfiguration.GeneralSection.RemoteShutdown' | translate}}</mat-checkbox>
+            </div>
+        </div>
+    </form>
+    <mat-action-row>    
+        <button type="button" mat-button color="warn" (click)="GeneralDefault()">{{'AlertConfiguration.GeneralSection.DefaultParams' | translate}}</button>
+        <button type="button" mat-button color="#26bcfb" (click)="GeneralSabmit()">{{'AlertConfiguration.GeneralSection.SendParms' | translate}}</button>
+    </mat-action-row>
+</mat-expansion-panel>

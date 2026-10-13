@@ -1,0 +1,79 @@
+.orient-dash-dlg {
+  display: flex;
+  flex-direction: column;
+  max-height: 92vh;
+  background: #fff;
+}
+
+.orient-dash-dlg__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  background: #039be5;
+  color: #fff;
+}
+
+.orient-dash-dlg__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.orient-dash-dlg__header .mat-icon-button,
+.orient-dash-dlg__header mat-icon {
+  color: #fff;
+}
+
+.orient-dash-dlg__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px 0;
+}
+
+.orient-dash-dlg__filter {
+  flex: 1 1 180px;
+  max-width: 280px;
+  margin-bottom: -1.25em;
+}
+
+.orient-dash-dlg__spacer {
+  flex: 1 1 auto;
+}
+
+.orient-dash-dlg__body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 8px 24px 16px;
+}
+
+.orient-dash-dlg__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 24px;
+  background: #039be5;
+}
+
+.orient-dash-dlg__footer .mat-button {
+  color: #fff;
+}
+
+.orient-dash-dlg__note {
+  margin: 8px 0 0;
+  color: #b71c1c;
+}
+
+table {
+  width: 100%;
+}
+
+.orient-dash-dlg .mat-header-cell,
+.orient-dash-dlg .mat-cell,
+.orient-dash-dlg .mat-footer-cell {
+  text-align: center;
+  justify-content: center;
+}

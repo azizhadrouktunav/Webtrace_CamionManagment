@@ -1,0 +1,145 @@
+<div id="product" class="page-layout MainContainer carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/parc/document'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <img src="assets/images/document/{{icondocument}}" width="70" height="30" style="filter: contrast(1000%) invert(1000%) sepia(0%);width: 55px;margin: 0 15px;">
+
+                <span class="logo-text h1">
+                    {{CarMatricule}} {{dialogTitle}} Log
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0 primary-50-bg">
+                <div class="search">
+                    <input id="searchBtn" #filter placeholder="Search for an log" >
+                    <label for="searchBtn">
+                        <mat-icon class="grey-700-fg">search</mat-icon>
+                    </label>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+
+            <button mat-fab color="warn" class="add-button" (click)="addLog()" aria-label="Add document">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+
+                <mat-table matTableExporter [dataSource]="dataSource" #exporter="matTableExporter" matSort>
+                    <ng-container matColumnDef="DateAvailableFromGMT">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header [translate]='valForm'>
+                            {{'NAV.ValFrom' | translate}}</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.DateAvailableFromGMT| localizedDate}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="DateAvailableToGMT">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.ValTo' | translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.DateAvailableToGMT| localizedDate}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="Cost">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.Cost' | translate}}</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Cost}}</mat-cell>
+                        <mat-footer-cell *matFooterCellDef [ngStyle] ="{'color':'red'}"> Total cost: {{getTotalCost() | currency: 'TND': 'symbol'}} </mat-footer-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="PaidCost">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.Payed' | translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.PaidCost}}</mat-cell>
+                        <mat-footer-cell *matFooterCellDef [ngStyle] ="{'color':'green'}"> Paid cost: {{getTotalPaidCost() | currency: 'TND':"symbol"}} </mat-footer-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="PaidDateGMT">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.PayDate' | translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.PaidDateGMT| localizedDate}}</mat-cell>
+                       
+
+                    </ng-container>
+                    <ng-container matColumnDef="Description">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.Desc' | translate}}</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Description}}</mat-cell>
+                       
+                    </ng-container>
+                    <ng-container matColumnDef="InvoiceReference">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.Reference' | translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.InvoiceReference}}</mat-cell>
+                        
+
+                    </ng-container>
+                    <ng-container matColumnDef="Supplier">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{'NAV.Supplier' | translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Supplier}}</mat-cell>
+                        
+
+                    </ng-container>
+                    <!-- actions -->
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+
+                            <button mat-icon-button (click)="editLog('edit',element)">
+                                <div class="tooltip">
+                                    <mat-icon>create</mat-icon><span class="tooltiptxt">Éditer</span>
+                                </div>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteDocumentLog(element)">
+                                <div class="tot">
+                                    <mat-icon aria-label="Delete">delete</mat-icon><span class="tottxt">Supprimer</span>
+                                </div>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="row_effect"></mat-row>
+                    <!-- <mat-row *matFooterRowDef="displayedColumns; sticky: true"></mat-row> -->
+                    <mat-footer-row *matFooterRowDef="tableFooterColumns"></mat-footer-row>
+                </mat-table>
+                <mat-toolbar style="background-color: white;width: calc(100% - 65px);">
+                    <div fxLayout="row" fxLayoutAlign="space-around" style="width: 80px;">
+                        <mat-icon (click)="downloadPdf()" class="pdf" title="Export as pdf file">picture_as_pdf
+                        </mat-icon>
+                        <img (click)="exporter.exportTable('xlsx', {fileName:'Document Log'})"
+                            src="assets/icons/excel.png" class="excel" title="Export as excel file">
+                    </div>
+                    <span class="example-spacer"></span>
+
+                    <mat-paginator #paginator [length]="dataSource?.filteredData.length" [pageIndex]="0" [pageSize]="5"
+                        [pageSizeOptions]="[1, 5, 10]">
+                    </mat-paginator>
+                </mat-toolbar>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

@@ -1,0 +1,97 @@
+<div id="DepenceGeneral" class="page-layout MainContainer carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0 WindowTitle" fxLayout="row" fxLayoutAlign="start center">
+                
+                <mat-icon>local_gas_station</mat-icon>
+                <span class="h1">
+                    {{'NAV.TanksReport' | translate}}  
+                </span>
+            </div>
+        
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card p-24" >
+            
+            <form novalidate [formGroup]="form" class="page-layout simple fullwidth" fxLayout="column" style="overflow: scroll; height:100%">
+
+
+                <div  fxLayout="column" fxLayout.gt-sm="row">
+                    <mat-form-field appearance="outline"  [fxFlex]="noshrink" class="mr-12">
+                        <mat-label>Réservoir</mat-label>
+                       <input matInput aria-label="Vehicle" [matAutocomplete]="auto" formControlName="car" required
+                             >
+                       <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" [displayWith]="displayCar">
+                         <mat-option  *ngFor="let obj of filteredOptions | async" [value]="obj">
+                               {{obj.Name}}
+                         </mat-option>
+                       </mat-autocomplete>
+                    </mat-form-field>
+
+                    
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>{{'NAV.StartDate' | translate}} </mat-label>
+
+                        <input matInput [ngxMatDatetimePicker]="picker" 
+                                        placeholder="Choose a date" 
+                                        [min]="minDate" [max]="maxDate" 
+                                        formControlName="StartDateGMT" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                        </mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker 
+                            [showSpinners]="showSpinners" 
+                            [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" 
+                            [stepSecond]="stepSecond"
+                            [touchUi]="touchUi"
+                            [color]="color">
+                        </ngx-mat-datetime-picker>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-label>{{'NAV.EndDate' | translate}} </mat-label>
+
+                        <input matInput [ngxMatDatetimePicker]="picker1" 
+                                        placeholder="Choose a date" 
+                                        [min]="minDate" [max]="maxDate" 
+                                            formControlName="EndDateGMT" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker1">
+                        </mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker1 
+                            [showSpinners]="showSpinners" 
+                            [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" 
+                            [stepSecond]="stepSecond"
+                            [touchUi]="touchUi"
+                            [color]="color">
+                        </ngx-mat-datetime-picker>
+                        </mat-form-field>
+                    
+                    
+                </div>
+                
+               
+                
+                <div style="width: 100%; text-align: center;">
+                    <button mat-raised-button color="accent" style="width:150px;height: 48px;margin: auto;" type="button" class="button" [disabled]="!form.valid"
+                    (click)="GetReportParam()"> {{'NAV.Generate' | translate}}</button>
+                
+                </div> 
+            
+
+
+            </form>
+        <!--/ CENTER-->
+    </div>
+    <!-- / CONTENT CARD -->
+
+</div>

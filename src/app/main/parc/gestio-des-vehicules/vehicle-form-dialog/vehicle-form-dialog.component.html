@@ -1,0 +1,335 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-16 pb-0 m-0 mat-dialog-content" fusePerfectScrollbar>
+        <form [formGroup]="Form" class='form' class="event-form w-100-p" fxLayout="column" fxFlex>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"
+                style="display: flex; justify-content: center;">
+                <mat-label>{{'Type' | translate}}</mat-label>
+                <mat-radio-group formControlName="isTransportation" (change)="radioChange($event)">
+                    <mat-radio-button class="example-margin" [value]=true>Vehicle</mat-radio-button>
+                    <mat-radio-button class="example-margin" [value]=false>Person</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="isTransportation === true">
+                <mat-form-field appearance="outline" class="w-100-p" style="width: 100%;">
+                    <mat-label>{{'NAV.Matricule' | translate}}</mat-label>
+                    <input matInput formControlName="FullName">
+                    <mat-error>{{'NAV.alert_Matricule*' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="isTransportation === true">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Icon</mat-label>
+                    <mat-select formControlName="IconName">
+                        <mat-option *ngFor="let icon of carIcons" [value]="icon.IconName">{{icon.name}}<img
+                                src="{{icon.url}}" style="float:right" />
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="isTransportation === true">
+            <mat-form-field appearance="outline" fxFlex="100">
+                <mat-label>{{'NAV.Speciality' | translate}}</mat-label>
+                <mat-select formControlName="Specialities">
+                    <mat-option *ngFor="let sep of Specialities" [value]="sep.Id">{{sep.Name}}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matSuffix class="secondary-text">account_balance</mat-icon>
+
+            </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="isTransportation === true">
+                <mat-form-field appearance="outline" fxFlex="50">
+                    <mat-label>{{'NAV.Departemant' | translate}}</mat-label>
+                    <mat-select formControlName="Department">
+                        <mat-option *ngFor="let dept of departments" [value]="dept.Id">{{dept.Name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">account_balance</mat-icon>
+
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50">
+                    <mat-label>{{'NAV.driver' | translate}}</mat-label>
+                    <input matInput aria-label="Vehicle" [matAutocomplete]="auto" formControlName="Driver" >
+                    <mat-autocomplete [panelWidth]="'auto'" #auto="matAutocomplete" [displayWith]="displayDriver">
+                        <mat-option *ngFor="let driver of filteredOptions | async" [value]="driver.Id">
+                            {{driver.Name}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <!--   <mat-select formControlName="Driver">
+                                        <mat-option *ngFor="let driver of drivers" [value]="driver.Id">{{driver.Name}}
+                                        </mat-option>
+                                    </mat-select>--> 
+                                    <mat-icon matSuffix class="secondary-text">accessibility</mat-icon>
+                                    <mat-error>Selecter le chauffeur</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"  *ngIf="isTransportation === true">
+        
+                                <mat-form-field appearance="outline" fxFlex="50">
+                                    <mat-label>{{'NAV.Marque' | translate}}</mat-label>
+                                    <mat-select formControlName="CarType" (selectionChange)="onTypeSelection($event)">
+                                        <mat-option *ngFor="let mark of marques" [value]="mark.Enum">{{mark.Name}}</mat-option>
+                                    </mat-select>
+                                    <mat-error>{{'NAV.Alert_requared' | translate}}</mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50">
+                                    <mat-label>{{'NAV.Modele' | translate}}</mat-label>
+                                    <mat-select formControlName="CarModel"  >
+                                        <mat-option *ngFor="let model of models" [value]="model.Enum">{{model.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true">
+        
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.Année' | translate}}</mat-label>
+                                    <input matInput formControlName="ModelYear" type="number">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" >
+                                    <mat-label>{{'NAV.TypeEnergie' | translate}}</mat-label>
+                                    <mat-select formControlName="FuelType">
+                                        <mat-option *ngFor="let item of fuel" [value]="item.id">{{item.name | translate}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true && action === 'edit' && vehiclePerson.CurrentEquipmentSerialNumber != '--'">
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="100">
+                                    <mat-label>Kilometrage</mat-label>
+                                    <input matInput formControlName="MileageFloat" type="number">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true">
+        
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.CapacitéR' | translate}}</mat-label>
+                                    <input matInput formControlName="FuelContainerCapacity" type="number">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.Conso' | translate}}</mat-label>
+                                    <input matInput formControlName="FuelTheoreticalCosumptionAvg" type="number">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true">
+        
+                                
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="100">
+                                    <mat-label>{{'NAV.Cylindree' | translate}}</mat-label>
+                                    <input matInput formControlName="Displacement" type="number">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true">
+        
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="100">
+                                    <mat-label>{{'NAV.Nchassis' | translate}}</mat-label>
+                                    <input matInput formControlName="ChassisNumber" type="text">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true">
+        
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="100">
+                                    <mat-label>{{'NAV.Date_circulation' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="picker" formControlName="DateOfCirculation">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+        
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true">
+                            <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="100">
+                                    <mat-label>{{'NAV.Date_reforme' | translate}}</mat-label>
+                                    <input matInput [matDatepicker]="picker1" formControlName="DateOfReform">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true">
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="100">
+                                    <mat-label>{{'NAV.Npalce' | translate}}</mat-label>
+                                    <input matInput formControlName="NomberOfPlaces" type="number">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true">
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.Puissancef' | translate}}</mat-label>
+                                    <input matInput formControlName="FiscalPower" type="number">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
+                                    <mat-label>{{'NAV.PuissanceR' | translate}}</mat-label>
+                                    <input matInput formControlName="RealPower" type="number">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row"  *ngIf="isTransportation === true && edit === true && vehiclePerson.CurrentEquipmentElement != null" >
+                                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="100">
+                                    <mat-label>{{'NAV.chipNumber' | translate}}</mat-label>
+                                    <input [readonly]="!CanChangeSimNumber" matInput formControlName="SimCardNumber" type="number">
+                                </mat-form-field>
+                            </div>
+                            <div class="file-uploader uploader-field" *ngIf="isTransportation === true && files.length == 0">
+                                <div style="display: flex;; cursor: pointer;" (click)="uploader.click()">
+                                    <input hidden  type="file" accept="image/*" id="file" #uploader (change)="fileBrowseHandler($event.target.files)">
+
+                    <button type="button" mat-icon-button matTooltip="Attach a vehicule photo"
+                        (click)="uploader.click()">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+                    <p>{{'NAV.CarPhoto1' | translate}}</p>
+                </div>
+            </div>
+            <img src={{urlImgCar}}>
+
+            <div fxLayout="row" *ngIf="isTransportation === true">
+                <div class="files-list" fxFlex="100">
+                    <div class="single-file" *ngFor="let file of files; let i = index">
+                        <div class="info">
+                            <div class="file-icon">
+                                <h6 class="name">
+                                    {{ file?.name }}
+                                </h6>
+                            </div>
+
+
+                            <div>
+                                <app-progress [progress]="file?.progress" fxFlex="80"
+                                    style="margin-top: 2%;"></app-progress>
+                                <div class="delete" (click)="deleteFile(i)" fxFlex="20">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+                                        style="margin-left: 50%;">
+                                        <path fill="#ff1a1a" fill-rule="nonzero"
+                                            d="M1 16c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v10zm3.17-7.83a.996.996 0 0 1 1.41 0L7 9.59l1.42-1.42a.996.996 0 1 1 1.41 1.41L8.41 11l1.42 1.42a.996.996 0 1 1-1.41 1.41L7 12.41l-1.42 1.42a.996.996 0 1 1-1.41-1.41L5.59 11 4.17 9.58a.996.996 0 0 1 0-1.41zM10.5 1L9.79.29C9.61.11 9.35 0 9.09 0H4.91c-.26 0-.52.11-.7.29L3.5 1H1c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1h-2.5z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="file-uploader uploader-field" *ngIf="isTransportation === true && grayCards.length == 0"
+                style="margin-top: 2%;">
+                <div style="display: flex ; cursor: pointer;" (click)="uploader.click()">
+                    <input hidden type="file" accept="image/*" id="grayCard" #uploader
+                        (change)="grayCardBrowseHandler($event.target.files)">
+
+                    <button type="button" mat-icon-button matTooltip="Attach a vehicule gray Card">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+                    <p>{{'NAV.CarPhoto2' | translate}}</p>
+                </div>
+            </div>
+            <img src={{urlImgGratCard}}>
+
+            <div fxLayout="row" *ngIf="isTransportation === true" style="margin-top: 2%;">
+                <div class="files-list" fxFlex="100">
+                    <div class="single-file" *ngFor="let grayCard of grayCards; let i = index">
+                        <div class="info">
+                            <div class="file-icon">
+                                <h6 class="name">
+                                    {{ grayCard?.name }}
+                                </h6>
+                            </div>
+                          <!--  <img src={{urlImgGratCard}}>-->
+                            <div>
+                                <app-progress [progress]="grayCard?.progress" fxFlex="80"
+                                    style="margin-top: 2%;"></app-progress>
+                                <div class="delete" (click)="deleteGrayCard(i)" fxFlex="20">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="18"
+                                        style="margin-left: 50%;">
+                                        <path fill="#ff1a1a" fill-rule="nonzero"
+                                            d="M1 16c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v10zm3.17-7.83a.996.996 0 0 1 1.41 0L7 9.59l1.42-1.42a.996.996 0 1 1 1.41 1.41L8.41 11l1.42 1.42a.996.996 0 1 1-1.41 1.41L7 12.41l-1.42 1.42a.996.996 0 1 1-1.41-1.41L5.59 11 4.17 9.58a.996.996 0 0 1 0-1.41zM10.5 1L9.79.29C9.61.11 9.35 0 9.09 0H4.91c-.26 0-.52.11-.7.29L3.5 1H1c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1h-2.5z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Person-->
+            <mat-form-field appearance="outline" class="w-100-p" *ngIf="isTransportation === false">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="FirstName">
+                <mat-error>tu faux remplir ce champs.</mat-error>
+            </mat-form-field>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="isTransportation === false">
+                <mat-form-field appearance="outline" class="w-100-p" style="width: 100%;">
+                    <mat-label>Prénom</mat-label>
+                    <input matInput formControlName="LastName">
+                    <mat-error>tu faux remplir ce champs.</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="isTransportation === false">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Icon</mat-label>
+                    <mat-select formControlName="IconName">
+                        <mat-option *ngFor="let icon of personIcons" [value]="icon.IconName">{{icon.name}}<img
+                                src="{{icon.url}}" style="float:right" />
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="isTransportation === false">
+                <mat-form-field appearance="outline" class="w-100-p" style="width: 100%;">
+                    <mat-label>E-mail</mat-label>
+                    <input matInput formControlName="Email">
+                    <mat-error>Email forme pas valider.</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="isTransportation === false">
+                <mat-form-field appearance="outline" class="w-100-p" style="width: 100%;">
+                    <mat-label>N tel mobile</mat-label>
+                    <input matInput formControlName="MobileTelephoneNumber">
+                </mat-form-field>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" *ngIf="isTransportation === false">
+                <mat-form-field appearance="outline" class="w-100-p" style="width: 100%;">
+                    <mat-label>N tel fix</mat-label>
+                    <input matInput formControlName="FixTelphoneNumber">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="isTransportation === false">
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Departement</mat-label>
+                    <mat-select formControlName="Department">
+                        <mat-option *ngFor="let dept of departments" [value]="dept.Id">{{dept.Name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon>
+                    <mat-error>Selecter le departement</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <!-- <button *ngIf="action === 'edit'"
+                mat-button
+                class="mr-8"
+                (click)="matDialogRef.close(['delete',Form])"
+                aria-label="Delete"
+                matTooltip="Delete">
+                {{'NAV.Remove' | translate}}
+        </button> -->
+
+        <button *ngIf="action !== 'edit'" mat-button class="save-button" (click)="onSaveForm(Form)"
+            [disabled]="Form.invalid" aria-label="SAVE">
+            {{'NAV.Add' | translate}}
+        </button>
+
+        <button *ngIf="action === 'edit'" mat-button class="save-button" (click)="onSaveFormEdit(Form)"
+            [disabled]="Form.invalid" aria-label="SAVE">
+            {{'NAV.Save' | translate}}
+        </button>
+
+    </div>
+</div>
