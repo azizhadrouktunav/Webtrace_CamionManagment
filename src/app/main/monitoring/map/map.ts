@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { Drawer } from './drawer';
 import { Traject } from './traject';
 import { GpsData } from '../trajectory/trajectory.model';
-import 'leaflet-easyPrint';
+import 'leaflet-easyprint';
 import * as esri from "esri-leaflet";
 //import * as leafletSearch from 'leaflet-search';
 // declare module 'leaflet' {
