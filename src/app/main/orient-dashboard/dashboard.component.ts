@@ -425,7 +425,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         continue;
       }
       const truck = this.truckById(rank.id);
+      const start = this.tripStart(mission, truck);
       rows.push({
+        when: start.when,
+        whenMin: start.whenMin,
+        whenDate: start.whenDate,
         truck: truck ? truck.plate : rank.plate,
         driver: rank.driver,
         trips: String(rank.trips),
@@ -445,6 +449,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
     }
     this.openDetail('Voyages', [
+      { key: 'when', label: 'Date et heure' },
       { key: 'truck', label: 'Camion' },
       { key: 'driver', label: 'Chauffeur' },
       { key: 'trips', label: 'Voyages' },
@@ -1677,6 +1682,30 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return date + ' · ' + time;
     }
     return date || time || '—';
+  }
+
+  private tripStart(mission: Mission, truck: Truck | null): { when: string; whenMin: string; whenDate: string } {
+    const parts = (mission.start || '08:00').split(':');
+    let totalMin = (Number(parts[0]) || 0) * 60 + (Number(parts[1]) || 0);
+    const offset = truck && truck.cycleOffset ? truck.cycleOffset : 30;
+    totalMin += offset % 120;
+    const iso = mission.date || '';
+    const base = new Date(iso + 'T00:00:00');
+    let when = '—';
+    if (!isNaN(base.getTime())) {
+      const stamp = new Date(base.getTime() + totalMin * 60000);
+      const date = stamp.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+      const hh = stamp.getHours();
+      const mm = stamp.getMinutes();
+      const hhs = hh < 10 ? '0' + hh : String(hh);
+      const mms = mm < 10 ? '0' + mm : String(mm);
+      when = date + ' · ' + hhs + ':' + mms;
+    }
+    return {
+      when: when,
+      whenMin: String(totalMin),
+      whenDate: iso
+    };
   }
 
   private workshopWhen(truck: Truck | null, truckId: string): string {

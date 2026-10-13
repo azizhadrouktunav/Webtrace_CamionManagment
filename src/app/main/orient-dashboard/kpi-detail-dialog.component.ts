@@ -102,10 +102,14 @@ export class KpiDetailDialogComponent implements AfterViewInit {
     const unloads = this.spread(unloadA, count);
     const rets = this.spread(retA, count);
     const rows: { [key: string]: string }[] = [];
+    const startMin = Number(row.whenMin);
+    const cycleMin = loadA + outA + unloadA + retA;
     let i: number;
     for (i = 0; i < count; i++) {
       const total = loads[i] + outs[i] + unloads[i] + rets[i];
+      const at = (isNaN(startMin) ? 0 : startMin) + Math.round(i * cycleMin);
       rows.push({
+        when: row.whenDate ? this.formatTripWhen(row.whenDate, at) : (row.when || '—'),
         n: String(i + 1),
         loading: this.pair(loads[i], loadS),
         outbound: this.pair(outs[i], outS),
@@ -119,6 +123,7 @@ export class KpiDetailDialogComponent implements AfterViewInit {
     this.title = 'Voyages de ' + (row.driver || 'chauffeur');
     this.empty = 'Aucun voyage.';
     this.columns = [
+      { key: 'when', label: 'Date et heure' },
       { key: 'n', label: 'N°' },
       { key: 'loading', label: 'Chargement' },
       { key: 'outbound', label: 'Trajet aller' },
@@ -242,5 +247,19 @@ export class KpiDetailDialogComponent implements AfterViewInit {
 
   private round1(value: number): number {
     return Math.round(value * 10) / 10;
+  }
+
+  private formatTripWhen(iso: string, totalMin: number): string {
+    const base = new Date(iso + 'T00:00:00');
+    if (isNaN(base.getTime())) {
+      return '—';
+    }
+    const stamp = new Date(base.getTime() + Math.round(totalMin) * 60000);
+    const date = stamp.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+    const hh = stamp.getHours();
+    const mm = stamp.getMinutes();
+    const hhs = hh < 10 ? '0' + hh : String(hh);
+    const mms = mm < 10 ? '0' + mm : String(mm);
+    return date + ' · ' + hhs + ':' + mms;
   }
 }

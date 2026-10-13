@@ -25,20 +25,43 @@ export class SessionGuard implements CanActivateChild, CanActivate {
   }
 
   checkPermission(url: string): boolean {
-    const loggedIn = this._authenticateService.isLoggedIn() && !!localStorage.getItem('SessionId');
-
-    if (loggedIn) {
-      if (url === '/' || url === '/app-auth') {
-        this.router.navigate(['/Home']);
-      }
-      return true;
-    }
-
     if (url === '/' || url === '/app-auth') {
+      this.openDemoSession();
+      this.router.navigate(['/Home']);
+      return false;
+    }
+
+    const loggedIn = this._authenticateService.isLoggedIn() && !!localStorage.getItem('SessionId');
+    if (loggedIn) {
       return true;
     }
 
-    this.router.navigate(['app-auth']);
+    this.openDemoSession();
+    this.router.navigate(['/Home']);
     return false;
+  }
+
+  private openDemoSession(): void {
+    if (this._authenticateService.isLoggedIn() && localStorage.getItem('SessionId')) {
+      return;
+    }
+    localStorage.setItem('STATE', 'true');
+    localStorage.setItem('SessionId', 'MOCK-SESSION-DEMO');
+    localStorage.setItem('isParcAuthorized', 'isParcAuthorized');
+    localStorage.setItem('isSuiviAuthorized', 'isSuiviAuthorized');
+    localStorage.setItem('isAdminAuthorized', 'isAdminAuthorized');
+    localStorage.setItem('isMonitoringTankAuthorized', 'isMonitoringTankAuthorized');
+    localStorage.setItem('AccessRightsOfCurrentAccount', JSON.stringify({
+      '3': true,
+      '14': true,
+      '15': true,
+      '17': true,
+      '22': true,
+      '28': true
+    }));
+    localStorage.setItem('UserName', 'Demo Orient');
+    localStorage.setItem('CustomerGMT', '+01:00');
+    localStorage.setItem('Customer', 'TUNAV Orient Demo');
+    localStorage.setItem('AuthDate', JSON.stringify((new Date()).getTime()));
   }
 }

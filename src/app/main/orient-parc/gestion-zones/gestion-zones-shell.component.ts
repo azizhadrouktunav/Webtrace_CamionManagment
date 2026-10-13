@@ -274,7 +274,7 @@ export class GestionZonesShellComponent implements OnInit, AfterViewInit, OnDest
   }
 
   private exportHeaders(): string[] {
-    return ['Nom', 'Type', 'Dessin', 'Actif'];
+    return ['Nom', 'Zone / Trajet', 'Dessin', 'Actif'];
   }
 
   private exportRows(): string[][] {
